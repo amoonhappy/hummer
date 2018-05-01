@@ -30,7 +30,7 @@ public class XMLBeanFactory implements IBeanFactory {
 
     private XMLBeanFactory() {
         initialBeanObject();
-        // use aop xml configuraion attribute enabledBeanIds to register
+        // use aop xml configuration attribute enabledBeanIds to register
         // interceptors
         Map ids = (Map) getBean("enabledBeanIds");
         if (ids != null) {
