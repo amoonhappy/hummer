@@ -25,12 +25,12 @@ public class XMLBeanFactory implements IBeanFactory {
     private static Map<String, IXMLConfiguration> singletonBeanConfigCache = CPConfigManager.getInstance()
             .getAllXMLConfiguration();
     private static IBeanFactory instance = new XMLBeanFactory();
-    Map<String, Object> singletonBeanCache = new HashMap<String, Object>();
-    LinkedList<Interceptor> ic = new LinkedList<Interceptor>();
+    Map<String, Object> singletonBeanCache = new HashMap<>();
+    LinkedList<Interceptor> ic = new LinkedList<>();
 
     private XMLBeanFactory() {
         initialBeanObject();
-        // use aop xml configuration attribute enabledBeanIds to register
+        // use aop xml configuraion attribute enabledBeanIds to register
         // interceptors
         Map ids = (Map) getBean("enabledBeanIds");
         if (ids != null) {
@@ -57,13 +57,7 @@ public class XMLBeanFactory implements IBeanFactory {
             for (Iterator<String> it = beanIds.iterator(); it.hasNext(); ) {
                 String beanId = it.next();
                 try {
-                    //when the bean is defined as singleton, then put to the bean cache
-                    if (this.isSingleton(beanId)) {
-                        singletonBeanCache.put(beanId, beanConfig2BeanObject(singletonBeanConfigCache.get(beanId)));
-                    } else {
-                        // if not singleton, the bean should be created during access
-                        log.info("bean [" + beanId + "] is not singleton!");
-                    }
+                    singletonBeanCache.put(beanId, beanConfig2BeanObject(singletonBeanConfigCache.get(beanId)));
                 } catch (IllegalAccessException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -103,6 +97,7 @@ public class XMLBeanFactory implements IBeanFactory {
             ret = singletonBeanCache.get(name);
         }
 
+        assert ret != null;
         if (!ret.getClass().getSimpleName().equals(requiredType.getSimpleName())) {
             final String notMatch = "the class: " + requiredType.getSimpleName() + " type don't match the bean id: "
                     + name;
@@ -122,13 +117,10 @@ public class XMLBeanFactory implements IBeanFactory {
 
     public boolean isTypeMatch(String name, Class targetType) throws NoBeanDefinationException {
         Object ret = getBean(name);
-        if (!ret.getClass().getSimpleName().equals(targetType.getSimpleName())) {
-            return false;
-        }
-        return true;
+        return ret.getClass().getSimpleName().equals(targetType.getSimpleName());
     }
 
-    protected Object beanConfig2BeanObject(IXMLConfiguration configuration)
+    private Object beanConfig2BeanObject(IXMLConfiguration configuration)
             throws IllegalAccessException, InvocationTargetException {
         Object obj = null;
 
@@ -181,10 +173,11 @@ public class XMLBeanFactory implements IBeanFactory {
                 throw new RuntimeException(interfaceErrorMsg);
             }
             ret = clazz.newInstance();
+            // if the object is already an interceptor, return;
             if (ret instanceof Interceptor) {
                 return ret;
             }
-            // ret = newweb Object();
+            // ret = new Object();
 
             Enhancer eh = new Enhancer();
             InterceptorChainCGLibCallback callback = new InterceptorChainCGLibCallback(ic, ret, clazz);
@@ -212,7 +205,7 @@ public class XMLBeanFactory implements IBeanFactory {
         } catch (IllegalAccessException e) {
             log.error("error when initial the proxy of instance: " + simpleName, e);
         } catch (Throwable e) {
-            log.error("error when enhance the class of instance via CGLIB2: " + simpleName, e);
+            log.error("error when enhance the class of instance via CGLIB: " + simpleName, e);
             throw new RuntimeException("could not create the proxy for class :" + simpleName);
         }
         return ret;

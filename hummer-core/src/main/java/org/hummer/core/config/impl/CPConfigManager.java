@@ -12,10 +12,7 @@ import org.hummer.core.util.StringUtil;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class CPConfigManager implements IConfigManager {
     private static Logger log = Log4jUtils.getLogger(CPConfigManager.class);
@@ -72,16 +69,17 @@ public class CPConfigManager implements IConfigManager {
     private void initialComponentConfig() throws IOException {
         Set<SupportedAppInfos.SupportedAppInfo> apps = SupportedAppInfos.getRegAppInfos();
         Set<String> nameList = new HashSet<>();
+        String comp_id;
 
         SupportedAppInfos.SupportedAppInfo appInfo;
-        for (SupportedAppInfos.SupportedAppInfo app : apps) {
-            String comp_id;
-            appInfo = app;
+        for (Iterator<SupportedAppInfos.SupportedAppInfo> it = apps.iterator(); it.hasNext(); ) {
+            appInfo = it.next();
             comp_id = appInfo.getAppName();
             log.info(comp_id);
-            nameList = findCompConfig(nameList, comp_id);
+            findCompConfig(nameList, comp_id);
 
-            for (String fileName : nameList) {
+            for (Iterator<String> itName = nameList.iterator(); itName.hasNext(); ) {
+                String fileName = itName.next();
                 log.info(comp_id + "." + fileName);
                 configCache.put(fileName, CPConfigFactory.getInstance().parse(fileName));
             }
@@ -147,7 +145,8 @@ public class CPConfigManager implements IConfigManager {
                 String[] comp_ids_ar = StringUtil.joinArray(comp_ids, ",");
                 String comp_ver_key;
                 String comp_ver;
-                for (String comp_id : comp_ids_ar) {
+                for (int i = 0; i < comp_ids_ar.length; i++) {
+                    String comp_id = comp_ids_ar[i];
                     comp_ver_key = StringUtils.replace(HUMMER_COMPONENT_VER, HUMMER_COMPONENT_REPLACEMENT, comp_id);
                     comp_ver = (String) archConfig.getValue(comp_ver_key);
                     SupportedAppInfos.appReg(comp_id, comp_ver);
