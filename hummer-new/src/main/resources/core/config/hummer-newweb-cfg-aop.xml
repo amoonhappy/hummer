@@ -1,10 +1,10 @@
 <component name="hummer-newweb" type="aop">
     <bean id="enabledBeanIds">
         <properties name="enabledBeanIds" type="String"
-                    value="transactionIntercepter,performanceLog"/>
+                    value="transactionInterceptor,performanceLog"/>
     </bean>
     <!-- other bean definition -->
-    <bean id="transactionIntercepter" class="org.hummer.core.aop.impl.TransactionInterceptor"
+    <bean id="transactionInterceptor" class="org.hummer.core.aop.impl.TransactionInterceptor"
           singleton="true">
         <properties name="xmlPattern" type="String"
                     value="

@@ -1,11 +1,11 @@
 <component name="hummer-newweb" type="aop">
-    <!-- Define which Intercepters will be applied to which services-->
+    <!-- Define which Interceptors will be applied to which services-->
     <bean id="enabledBeanIds">
         <properties name="enabledBeanIds" type="String"
-                    value="performanceLog,transactionIntercepter"/>
+                    value="performanceLog,transactionInterceptor"/>
     </bean>
-    <!-- Intercepters definition -->
-    <bean id="transactionIntercepter" class="org.hummer.core.aop.impl.TransactionInterceptor"
+    <!-- Interceptors definition -->
+    <bean id="transactionInterceptor" class="org.hummer.core.aop.impl.TransactionInterceptor"
           singleton="true">
         <properties name="xmlPattern" type="String"
                     value="

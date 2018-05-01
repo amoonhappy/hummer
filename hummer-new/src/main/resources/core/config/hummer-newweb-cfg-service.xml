@@ -1,5 +1,5 @@
 <component name="hummer-newweb" type="bsv">
-    <!-- Service Defination -->
+    <!-- Service Definition -->
     <bean id="userService"
           class="org.hummer.newweb.service.user.impl.UserService" singleton="false"
           transType="required">
