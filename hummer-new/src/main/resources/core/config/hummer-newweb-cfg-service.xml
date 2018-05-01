@@ -1,0 +1,8 @@
+<component name="hummer-newweb" type="bsv">
+    <!-- Service Defination -->
+    <bean id="userService"
+          class="org.hummer.newweb.service.user.impl.UserService" singleton="false"
+          transType="required">
+        <properties name="userDAO" type="refBean" value="userDAO"/>
+    </bean>
+</component>

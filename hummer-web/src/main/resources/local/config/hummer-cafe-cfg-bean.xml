@@ -1,0 +1,7 @@
+<component name="hummer-cafe" type="bean">
+    <!-- other bean definition -->
+    <bean id="pagerHandler"
+          class="org.hummer.core.persistence.impl.HibernatePagerHandler"
+          singleton="false">
+    </bean>
+</component>

@@ -1,0 +1,11 @@
+<component name="hummer-newweb" type="dsv">
+    <!-- DAO definition -->
+    <bean id="userDAO" class="org.hummer.newweb.dao.user.impl.UserHibernateDAO"
+          singleton="true">
+        <properties name="pagerHandler" type="refBean" value="pagerHandler"/>
+    </bean>
+    <!--bean id="userDAOTest" class="org.hummer.web.dao.test.UserDAOTest"
+          singleton="true">
+        <properties name="userDAO" type="refBean" value="userDAO"/>
+    </bean-->
+</component>

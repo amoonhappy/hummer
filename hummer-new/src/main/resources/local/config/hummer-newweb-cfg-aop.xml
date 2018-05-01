@@ -1,0 +1,34 @@
+<component name="hummer-newweb" type="aop">
+    <!-- Define which Intercepters will be applied to which services-->
+    <bean id="enabledBeanIds">
+        <properties name="enabledBeanIds" type="String"
+                    value="performanceLog,transactionIntercepter"/>
+    </bean>
+    <!-- Intercepters definition -->
+    <bean id="transactionIntercepter" class="org.hummer.core.aop.impl.TransactionInterceptor"
+          singleton="true">
+        <properties name="xmlPattern" type="String"
+                    value="
+			^[a-z|A-Z|.|0-9]+Service.add[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*
+			^[a-z|A-Z|.|0-9]+ServiceLocal.add[a-z|A-Z|.|0-9]*
+           ^[a-z|A-Z|.|0-9]+ServiceLocal.save[a-z|A-Z|.|0-9]*
+        ">
+        </properties>
+        <properties name="xmlExcludePattern" type="String"
+                    value="^get,^set,^toString">
+        </properties>
+    </bean>
+    <bean id="performanceLog" class="org.hummer.core.aop.impl.PerformanceTraceInterceptor"
+          singleton="true">
+        <properties name="xmlPattern" type="String"
+                    value="
+			^[a-z|A-Z|.|0-9]+Service.add[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+ServiceLocal.get[a-z|A-Z|.|0-9]*
+			">
+        </properties>
+        <properties name="xmlExcludePattern" type="String" value="^set,^toString">
+        </properties>
+    </bean>
+</component>
