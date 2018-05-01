@@ -16,12 +16,13 @@ public class CPConfigFactory implements ICPPropConfigParser {
     }
 
     public IConfiguration parse(String fileName) throws FileNotFoundException {
-        String extentionName = FileSystemUtil.getFileExtention(fileName);
+        String extensionName = FileSystemUtil.getFileExtention(fileName);
         IConfiguration ret = null;
-        if (ParserFactory.PROP_FILEEXT.equals(extentionName)) {
-            ICPPropConfigParser parser = new CPPropConfigParser();
+        if (ParserFactory.PROP_FILE_EXT.equals(extensionName)) {
+            ICPPropConfigParser parser;
+            parser = new CPPropConfigParser();
             ret = parser.parse(fileName);
-        } else if (ParserFactory.XML_FILEEXT.equals(extentionName)) {
+        } else if (ParserFactory.XML_FILE_EXT.equals(extensionName)) {
             XMLConfigFactory xmlConfigFactory = XMLConfigFactory.getInstance();
             Map<String, IXMLConfiguration> map = xmlConfigFactory.parse(fileName);
             IXMLConfiguration xml = new XMLBeanConfig();

@@ -11,21 +11,17 @@ import java.util.Map;
 public class XMLBeanConfig extends XMLConfig implements IXMLBeanConfig {
     // protected List<String> enabledBeanIds;
 
-    protected IXMLBeanConfig overwriteConfig;
+    IXMLBeanConfig overwriteConfig;
 
-    protected String beanId;
+    private String beanId;
 
-    protected Class beanClass;
+    private Class beanClass;
 
-    protected boolean bSingleton;
+    private String singleton;
 
-    protected String singleton;
+    private Map<String, String> refBeanIds = new HashMap<>();
 
-    protected Map<String, String> refBeanIds = new HashMap<String, String>();
-
-    protected Map<String, String> propertiesValue = new HashMap<String, String>();
-
-    private String temp;
+    private Map<String, String> propertiesValue = new HashMap<>();
 
     public String getBeanId() {
         return this.beanId;
@@ -36,22 +32,18 @@ public class XMLBeanConfig extends XMLConfig implements IXMLBeanConfig {
     }
 
     public boolean isSingleton() {
-        this.bSingleton = "true".equalsIgnoreCase(this.getSingleton());
-        //ret;
-        try {
-            if (overwriteConfig != null && !StringUtil.isEmpty(overwriteConfig.getSingleton())) {
-                this.bSingleton = overwriteConfig.isSingleton();
-            }
-        } catch (Exception e) {
-            // TODO catch process
+        boolean bSingleton = "true".equalsIgnoreCase(this.getSingleton());
+
+        if (overwriteConfig != null && !StringUtil.isEmpty(overwriteConfig.getSingleton())) {
+            bSingleton = overwriteConfig.isSingleton();
         }
-        return this.bSingleton;
+
+        return bSingleton;
     }
 
     public IConfiguration overwriteBy(IConfiguration localConfig) {
         if (localConfig instanceof IXMLBeanConfig) {
-            IXMLBeanConfig overwriteConfig = (IXMLBeanConfig) localConfig;
-            this.overwriteConfig = overwriteConfig;
+            this.overwriteConfig = (IXMLBeanConfig) localConfig;
         }
         return this;
     }

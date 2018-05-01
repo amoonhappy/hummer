@@ -18,7 +18,7 @@ public class CPResourcesManagerTest extends TestCase {
     public void testGetCore() {
 
         try {
-            InputStream input = CPResourcesManager.getInstance().getCore("hummer-core.id", file1);
+            InputStream input = CPResourcesManager.getInstance().getCore("hummer-core.id");
             InputStreamReader isr = new InputStreamReader(input);
             BufferedReader reader = new BufferedReader(isr);
             String line;

@@ -23,9 +23,9 @@ public abstract class DynamicChainMethodInterceptor implements MethodMatcher, In
      */
     private String[] excludedPatterns = new String[0];
 
-    protected abstract void initParttens(String[] patterns);
+    protected abstract void initPatterns(String[] patterns);
 
-    protected abstract void initExcludeParttens(String[] excludePatterns);
+    protected abstract void initExcludePatterns(String[] excludePatterns);
 
     /**
      * Convenience method when we have only a single pattern. Use either this
@@ -50,10 +50,10 @@ public abstract class DynamicChainMethodInterceptor implements MethodMatcher, In
      *
      * @param patterns regular expressions describing methods to match
      */
-    public void setPatterns(String[] patterns) {
+    void setPatterns(String[] patterns) {
         Assert.notEmpty(patterns, "'patterns' cannot be null or empty.");
         this.patterns = patterns;
-        initParttens(patterns);
+        initPatterns(patterns);
     }
 
     /**
@@ -80,10 +80,10 @@ public abstract class DynamicChainMethodInterceptor implements MethodMatcher, In
      *
      * @param excludedPatterns regular expressions describing methods to match for exclusion
      */
-    public void setExcludedPatterns(String[] excludedPatterns) {
+    void setExcludedPatterns(String[] excludedPatterns) {
         Assert.notEmpty(excludedPatterns, "'excludedPatterns' cannot be null or empty.");
         this.excludedPatterns = excludedPatterns;
-        initExcludeParttens(excludedPatterns);
+        initExcludePatterns(excludedPatterns);
     }
 
     /**

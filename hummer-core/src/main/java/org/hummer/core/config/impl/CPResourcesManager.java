@@ -10,17 +10,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class CPResourcesManager {
-    public static final String CORE_PREFIX = "core/config/";
-    public static final String LOCAL_PREFIX = "local/config/";
+    static final String CORE_PREFIX = "core/config/";
+    static final String LOCAL_PREFIX = "local/config/";
     private static Logger log = Log4jUtils.getLogger(CPResourcesManager.class);
     private static CPResourcesManager instance = new CPResourcesManager();
-    private Map<String, JarFile> compCache = new HashMap<String, JarFile>();
 
     private CPResourcesManager() {
     }
@@ -29,7 +26,7 @@ public class CPResourcesManager {
         return instance;
     }
 
-    public InputStream getCore(String comp_id, String fileName) throws IOException {
+    public InputStream getCore(String comp_id) throws IOException {
         InputStream in = null;
 
         JarFile jarFile = getJar(comp_id);
@@ -55,7 +52,7 @@ public class CPResourcesManager {
         return in;
     }
 
-    public JarFile getJar(String comp_id) {
+    private JarFile getJar(String comp_id) {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
         URL url = cl.getResource(comp_id + ".id");
@@ -77,10 +74,11 @@ public class CPResourcesManager {
     }
 
     public InputStream getLocal(String fileName) throws IOException {
-        InputStream in = null;
+        InputStream in;
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         String temp = LOCAL_PREFIX + fileName;
         URL url = cl.getResource(temp);
+        assert url != null;
         in = url.openStream();
         return in;
     }

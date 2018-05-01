@@ -76,14 +76,10 @@ public class BusinessExceptionInterceptor implements org.aopalliance.intercept.M
                 // if successful
             } else {
                 if (returnValue instanceof ReturnValue) {
-                    value = (ReturnValue) returnValue;
                     ActionMessages messages = getMessages(request);
-                    Messages retmessages = value.getMessages();
-                    if (retmessages != null) {
-                        disposeMessages(messages, retmessages);
+                    disposeMessages(messages, ((ReturnValue) returnValue).getMessages());
+                    request.setAttribute(Globals.MESSAGE_KEY, messages);
 
-                        request.setAttribute(Globals.MESSAGE_KEY, messages);
-                    }
                 } else {
                     return returnValue;
                 }

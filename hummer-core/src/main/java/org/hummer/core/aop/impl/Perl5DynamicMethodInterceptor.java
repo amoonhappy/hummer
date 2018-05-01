@@ -17,7 +17,7 @@ public abstract class Perl5DynamicMethodInterceptor extends DynamicChainMethodIn
 
     private String xmlExcludePattern = null;
 
-    private transient Pattern[] parttens = new Pattern[0];
+    private transient Pattern[] patterns = new Pattern[0];
 
     private transient Pattern[] compiledExclusionPatterns = new Pattern[0];
 
@@ -52,14 +52,14 @@ public abstract class Perl5DynamicMethodInterceptor extends DynamicChainMethodIn
     }
 
     @Override
-    protected void initExcludeParttens(String[] excludePatterns) {
+    protected void initExcludePatterns(String[] excludePatterns) {
         this.compiledExclusionPatterns = compilePatterns(excludePatterns);
         this.matcher = new Perl5Matcher();
     }
 
     @Override
-    protected void initParttens(String[] patterns) {
-        this.parttens = compilePatterns(patterns);
+    protected void initPatterns(String[] patterns) {
+        this.patterns = compilePatterns(patterns);
         this.matcher = new Perl5Matcher();
     }
 
@@ -86,9 +86,7 @@ public abstract class Perl5DynamicMethodInterceptor extends DynamicChainMethodIn
      * <code>String</code>.
      */
     protected boolean matches(String pattern, int patternIndex) {
-        boolean matched = this.matcher.matches(pattern, this.parttens[patternIndex]);
-
-        return matched;
+        return this.matcher.matches(pattern, this.patterns[patternIndex]);
     }
 
     /**
@@ -105,8 +103,7 @@ public abstract class Perl5DynamicMethodInterceptor extends DynamicChainMethodIn
      * <code>String</code>.
      */
     protected boolean matchesExclusion(String pattern, int patternIndex) {
-        boolean matched = this.matcher.matches(pattern, this.compiledExclusionPatterns[patternIndex]);
-        return matched;
+        return this.matcher.matches(pattern, this.compiledExclusionPatterns[patternIndex]);
     }
 
 }

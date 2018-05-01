@@ -4,7 +4,9 @@ import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
 import org.hummer.core.aop.intf.Interceptor;
+import org.hummer.core.util.Log4jUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
@@ -14,16 +16,18 @@ import java.util.LinkedList;
  *
  * @author jeff.zhou
  */
+@Deprecated
 public class ProxyFactory {
     private static ProxyFactory instance = new ProxyFactory();
+    private static Logger log = Log4jUtils.getLogger(Perl5DynamicMethodInterceptor.class);
 
-    LinkedList<Interceptor> ic = new LinkedList<Interceptor>();
+    private LinkedList<Interceptor> ic = new LinkedList<>();
 
     private ProxyFactory() {
         ic.addFirst(new TransactionInterceptor());
-        // ic.addLast(newweb Log2Interceptor(
-        // newweb String[] { "^[a-z|A-Z|.|0-9]+Service.print[0-9]*" },
-        // newweb String[] { "^get", "^set", "^toString" }));
+        // ic.addLast(new Log2Interceptor(
+        // new String[] { "^[a-z|A-Z|.|0-9]+Service.print[0-9]*" },
+        // new String[] { "^get", "^set", "^toString" }));
     }
 
     public static ProxyFactory getInstance() {
@@ -37,14 +41,12 @@ public class ProxyFactory {
                 throw new RuntimeException("could not create the proxy for interface");
             }
             ret = clazz.newInstance();
-            // ret = newweb Object();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            // ret = new Object();
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("get Proxy error!", e);
         }
         Enhancer eh = new Enhancer();
-        IntercepterChainCGLibCallback callback = new IntercepterChainCGLibCallback(ic, ret, clazz);
+        InterceptorChainCGLibCallback callback = new InterceptorChainCGLibCallback(ic, ret, clazz);
         Callback[] callbacks = new Callback[]{callback, NoOp.INSTANCE};
         eh.setSuperclass(clazz);
         eh.setCallbackFilter(callback.getFilter());
@@ -53,17 +55,8 @@ public class ProxyFactory {
         ret = eh.create();
         try {
             BeanUtils.setProperty(ret, "test", ret);
-            // Object temp = BeanUtils.getProperty(ret, "test");
-            // System.out.println(temp);
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            // } catch (NoSuchMethodException e) {
-            // // TODO Auto-generated catch block
-            // e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            log.error("Cglib Enhancement error!", e);
         }
         return ret;
     }

@@ -3,6 +3,8 @@ package org.hummer.core.config.impl;
 import org.dom4j.Element;
 import org.hummer.core.config.intf.IXMLBeanConfig;
 
+//TODO: to implement using separated models?
+@Deprecated
 public class XMLDSVBeanConfigParser extends XMLBeanConfigParser {
     protected IXMLBeanConfig getXMLBeanConfigImpl() {
         return new XMLDataServiceConfig();

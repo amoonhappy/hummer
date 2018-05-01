@@ -19,6 +19,7 @@ import org.hummer.core.constants.ExceptionConstant;
 import org.hummer.core.exception.BusinessException;
 import org.hummer.core.message.impl.SQLLogInfo;
 import org.hummer.core.util.ExceptionUtil;
+import org.hummer.core.util.Log4jUtils;
 
 import java.sql.SQLException;
 
@@ -26,7 +27,7 @@ import java.sql.SQLException;
  * @author jeff.zhou
  */
 public class DAOExceptionInterceptor implements org.aopalliance.intercept.MethodInterceptor {
-    private static final Logger log = Logger.getLogger(DAOExceptionInterceptor.class);
+    private static final Logger log = Log4jUtils.getLogger(DAOExceptionInterceptor.class);
 
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Object returnValue;

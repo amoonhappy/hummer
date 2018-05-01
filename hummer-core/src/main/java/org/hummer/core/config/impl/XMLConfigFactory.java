@@ -1,20 +1,26 @@
 package org.hummer.core.config.impl;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.hummer.core.config.intf.IXMLConfigParser;
 import org.hummer.core.config.intf.IXMLConfiguration;
+import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.hummer.core.util.XmlDOMUtil;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class XMLConfigFactory {
     public static XMLConfigFactory instance = new XMLConfigFactory();
+    private static Logger log = Log4jUtils.getLogger(XMLConfigFactory.class);
 
     private XMLConfigFactory() {
 
@@ -35,15 +41,14 @@ public class XMLConfigFactory {
             return localConfig;
         } else {
 
+            assert coreConfig != null;
             Set<String> coreKeySet = coreConfig.keySet();
             Set<String> localKeySet = localConfig.keySet();
-            List<String> mergedKeySet = new ArrayList<String>();
-            mergedKeySet = (List<String>) CollectionUtils.union(coreKeySet, localKeySet);
-            // List<IXMLConfiguration> ret = newweb
+            List<String> mergedKeySet = (List<String>) CollectionUtils.union(coreKeySet, localKeySet);
+            // List<IXMLConfiguration> ret = new
             // ArrayList<IXMLConfiguration>();
-            Map<String, IXMLConfiguration> ret = new HashMap<String, IXMLConfiguration>();
-            for (Iterator<String> it = mergedKeySet.iterator(); it.hasNext(); ) {
-                String key = it.next();
+            Map<String, IXMLConfiguration> ret = new HashMap<>();
+            for (String key : mergedKeySet) {
                 IXMLConfiguration coreTemp = coreConfig.get(key);
                 IXMLConfiguration localTemp = localConfig.get(key);
                 if (coreTemp == null && localTemp != null) {
@@ -68,12 +73,8 @@ public class XMLConfigFactory {
             if (xmlDoc != null) {
                 ret = convertToIConfiguration(xmlDoc);
             }
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            log.error("load local config xml failed!", e);
         }
         return ret;
     }
@@ -84,12 +85,8 @@ public class XMLConfigFactory {
         try {
             Document xmlDoc = getDocument(coreFileName);
             ret = convertToIConfiguration(xmlDoc);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            log.error("load core config xml failed!", e);
         }
         return ret;
     }
@@ -99,7 +96,7 @@ public class XMLConfigFactory {
     }
 
     private Map<String, IXMLConfiguration> convertToIConfiguration(Document xmlDoc) {
-        Map<String, IXMLConfiguration> ret = null;
+        Map<String, IXMLConfiguration> ret;
 
         Element root = xmlDoc.getRootElement();
         String configType = root.attributeValue("type");

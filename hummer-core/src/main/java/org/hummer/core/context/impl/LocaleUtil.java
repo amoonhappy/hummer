@@ -4,7 +4,7 @@ import java.util.Locale;
 
 public class LocaleUtil {
     public static Locale getLocale() {
-        Locale locale = null;
+        Locale locale;
         RequestContext context = ContextHolder.getRequestContext();
 
         if (context != null) {

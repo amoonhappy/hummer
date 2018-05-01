@@ -5,7 +5,7 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
-import org.hummer.core.aop.impl.IntercepterChainCGLibCallback;
+import org.hummer.core.aop.impl.InterceptorChainCGLibCallback;
 import org.hummer.core.aop.intf.Interceptor;
 import org.hummer.core.config.impl.CPConfigManager;
 import org.hummer.core.config.intf.IXMLBeanConfig;
@@ -187,7 +187,7 @@ public class XMLBeanFactory implements IBeanFactory {
             // ret = newweb Object();
 
             Enhancer eh = new Enhancer();
-            IntercepterChainCGLibCallback callback = new IntercepterChainCGLibCallback(ic, ret, clazz);
+            InterceptorChainCGLibCallback callback = new InterceptorChainCGLibCallback(ic, ret, clazz);
             Callback[] callbacks = new Callback[]{callback, NoOp.INSTANCE};
             eh.setSuperclass(clazz);
             eh.setCallbackFilter(callback.getFilter());

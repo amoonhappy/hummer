@@ -5,7 +5,7 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
-import org.hummer.core.aop.impl.IntercepterChainCGLibCallback;
+import org.hummer.core.aop.impl.InterceptorChainCGLibCallback;
 import org.hummer.core.aop.intf.Interceptor;
 import org.hummer.core.factory.intf.IProxyFactory;
 import org.hummer.core.util.Log4jUtils;
@@ -45,7 +45,7 @@ public class Cglib2ProxyFactory implements IProxyFactory {
             // ret = newweb Object();
 
             Enhancer eh = new Enhancer();
-            IntercepterChainCGLibCallback callback = new IntercepterChainCGLibCallback(ic, ret, clazz);
+            InterceptorChainCGLibCallback callback = new InterceptorChainCGLibCallback(ic, ret, clazz);
             Callback[] callbacks = new Callback[]{callback, NoOp.INSTANCE};
             eh.setSuperclass(clazz);
             eh.setCallbackFilter(callback.getFilter());

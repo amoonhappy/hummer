@@ -18,33 +18,31 @@ import java.util.LinkedList;
 public class InterceptorChainImpl implements InterceptorChain {
 
     protected final Object proxy;
-
-    protected final Object target;
-
     protected final Method method;
+    final Object target;
     private final Class targetClass;
-    protected Object[] arguments;
-    LinkedList<Interceptor> chain = new LinkedList<Interceptor>();
+    Object[] arguments;
+    private LinkedList<Interceptor> chain;
     private int curIndex = -1;
 
     /**
      * Construct a newweb ReflectiveMethodInvocation with the given arguments.
      *
-     * @param proxy                                the proxy object that the invocation was made on
-     * @param target                               the target object to invoke
-     * @param method                               the method to invoke
-     * @param arguments                            the arguments to invoke the method with
-     * @param targetClass                          the target class, for MethodMatcher invocations
-     * @param interceptorsAndDynamicMethodMatchers interceptors that should be applied, along with any
-     *                                             InterceptorAndDynamicMethodMatchers that need evaluation at
-     *                                             runtime. MethodMatchers included in this struct must already
-     *                                             have been found to have matched as far as was possibly
-     *                                             statically. Passing an array might be about 10% faster, but
-     *                                             would complicate the code. And it would work only for static
-     *                                             pointcuts.
+     * @param proxy       the proxy object that the invocation was made on
+     * @param target      the target object to invoke
+     * @param method      the method to invoke
+     * @param arguments   the arguments to invoke the method with
+     * @param targetClass the target class, for MethodMatcher invocations
+     * @param chain       interceptors that should be applied, along with any
+     *                    InterceptorAndDynamicMethodMatchers that need evaluation at
+     *                    runtime. MethodMatchers included in this struct must already
+     *                    have been found to have matched as far as was possibly
+     *                    statically. Passing an array might be about 10% faster, but
+     *                    would complicate the code. And it would work only for static
+     *                    pointcuts.
      */
-    public InterceptorChainImpl(Object proxy, Object target, Method method, Object[] arguments, Class targetClass,
-                                LinkedList<Interceptor> chain) {
+    InterceptorChainImpl(Object proxy, Object target, Method method, Object[] arguments, Class targetClass,
+                         LinkedList<Interceptor> chain) {
         this.proxy = proxy;
         this.target = target;
         this.targetClass = targetClass;
@@ -64,7 +62,7 @@ public class InterceptorChainImpl implements InterceptorChain {
      * @throws Throwable                                      if thrown by the target method
      * @throws org.springframework.aop.AopInvocationException in case of a reflection error
      */
-    public static Object invokeJoinpointUsingReflection(Object target, Method method, Object[] args) throws Throwable {
+    private static Object invokeJoinPointUsingReflection(Object target, Method method, Object[] args) throws Throwable {
 
         // Use reflection to invoke the method.
         try {
@@ -110,14 +108,10 @@ public class InterceptorChainImpl implements InterceptorChain {
         return (this.arguments != null ? this.arguments : new Object[0]);
     }
 
-    public void setArguments(Object[] arguments) {
-        this.arguments = arguments;
-    }
-
     public Object proceed() throws Throwable {
         // We start with an index of -1 and increment early.
         if (this.curIndex == this.chain.size() - 1) {
-            return invokeJoinpoint();
+            return invokeJoinPoint();
         }
 
         Object interceptorOrInterceptionAdvice = this.chain.get(++this.curIndex);
@@ -142,7 +136,7 @@ public class InterceptorChainImpl implements InterceptorChain {
                 return ((Interceptor) interceptorOrInterceptionAdvice).invoke(this);
             }
         } else {
-            return invokeJoinpoint();
+            return invokeJoinPoint();
         }
     }
 
@@ -153,8 +147,8 @@ public class InterceptorChainImpl implements InterceptorChain {
      * @return the return value of the joinpoint
      * @throws Throwable if invoking the joinpoint resulted in an exception
      */
-    protected Object invokeJoinpoint() throws Throwable {
-        return invokeJoinpointUsingReflection(this.target, this.method, this.arguments);
+    protected Object invokeJoinPoint() throws Throwable {
+        return invokeJoinPointUsingReflection(this.target, this.method, this.arguments);
     }
 
     public int getCurrentIndex() {
@@ -162,10 +156,7 @@ public class InterceptorChainImpl implements InterceptorChain {
     }
 
     public boolean hasNext() {
-        if (chain.get(curIndex + 1) != null) {
-            return true;
-        }
-        return false;
+        return chain.get(curIndex + 1) != null;
     }
 
     public boolean isEmpty() {

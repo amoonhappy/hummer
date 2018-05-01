@@ -8,17 +8,17 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author jeff.zhou
  */
 public interface InterceptorChain extends MethodInvocation {
-    public boolean isEmpty();
+    boolean isEmpty();
 
-    public boolean hasNext();
+    boolean hasNext();
 
-    public int getCurrentIndex();
+    int getCurrentIndex();
 
-    public Interceptor next();
+    Interceptor next();
 
-    public void addInterceptor2First(Interceptor in);
+    void addInterceptor2First(Interceptor in);
 
-    public void addInterceptor2Last(Interceptor in);
+    void addInterceptor2Last(Interceptor in);
 
-    public void addInterceptor(Interceptor in, int index);
+    void addInterceptor(Interceptor in, int index);
 }

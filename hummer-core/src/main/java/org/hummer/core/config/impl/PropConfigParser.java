@@ -3,7 +3,6 @@ package org.hummer.core.config.impl;
 import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.config.intf.IPropConfigParser;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -12,7 +11,7 @@ public class PropConfigParser implements IPropConfigParser {
 
     private static Properties props;
 
-    public IConfiguration parse(String fileName) throws FileNotFoundException {
+    public IConfiguration parse(String fileName) {
         // load core config
         IConfiguration coreConfig = loadCoreConfig(fileName);
         // load local config
@@ -26,46 +25,31 @@ public class PropConfigParser implements IPropConfigParser {
     private IConfiguration loadLocalConfig(String fileName) {
         String localFileName = "local/config/" + fileName;
         PropertiesConfig ret = new PropertiesConfig();
-        InputStream in;
         props = new Properties();
+        ret = loadStream2Prop(localFileName, ret);
+        return ret;
+    }
+
+    private PropertiesConfig loadStream2Prop(String localFileName, PropertiesConfig ret) {
+        InputStream in;
         try {
             in = Thread.currentThread().getContextClassLoader().getResourceAsStream(localFileName);
             if (in != null) {
                 props.load(in);
                 ret.setProperties(props);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
         return ret;
     }
 
     private IConfiguration loadCoreConfig(String fileName) {
         String coreFileName = "core/config/" + fileName;
         PropertiesConfig ret = new PropertiesConfig();
-        InputStream in;
         props = new Properties();
-        try {
-            in = Thread.currentThread().getContextClassLoader().getResourceAsStream(coreFileName);
-            if (in != null) {
-                props.load(in);
-                ret.setProperties(props);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ret = loadStream2Prop(coreFileName, ret);
 
         return ret;
     }
-
-    public String parseConfigType(String fileName) throws FileNotFoundException {
-        return CONFIG_TYPE_ALL;
-    }
-
 }

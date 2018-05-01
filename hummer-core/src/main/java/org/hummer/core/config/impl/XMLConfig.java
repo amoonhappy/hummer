@@ -8,7 +8,7 @@ import java.util.Map;
 public abstract class XMLConfig implements IXMLConfiguration {
     // protected IXMLConfiguration overwriteConfig;
 
-    protected Map<String, IXMLConfiguration> configCache = new HashMap<String, IXMLConfiguration>();
+    Map<String, IXMLConfiguration> configCache = new HashMap<>();
 
     public Object getValue(String key) {
         return getChildMap().get(key);

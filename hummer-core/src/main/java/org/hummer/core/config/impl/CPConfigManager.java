@@ -21,7 +21,7 @@ public class CPConfigManager implements IConfigManager {
     private static Logger log = Log4jUtils.getLogger(CPConfigManager.class);
     private static CPConfigManager instance = new CPConfigManager();
     private IConfiguration archConfig;
-    private Map<String, IConfiguration> configCache = new HashMap<String, IConfiguration>();
+    private Map<String, IConfiguration> configCache = new HashMap<>();
 
     private CPConfigManager() {
 
@@ -33,8 +33,6 @@ public class CPConfigManager implements IConfigManager {
         initSupportedApp();
         try {
             initialComponentConfig();
-        } catch (FileNotFoundException e) {
-            log.error("Comp Config not found", e);
         } catch (IOException e) {
             log.error("Comp Config not found", e);
         }
@@ -45,7 +43,7 @@ public class CPConfigManager implements IConfigManager {
     }
 
     public Map<String, IXMLConfiguration> getAllXMLConfiguration() {
-        Map<String, IXMLConfiguration> ret = new HashMap<String, IXMLConfiguration>();
+        Map<String, IXMLConfiguration> ret = new HashMap<>();
         if (configCache != null && configCache.size() > 0) {
             Set<String> keySet = configCache.keySet();
             for (String key : keySet) {
@@ -73,19 +71,18 @@ public class CPConfigManager implements IConfigManager {
 
     private void initialComponentConfig() throws IOException {
         Set<SupportedAppInfos.SupportedAppInfo> apps = SupportedAppInfos.getRegAppInfos();
-        Set<String> nameList = new HashSet<String>();
-        String comp_id;
-//        JarFile jar;
-//        Enumeration<JarEntry> jarEntries;
+        Set<String> nameList = new HashSet<>();
+
         SupportedAppInfos.SupportedAppInfo appInfo;
         for (SupportedAppInfos.SupportedAppInfo app : apps) {
+            String comp_id;
             appInfo = app;
             comp_id = appInfo.getAppName();
             log.info(comp_id);
             nameList = findCompConfig(nameList, comp_id);
 
             for (String fileName : nameList) {
-                System.out.println(comp_id + "." + fileName);
+                log.info(comp_id + "." + fileName);
                 configCache.put(fileName, CPConfigFactory.getInstance().parse(fileName));
             }
         }

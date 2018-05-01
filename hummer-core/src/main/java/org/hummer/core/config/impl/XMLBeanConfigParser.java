@@ -1,11 +1,13 @@
 package org.hummer.core.config.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.dom4j.Element;
 import org.hummer.core.config.intf.IXMLBeanConfig;
 import org.hummer.core.config.intf.IXMLConfigParser;
 import org.hummer.core.config.intf.IXMLConfiguration;
 import org.hummer.core.util.ClassLoaderUtil;
+import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 
 import java.util.HashMap;
@@ -13,20 +15,21 @@ import java.util.List;
 import java.util.Map;
 
 public class XMLBeanConfigParser implements IXMLConfigParser {
+    private static Logger log = Log4jUtils.getLogger(XMLBeanConfigParser.class);
 
     public Map<String, IXMLConfiguration> parse(Element xmlDoc) {
-        Map<String, IXMLConfiguration> ret = new HashMap<String, IXMLConfiguration>();
+        Map<String, IXMLConfiguration> ret = new HashMap<>();
 
-        List<Element> beans = xmlDoc.elements();
-        for (int i = 0; i < beans.size(); i++) {
-            Element bean = beans.get(i);
+        List beans = xmlDoc.elements();
+        for (Object bean1 : beans) {
+            Element bean = (Element) bean1;
             IXMLBeanConfig xmlBeanConfig = parseBeanConfig(bean);
             ret.put(xmlBeanConfig.getBeanId(), xmlBeanConfig);
         }
         return ret;
     }
 
-    protected String parseAttribute(Element e, String attrName) {
+    String parseAttribute(Element e, String attrName) {
         String value = null;
         if (e != null && !StringUtil.isEmpty(attrName)) {
             value = StringUtils.trimToEmpty(e.attributeValue(attrName));
@@ -34,7 +37,7 @@ public class XMLBeanConfigParser implements IXMLConfigParser {
         return value;
     }
 
-    protected IXMLBeanConfig parseBeanConfig(Element e) {
+    private IXMLBeanConfig parseBeanConfig(Element e) {
         IXMLBeanConfig ret = getXMLBeanConfigImpl();
         ret = parseBeanClassValue(e, ret);
         ret = parseBeanIdValue(e, ret);
@@ -44,18 +47,18 @@ public class XMLBeanConfigParser implements IXMLConfigParser {
         return ret;
     }
 
-    protected IXMLBeanConfig parsePropertiesValue(Element e, IXMLBeanConfig ret) {
+    private IXMLBeanConfig parsePropertiesValue(Element e, IXMLBeanConfig ret) {
         if (e != null && ret != null) {
-            List<Element> properties = e.elements("properties");
-            for (int i = 0; i < properties.size(); i++) {
-                Element property = properties.get(i);
+            List properties = e.elements("properties");
+            for (Object property1 : properties) {
+                Element property = (Element) property1;
                 ret = parseBeanAttrConfig(property, ret);
             }
         }
         return ret;
     }
 
-    protected IXMLBeanConfig parseBeanAttrConfig(Element e, IXMLBeanConfig ret) {
+    private IXMLBeanConfig parseBeanAttrConfig(Element e, IXMLBeanConfig ret) {
         String propertyName = parseAttribute(e, "name");
         String type = parseAttribute(e, "type");
         String value = parseAttribute(e, "value");
@@ -68,8 +71,8 @@ public class XMLBeanConfigParser implements IXMLConfigParser {
     }
 
     /**
-     * @param e
-     * @param ret
+     * @param e   Element
+     * @param ret IXMLBeanConfig
      */
     private IXMLBeanConfig parseBeanClassValue(Element e, IXMLBeanConfig ret) {
         String className = parseAttribute(e, "class");
@@ -77,37 +80,36 @@ public class XMLBeanConfigParser implements IXMLConfigParser {
         try {
             implClass = ClassLoaderUtil.findClass(className);
         } catch (ClassNotFoundException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            log.error("parseBeanClassValue error!", e1);
         }
         ret.setBeanClass(implClass);
         return ret;
     }
 
     /**
-     * @param e
-     * @param ret
+     * @param e   Element
+     * @param ret IXMLBeanConfig
      */
-    protected IXMLBeanConfig parseBeanIdValue(Element e, IXMLBeanConfig ret) {
+    private IXMLBeanConfig parseBeanIdValue(Element e, IXMLBeanConfig ret) {
         String beanId = parseAttribute(e, "id");
         ret.setBeanId(beanId);
         return ret;
     }
 
     /**
-     * @param e
-     * @param ret
+     * @param e   Element
+     * @param ret IXMLBeanConfig
      */
-    protected IXMLBeanConfig parseSingletonValue(Element e, IXMLBeanConfig ret) {
+    private IXMLBeanConfig parseSingletonValue(Element e, IXMLBeanConfig ret) {
         String singleton = parseAttribute(e, "singleton");
         ret.setSingleton(singleton);
         return ret;
     }
 
     /**
-     * @param e
-     * @param ret
-     * @return
+     * @param e   Element
+     * @param ret IXMLBeanConfig
+     * @return IXMLBeanConfig
      */
     protected IXMLBeanConfig parseOtherAttribute(Element e, IXMLBeanConfig ret) {
         // String enabledBeanIds = parseAttribute(e, "enabledBeanIds");

@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class SupportedAppInfos {
     static SupportedAppInfos supportedAppInfos = new SupportedAppInfos();
-    static Set<SupportedAppInfo> appInfos = new HashSet<SupportedAppInfo>();
+    static Set<SupportedAppInfo> appInfos = new HashSet<>();
 
     public static void appReg(String appName, String version) {
         SupportedAppInfo appInfo = supportedAppInfos.new SupportedAppInfo(appName, version);

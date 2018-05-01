@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class ConfigurationManager implements IConfigurationManager {
     private static final String JOINER = "-";
 

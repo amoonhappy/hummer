@@ -10,8 +10,7 @@ public class XMLBizServiceConfig extends XMLBeanConfig implements IXMLBusinessSe
 
     public IConfiguration overwriteBy(IConfiguration localConfig) {
         if (localConfig instanceof IXMLBusinessServiceConfig) {
-            IXMLBusinessServiceConfig overwriteConfig = (IXMLBusinessServiceConfig) localConfig;
-            this.overwriteConfig = overwriteConfig;
+            this.overwriteConfig = (IXMLBusinessServiceConfig) localConfig;
         }
         return this;
     }

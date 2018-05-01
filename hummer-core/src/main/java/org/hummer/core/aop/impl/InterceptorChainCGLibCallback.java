@@ -15,7 +15,7 @@ import java.util.LinkedList;
  *
  * @author jeff.zhou
  */
-public class IntercepterChainCGLibCallback implements MethodInterceptor, Serializable {
+public class InterceptorChainCGLibCallback implements MethodInterceptor, Serializable {
 
     /**
      *
@@ -28,13 +28,13 @@ public class IntercepterChainCGLibCallback implements MethodInterceptor, Seriali
 
     private final Class targetClass;
 
-    public IntercepterChainCGLibCallback(LinkedList<Interceptor> adviceChain, Object target, Class targetClass) {
+    public InterceptorChainCGLibCallback(LinkedList<Interceptor> adviceChain, Object target, Class targetClass) {
         this.adviceChain = adviceChain;
         this.target = target;
         this.targetClass = targetClass;
     }
 
-    private static Object massageReturnTypeIfNecessary(Object proxy, Object target, Method method, Object retVal) {
+    private static Object massageReturnTypeIfNecessary(Object proxy, Object target, Object retVal) {
         // Massage return value if necessary
         if (retVal != null && retVal == target) {
             retVal = proxy;
@@ -43,12 +43,12 @@ public class IntercepterChainCGLibCallback implements MethodInterceptor, Seriali
     }
 
     public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-        Object retVal = null;
+        Object retVal;
         MethodInvocation invocation = new CglibMethodInvocation(proxy, this.target, method, args, this.targetClass,
                 this.adviceChain, methodProxy);
         // If we get here, we need to create a MethodInvocation.
         retVal = invocation.proceed();
-        retVal = massageReturnTypeIfNecessary(proxy, this.target, method, retVal);
+        retVal = massageReturnTypeIfNecessary(proxy, this.target, retVal);
         return retVal;
     }
 

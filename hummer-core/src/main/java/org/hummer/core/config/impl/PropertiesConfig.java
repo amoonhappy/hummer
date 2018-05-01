@@ -6,11 +6,11 @@ import org.hummer.core.util.StringUtil;
 import java.util.Properties;
 
 public class PropertiesConfig implements IConfiguration {
-    Properties props;
+    private Properties props;
 
-    IConfiguration overwriteConfig;
+    private IConfiguration overwriteConfig;
 
-    // Map<String, Object> props = newweb HashMap<String, Object>();
+    // Map<String, Object> props = new HashMap<String, Object>();
 
     public Object getValue(String key) {
         Object ret = null;

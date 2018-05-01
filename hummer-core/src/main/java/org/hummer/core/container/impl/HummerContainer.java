@@ -4,6 +4,7 @@ import org.hummer.core.container.intf.IBusinessServiceManager;
 import org.hummer.core.container.intf.IConfigurationManager;
 import org.hummer.core.container.intf.IHummerContainer;
 
+@Deprecated
 public class HummerContainer implements IHummerContainer {
 
     private static HummerContainer instance = new HummerContainer();

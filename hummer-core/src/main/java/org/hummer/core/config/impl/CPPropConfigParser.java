@@ -5,7 +5,6 @@ import org.hummer.core.config.intf.ICPPropConfigParser;
 import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.util.Log4jUtils;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -13,9 +12,7 @@ import java.util.Properties;
 public class CPPropConfigParser implements ICPPropConfigParser {
     private static Logger log = Log4jUtils.getLogger(CPPropConfigParser.class);
 
-    private static Properties props;
-
-    public IConfiguration parse(String fileName) throws FileNotFoundException {
+    public IConfiguration parse(String fileName) {
         // load core config
         IConfiguration coreConfig = loadCoreConfig(fileName);
         // load local config
@@ -29,20 +26,8 @@ public class CPPropConfigParser implements ICPPropConfigParser {
     private IConfiguration loadLocalConfig(String fileName) {
         String localFileName = "local/config/" + fileName;
         PropertiesConfig ret = new PropertiesConfig();
-        InputStream is;
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        try {
-            is = cl.getResourceAsStream(localFileName);
-            if (is != null) {
-                props = new Properties();
-                props.load(is);
-                ret.setProperties(props);
-            }
-        } catch (FileNotFoundException e) {
-            log.error("could not load [" + localFileName + "] from " + cl, e);
-        } catch (IOException e) {
-            log.error("could not load [" + localFileName + "] from " + cl, e);
-        }
+        ret = loadStream2Prop(localFileName, ret, cl);
 
         return ret;
     }
@@ -50,28 +35,24 @@ public class CPPropConfigParser implements ICPPropConfigParser {
     private IConfiguration loadCoreConfig(String fileName) {
         String coreFileName = "core/config/" + fileName;
         PropertiesConfig ret = new PropertiesConfig();
-        InputStream is;
-
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        try {
-
-            is = cl.getResourceAsStream(coreFileName);
-            if (is != null) {
-                props = new Properties();
-                props.load(is);
-                ret.setProperties(props);
-            }
-        } catch (FileNotFoundException e) {
-            log.error("could not load [" + coreFileName + "] from " + cl, e);
-        } catch (IOException e) {
-            log.error("could not load [" + coreFileName + "] from " + cl, e);
-        }
+        loadStream2Prop(coreFileName, ret, cl);
 
         return ret;
     }
 
-    public String parseConfigType(String fileName) throws FileNotFoundException {
-        return CONFIG_TYPE_ALL;
+    private PropertiesConfig loadStream2Prop(String coreFileName, PropertiesConfig ret, ClassLoader cl) {
+        InputStream is;
+        try {
+            is = cl.getResourceAsStream(coreFileName);
+            if (is != null) {
+                Properties props = new Properties();
+                props.load(is);
+                ret.setProperties(props);
+            }
+        } catch (IOException e) {
+            log.error("could not load [" + coreFileName + "] from " + cl, e);
+        }
+        return ret;
     }
-
 }
