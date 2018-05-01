@@ -25,8 +25,8 @@ public class XMLBeanFactory implements IBeanFactory {
     private static Map<String, IXMLConfiguration> singletonBeanConfigCache = CPConfigManager.getInstance()
             .getAllXMLConfiguration();
     private static IBeanFactory instance = new XMLBeanFactory();
-    Map<String, Object> singletonBeanCache = new HashMap<>();
-    LinkedList<Interceptor> ic = new LinkedList<>();
+    private Map<String, Object> singletonBeanCache = new HashMap<>();
+    private LinkedList<Interceptor> ic = new LinkedList<>();
 
     private XMLBeanFactory() {
         initialBeanObject();
@@ -122,38 +122,36 @@ public class XMLBeanFactory implements IBeanFactory {
 
         if (configuration instanceof IXMLBeanConfig) {
             IXMLBeanConfig beanConfig = (IXMLBeanConfig) configuration;
-            if (beanConfig != null) {
-                Class classImpl = beanConfig.getBeanClass();
-                if (classImpl != null) {
-                    obj = getProxy(classImpl);
+            Class classImpl = beanConfig.getBeanClass();
+            if (classImpl != null) {
+                obj = getProxy(classImpl);
 
-                    Map<String, String> refBeanIds = beanConfig.getProp2RefBeanIdMapping();
-                    Map<String, String> propertiesValue = beanConfig.getXMLProperteisValueMapping();
+                Map<String, String> refBeanIds = beanConfig.getProp2RefBeanIdMapping();
+                Map<String, String> propertiesValue = beanConfig.getXMLProperteisValueMapping();
 
-                    if (propertiesValue != null) {
-                        for (Iterator<String> it = propertiesValue.keySet().iterator(); it.hasNext(); ) {
-                            String propertiesName = it.next();
-                            String value = propertiesValue.get(propertiesName);
-                            BeanUtils.setProperty(obj, propertiesName, value);
-                        }
+                if (propertiesValue != null) {
+                    for (Iterator<String> it = propertiesValue.keySet().iterator(); it.hasNext(); ) {
+                        String propertiesName = it.next();
+                        String value = propertiesValue.get(propertiesName);
+                        BeanUtils.setProperty(obj, propertiesName, value);
                     }
-
-                    if (refBeanIds != null) {
-                        for (Iterator<String> it = refBeanIds.keySet().iterator(); it.hasNext(); ) {
-                            String propertiesName = it.next();
-                            if (singletonBeanCache.get(refBeanIds.get(propertiesName)) != null) {
-                                BeanUtils.setProperty(obj, propertiesName,
-                                        singletonBeanCache.get(refBeanIds.get(propertiesName)));
-                            } else {
-                                BeanUtils.setProperty(obj, propertiesName, beanConfig2BeanObject(
-                                        singletonBeanConfigCache.get(refBeanIds.get(propertiesName))));
-                            }
-                            return obj;
-                        }
-                    }
-                } else {
-                    return beanConfig.getXMLProperteisValueMapping();
                 }
+
+                if (refBeanIds != null) {
+                    for (Iterator<String> it = refBeanIds.keySet().iterator(); it.hasNext(); ) {
+                        String propertiesName = it.next();
+                        if (singletonBeanCache.get(refBeanIds.get(propertiesName)) != null) {
+                            BeanUtils.setProperty(obj, propertiesName,
+                                    singletonBeanCache.get(refBeanIds.get(propertiesName)));
+                        } else {
+                            BeanUtils.setProperty(obj, propertiesName, beanConfig2BeanObject(
+                                    singletonBeanConfigCache.get(refBeanIds.get(propertiesName))));
+                        }
+                        return obj;
+                    }
+                }
+            } else {
+                return beanConfig.getXMLProperteisValueMapping();
             }
         }
         return obj;
@@ -196,9 +194,7 @@ public class XMLBeanFactory implements IBeanFactory {
             } catch (Exception e) {
                 log.error("error when set the proxy properties of instance: " + simpleName, e);
             }
-        } catch (InstantiationException e) {
-            log.error("error when initial the proxy of instance: " + simpleName, e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             log.error("error when initial the proxy of instance: " + simpleName, e);
         } catch (Throwable e) {
             log.error("error when enhance the class of instance via CGLIB: " + simpleName, e);
