@@ -1,6 +1,8 @@
 package org.hummer.core.aop.impl;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.log4j.Logger;
+import org.hummer.core.util.Log4jUtils;
 
 /**
  * iFOP Spacee for Developer Party
@@ -8,10 +10,12 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author jeff.zhou
  */
 public class Log2Interceptor extends Perl5DynamicMethodInterceptor {
+    private static Logger log = Log4jUtils.getLogger(Log2Interceptor.class);
+
     public Object invoke(MethodInvocation arg0) throws Throwable {
-        System.out.println("Log2Proxy:before " + arg0.getMethod().getName() + " invoke");
+        log.info("Log2Proxy:before " + arg0.getMethod().getName() + " invoke");
         Object ret = arg0.proceed();
-        System.out.println("Log2Proxy:after " + arg0.getMethod().getName() + " invoke");
+        log.info("Log2Proxy:after " + arg0.getMethod().getName() + " invoke");
         return ret;
     }
 }

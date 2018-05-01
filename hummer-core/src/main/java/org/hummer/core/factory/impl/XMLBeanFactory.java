@@ -58,12 +58,8 @@ public class XMLBeanFactory implements IBeanFactory {
                 String beanId = it.next();
                 try {
                     singletonBeanCache.put(beanId, beanConfig2BeanObject(singletonBeanConfigCache.get(beanId)));
-                } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    log.error("init Bean Object failed!", e);
                 }
             }
         }
