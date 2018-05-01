@@ -48,7 +48,7 @@ public class StringUtil {
         arrString = new String[st.countTokens()];
 
         for (int i = 0; i < arrString.length; i++) {
-            arrString[i] = ((String) st.nextToken()).trim();
+            arrString[i] = (st.nextToken()).trim();
         }
 
         return arrString;
@@ -69,7 +69,6 @@ public class StringUtil {
      *
      * @param str the CharSequence to check (may be {@code null})
      * @return {@code true} if the CharSequence is not null and has length
-     * @see #hasText(String)
      */
     public static boolean hasLength(CharSequence str) {
         return (str != null && str.length() > 0);

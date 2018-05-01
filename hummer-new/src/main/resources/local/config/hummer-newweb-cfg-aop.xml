@@ -1,5 +1,7 @@
 <component name="hummer-newweb" type="aop">
     <!-- Define which Interceptors will be applied to which services-->
+    <!-- the sequence of each interceptors in "value" is the initiation sequence of the interceptor-->
+    <!-- performance log interceptor should always be the 1st one-->
     <bean id="enabledBeanIds">
         <properties name="enabledBeanIds" type="String"
                     value="performanceLog,transactionInterceptor"/>

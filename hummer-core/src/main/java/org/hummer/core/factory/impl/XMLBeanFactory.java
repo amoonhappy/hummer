@@ -15,6 +15,7 @@ import org.hummer.core.exception.NoBeanDefinationException;
 import org.hummer.core.factory.intf.IBeanFactory;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -35,9 +36,17 @@ public class XMLBeanFactory implements IBeanFactory {
         Map ids = (Map) getBean("enabledBeanIds");
         if (ids != null) {
             String enabledBeanIds = (String) ids.get("enabledBeanIds");
-            String[] enabledIcs = StringUtil.joinArray(enabledBeanIds, ",");
+            String[] enabledIcs; //= StringUtil.joinArray(enabledBeanIds, ",");
+            if (log.isInfoEnabled()) {
+                log.info("enabledBeanIds:[" + enabledBeanIds + "]");
+            }
+            enabledIcs = StringUtils.delimitedListToStringArray(enabledBeanIds, ",", " ");
+
             for (int i = 0; i < enabledIcs.length; i++) {
                 ic.add((Interceptor) getBean(enabledIcs[i]));
+                if (log.isInfoEnabled()) {
+                    log.info("add Interceptor:[" + enabledIcs[i] + "], Seq: [" + i + "]");
+                }
             }
         } else {
             log.info("no interceptors loaded, pls check hummer aop xml configuration!");
@@ -57,9 +66,15 @@ public class XMLBeanFactory implements IBeanFactory {
             for (Iterator<String> it = beanIds.iterator(); it.hasNext(); ) {
                 String beanId = it.next();
                 try {
-                    singletonBeanCache.put(beanId, beanConfig2BeanObject(singletonBeanConfigCache.get(beanId)));
+                    //when the bean is defined as singleton, then put to the bean cache
+                    if (this.isSingleton(beanId)) {
+                        singletonBeanCache.put(beanId, beanConfig2BeanObject(singletonBeanConfigCache.get(beanId)));
+                    } else {
+                        // if not singleton, the bean should be created during access
+                        log.info("bean [" + beanId + "] is not singleton!");
+                    }
                 } catch (IllegalAccessException | InvocationTargetException e) {
-                    log.error("init Bean Object failed!", e);
+                    log.error("init Bean Objects failed!", e);
                 }
             }
         }

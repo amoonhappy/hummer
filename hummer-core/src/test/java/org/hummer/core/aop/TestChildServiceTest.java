@@ -1,6 +1,7 @@
 package org.hummer.core.aop;
 
 import junit.framework.TestCase;
+import org.hummer.core.util.StringUtil;
 
 /**
  * iFOP Spacee for Developer Party
@@ -11,9 +12,11 @@ public class TestChildServiceTest extends TestCase {
 
     public void testPrint() {
         TestChildService proxy = new TestChildService();
-        TestService proxy1 = (TestService) proxy;
 
-        proxy1.print();
+        proxy.print();
+        String[] test = StringUtil.joinArray("a,b", ",");//StringUtils.delimitedListToStringArray("b,a", ",");
+
+        System.out.println(test[0] + "->" + test[1]);
 
     }
 

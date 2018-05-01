@@ -76,9 +76,10 @@ public class CPConfigManager implements IConfigManager {
             appInfo = it.next();
             comp_id = appInfo.getAppName();
             log.info(comp_id);
-            findCompConfig(nameList, comp_id);
+            nameList = findCompConfig(nameList, comp_id);
 
-            for (Iterator<String> itName = nameList.iterator(); itName.hasNext(); ) {
+            Iterator<String> itName = nameList.iterator();
+            while (itName.hasNext()) {
                 String fileName = itName.next();
                 log.info(comp_id + "." + fileName);
                 configCache.put(fileName, CPConfigFactory.getInstance().parse(fileName));

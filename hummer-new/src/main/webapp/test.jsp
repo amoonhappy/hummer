@@ -24,7 +24,7 @@
     try {
         // ReturnValue rv = service.getAllUsers();
         IUser user = new User();
-        user.setId("111111");
+        user.setId("2222333");
         user.setFirstName("jeff");
         user.setLastName("zhou");
         // Serializable ret = rv.getResult();

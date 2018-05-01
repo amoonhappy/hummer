@@ -22,24 +22,24 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
     }
 
     public Object invoke(MethodInvocation arg0) throws Throwable {
-        if (log.isDebugEnabled()) {
-            StringBuilder info = new StringBuilder();
-            info.append("TransactionInterceptor:before ");
+        if (log.isInfoEnabled()) {
+            StringBuffer info = new StringBuffer();
+            info.append("TransactionInterceptor:before [");
             info.append(arg0.getMethod().getName());
-            info.append(" invoke start Transaction");
-            log.debug(info);
+            info.append("] invoke start Transaction");
+            log.info(info);
         }
         HibernateUtil.beginTransaction();
         Object result = arg0.proceed();
         HibernateUtil.commitTransaction();
 
         //HibernateUtil.closeSession();
-        if (log.isDebugEnabled()) {
-            StringBuilder info1 = new StringBuilder();
-            info1.append("TransactionInterceptor:after ");
+        if (log.isInfoEnabled()) {
+            StringBuffer info1 = new StringBuffer();
+            info1.append("TransactionInterceptor:after [");
             info1.append(arg0.getMethod().getName());
-            info1.append(" invoke commit Transaction");
-            log.debug(info1.toString());
+            info1.append("] invoke commit Transaction");
+            log.info(info1.toString());
         }
         return result;
     }
