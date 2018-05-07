@@ -17,5 +17,12 @@
         <module name="hummer-web" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="hummer" target="1.5" />
+      <module name="hummer-codegen" target="1.5" />
+      <module name="hummer-core" target="1.5" />
+      <module name="hummer-new" target="1.5" />
+      <module name="hummer-web" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>
