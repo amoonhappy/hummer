@@ -16,7 +16,6 @@ import java.util.LinkedList;
  *
  * @author jeff.zhou
  */
-@Deprecated
 public class ProxyFactory {
     private static ProxyFactory instance = new ProxyFactory();
     private static Logger log = Log4jUtils.getLogger(Perl5DynamicMethodInterceptor.class);
