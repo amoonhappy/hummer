@@ -8,12 +8,12 @@
     <artifactId>hummer</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
         <module>hummer-core</module>
         <module>hummer-web</module>
         <module>hummer-codegen</module>
         <module>hummer-new</module>
     </modules>
-
 
 </project>
