@@ -36,4 +36,8 @@ public class CglibMethodInvocation extends InterceptorChainImpl {
             return this.methodProxy.invoke(this.target, this.arguments);
         }
     }
+
+    protected Class<? extends Object> getTargetClass() {
+        return this.target.getClass();
+    }
 }

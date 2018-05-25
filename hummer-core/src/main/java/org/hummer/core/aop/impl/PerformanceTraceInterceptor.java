@@ -23,12 +23,14 @@ public class PerformanceTraceInterceptor extends Perl5DynamicMethodInterceptor {
     private static final Logger log = Logger.getLogger(PerformanceTraceInterceptor.class);
 
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-
+        Class targetClass = ((CglibMethodInvocation) methodInvocation).getTargetClass();
         //TODO we can use multiple thread to write the perf log to the perf analysis log file
         Object returnValue;
         String methodName = methodInvocation.getMethod().getName();
         StringBuilder info = new StringBuilder();
-        info.append(" method [");
+        info.append("**PerLOG** [");
+        info.append(targetClass.getSimpleName());
+        info.append(".");
         info.append(methodName);
         info.append("] spend time: ");
 
