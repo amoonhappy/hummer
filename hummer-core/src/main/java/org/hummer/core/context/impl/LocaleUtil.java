@@ -8,7 +8,8 @@ public class LocaleUtil {
         RequestContext context = ContextHolder.getRequestContext();
 
         if (context != null) {
-            locale = context.getLocale();
+            //locale = context.getLocale();
+            locale = null;
         } else {
             locale = Locale.getDefault();
         }

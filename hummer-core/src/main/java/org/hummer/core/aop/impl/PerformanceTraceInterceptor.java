@@ -30,21 +30,11 @@ public class PerformanceTraceInterceptor extends Perl5DynamicMethodInterceptor {
         String methodName = methodInvocation.getMethod().getName();
         String simpleName = targetClass.getSimpleName();
 
-//        StringBuilder info = new StringBuilder();
-//        info.append("**PerLOG** [");
-//        info.append(simpleName);
-//        info.append(".");
-//        info.append(methodName);
-//        info.append("] spend time: ");
-
         long startTime = System.currentTimeMillis();
         returnValue = methodInvocation.proceed();
 
         long endTime = System.currentTimeMillis();
         long spendTime = endTime - startTime;
-        //info.append(spendTime);
-        //info.append(" ms.");
-        //log.info(info.toString());
 
         log.info("**PerLog** [{}.{}] spend time: {} ms.", simpleName, methodName, spendTime);
 

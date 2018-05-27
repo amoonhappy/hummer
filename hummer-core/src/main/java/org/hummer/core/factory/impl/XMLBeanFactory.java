@@ -15,7 +15,6 @@ import org.hummer.core.factory.intf.IBeanFactory;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -40,7 +39,8 @@ public class XMLBeanFactory implements IBeanFactory {
             if (log.isInfoEnabled()) {
                 log.info("enabledBeanIds:[" + enabledBeanIds + "]");
             }
-            enabledIcs = StringUtils.delimitedListToStringArray(enabledBeanIds, ",", " ");
+            enabledIcs = StringUtil.joinArray(enabledBeanIds, ",");
+            //StringUtils.delimitedListToStringArray(enabledBeanIds, ",", " ");
 
             for (int i = 0; i < enabledIcs.length; i++) {
                 ic.add((Interceptor) getBean(enabledIcs[i]));
@@ -149,6 +149,7 @@ public class XMLBeanFactory implements IBeanFactory {
                         String propertiesName = it.next();
                         String value = propertiesValue.get(propertiesName);
                         BeanUtils.setProperty(obj, propertiesName, value);
+
                     }
                 }
 

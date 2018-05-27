@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Deprecated
 public class ConfigurationManager implements IConfigurationManager {
     private static final String JOINER = "-";
 
@@ -19,9 +18,20 @@ public class ConfigurationManager implements IConfigurationManager {
 
     private static final String XML_FILEEXT = ".xml";
 
-    private static List<String> reloadList = new ArrayList<String>();
+    private static List<String> reloadList = new ArrayList<>();
 
     Map configurationMap = new FastHashMap();
+    private static IConfigurationManager instance = new ConfigurationManager();
+
+    /**
+     * disable manually creation
+     */
+    private ConfigurationManager() {
+    }
+
+    public static IConfigurationManager getInstance() {
+        return instance;
+    }
 
     /**
      * @param nameSpace the format is componentId.domain, for example:

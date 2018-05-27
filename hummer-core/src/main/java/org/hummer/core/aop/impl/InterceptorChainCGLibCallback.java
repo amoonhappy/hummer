@@ -17,9 +17,6 @@ import java.util.LinkedList;
  */
 public class InterceptorChainCGLibCallback implements MethodInterceptor, Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 4000967288710540884L;
 
     private final LinkedList<Interceptor> adviceChain;

@@ -6,5 +6,4 @@ package org.hummer.core.aop.intf;
  * @author jeff.zhou
  */
 public interface Interceptor extends org.aopalliance.intercept.MethodInterceptor {
-    // MethodInterceptor {
 }

@@ -12,7 +12,7 @@ public class BusinessServiceManager implements IBusinessServiceManager {
     private BusinessServiceManager() {
     }
 
-    public static IBusinessServiceManager getInstance() {
+    protected static IBusinessServiceManager getInstance() {
         return instance;
     }
 

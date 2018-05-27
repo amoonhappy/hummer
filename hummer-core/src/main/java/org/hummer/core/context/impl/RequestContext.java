@@ -15,31 +15,29 @@ package org.hummer.core.context.impl;
 
 import org.hummer.core.context.intf.IContext;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Locale;
 
 /**
  * @author jeff.zhou
  */
 public class RequestContext implements IContext {
-    private HttpServletRequest request;
-
-    private Locale locale;
-
-    public HttpServletRequest getRequest() {
-        return request;
-    }
-
-    public void setRequest(HttpServletRequest request) {
-        this.request = request;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
+//    private HttpServletRequest request;
+//
+//    private Locale locale;
+//
+//    public HttpServletRequest getRequest() {
+//        return request;
+//    }
+//
+//    public void setRequest(HttpServletRequest request) {
+//        this.request = request;
+//    }
+//
+//    public Locale getLocale() {
+//        return locale;
+//    }
+//
+//    public void setLocale(Locale locale) {
+//        this.locale = locale;
+//    }
 
 }

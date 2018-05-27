@@ -26,7 +26,7 @@ public class InterceptorChainImpl implements InterceptorChain {
     private int curIndex = -1;
 
     /**
-     * Construct a newweb ReflectiveMethodInvocation with the given arguments.
+     * Construct a new ReflectiveMethodInvocation with the given arguments.
      *
      * @param proxy       the proxy object that the invocation was made on
      * @param target      the target object to invoke
@@ -60,7 +60,7 @@ public class InterceptorChainImpl implements InterceptorChain {
      * @param args   the arguments for the method
      * @return the invocation result, if any
      * @throws Throwable                                      if thrown by the target method
-     * @throws org.springframework.aop.AopInvocationException in case of a reflection error
+     * @throws AopInvocationException                         throw if Hummer's AOP is failed
      */
     private static Object invokeJoinPointUsingReflection(Object target, Method method, Object[] args) throws Throwable {
 
