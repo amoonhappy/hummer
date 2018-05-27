@@ -11,8 +11,8 @@ public class TestDAO extends BasicMybatisDAO implements ITestDAO {
     }
 
     @Override
-    public void insert(IUser a) {
-        super.insertModel(a);
+    public int insert(IUser a) {
+        return super.insertModel(a);
     }
 
 }

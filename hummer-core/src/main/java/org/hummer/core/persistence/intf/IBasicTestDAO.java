@@ -1,17 +1,17 @@
 package org.hummer.core.persistence.intf;
 
 import org.hummer.core.model.intf.IModel;
-import org.hummer.core.model.intf.ISingleLongPKModel;
+import org.hummer.core.model.intf.ISingleStringPKModel;
 import org.hummer.core.pagination.Pager;
 
 public interface IBasicTestDAO {
-    void insertModel(IModel iModel);
+    int insertModel(IModel iModel);
 
-    void deleteModel(IModel iModel);
+    void deleteModel(ISingleStringPKModel iModel);
 
-    IModel getModel(ISingleLongPKModel iModel);
+    IModel getModel(ISingleStringPKModel iModel);
 
-    void updateModel(ISingleLongPKModel iModel);
+    int updateModel(ISingleStringPKModel iModel);
 
     Pager getAllModels();
 

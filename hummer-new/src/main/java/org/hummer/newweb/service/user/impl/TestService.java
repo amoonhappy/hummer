@@ -16,7 +16,9 @@ public class TestService extends BasicTestService implements ITestService {
 
     @Override
     public void insertUser(IUser user) {
-        testDAO.insert(user);
+        int i = testDAO.insert(user);
+        user.setFirstName("changed");
+        i = testDAO.updateModel(user);
     }
 
     public ITestDAO getTestDAO() {
