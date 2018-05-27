@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration scan="true" scanPeriod="10 second" debug="false">
+    <contextName>Hummer Web</contextName>
     <property name="LOG_HOME" value="log"/>
     <!-- 输出到控制台 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -39,6 +40,10 @@
     </logger>
     <logger name="org.hibernate" additivity="false">
         <level value="ERROR"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.apache.ibatis" additivity="false">
+        <level value="DEBUG"/>
         <appender-ref ref="STDOUT"/>
     </logger>
     <!-- 相当于logger元素，只是name值已经确定为root了 -->

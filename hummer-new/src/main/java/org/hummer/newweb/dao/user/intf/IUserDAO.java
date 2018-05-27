@@ -21,5 +21,5 @@ import org.hummer.core.persistence.intf.IBasicDAO;
  * @author jeff.zhou
  */
 public interface IUserDAO extends IBasicDAO, UserDetailsService {
-    public Pager getAllUsers() throws Exception;
+    Pager getAllUsers() throws Exception;
 }

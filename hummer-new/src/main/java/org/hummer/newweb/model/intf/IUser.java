@@ -25,22 +25,22 @@ public interface IUser extends ISingleStringPKModel, IAuditableModel, UserDetail
     /**
      * @hibernate.property column="firstname" length="50"
      */
-    public abstract String getFirstName();
+    String getFirstName();
 
-    public abstract void setFirstName(String firstname);
+    void setFirstName(String firstname);
 
     /**
      * @hibernate.property column="lastname" length="50"
      */
-    public abstract String getLastName();
+    String getLastName();
 
-    public abstract void setLastName(String lastname);
+    void setLastName(String lastname);
 
     /**
      * @hibernate.property column="status" length="50"
      */
-    public abstract String getStatus();
+    String getStatus();
 
-    public abstract void setStatus(String status);
+    void setStatus(String status);
 
 }

@@ -4,5 +4,7 @@
           singleton="true">
         <properties name="pagerHandler" type="refBean" value="pagerHandler"/>
     </bean>
-
+    <bean id="testDAO" class="org.hummer.newweb.dao.user.impl.TestDAO"
+          singleton="true">
+    </bean>
 </component>

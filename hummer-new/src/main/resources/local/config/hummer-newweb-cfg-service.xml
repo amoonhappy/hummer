@@ -4,4 +4,9 @@
           singleton="true" transType="required">
         <properties name="userDAO" type="refBean" value="userDAO"/>
     </bean>
+    <bean id="testService"
+          class="org.hummer.newweb.service.user.impl.TestService"
+          singleton="true" transType="required">
+        <properties name="testDAO" type="refBean" value="testDAO"/>
+    </bean>
 </component>

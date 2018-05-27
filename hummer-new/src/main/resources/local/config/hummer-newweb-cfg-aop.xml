@@ -27,7 +27,8 @@
                     value="
 			^[a-z|A-Z|.|0-9]+Service.add[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*,
-			^[a-z|A-Z|.|0-9]+ServiceLocal.get[a-z|A-Z|.|0-9]*
+			^[a-z|A-Z|.|0-9]+ServiceLocal.get[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.insert[a-z|A-Z|.|0-9]*
 			">
         </properties>
         <properties name="xmlExcludePattern" type="String" value="^set,^toString">

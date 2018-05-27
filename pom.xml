@@ -15,5 +15,4 @@
         <module>hummer-codegen</module>
         <module>hummer-new</module>
     </modules>
-
 </project>

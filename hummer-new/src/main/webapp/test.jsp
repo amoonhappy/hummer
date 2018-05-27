@@ -2,11 +2,9 @@
 <%@ page import="org.hummer.core.container.impl.HummerContainer" %>
 <%@ page import="org.hummer.core.container.intf.IBusinessServiceManager" %>
 <%@ page import="org.hummer.core.container.intf.IHummerContainer" %>
-<%@ page import="org.hummer.core.pagination.Pager" %>
-<%@ page import="org.hummer.core.service.impl.ReturnValue" %>
 <%@ page import="org.hummer.newweb.model.impl.User" %>
 <%@ page import="org.hummer.newweb.model.intf.IUser" %>
-<%@ page import="org.hummer.newweb.service.user.intf.IUserService" %>
+<%@ page import="org.hummer.newweb.service.user.intf.ITestService" %>
 
 <html>
 <head>
@@ -19,21 +17,21 @@
 <%
     IHummerContainer hummerContainer = HummerContainer.getInstance();
     IBusinessServiceManager bsm = hummerContainer.getServiceManager();
-    IUserService service = (IUserService) bsm.getService("userService");
+    ITestService service = (ITestService) bsm.getService("testService");
 
     System.out.println(service);
     try {
         // ReturnValue rv = service.getAllUsers();
         IUser user = new User();
-        user.setId("2222333");
-        user.setFirstName("jeff");
-        user.setLastName("zhou");
+        ///user.setId("2222333");
+        user.setFirstName("??");
+        user.setLastName("xxx");
         // Serializable ret = rv.getResult();
-        service.addUser(user);
+        service.insertUser(user);
 
-        ReturnValue rv = service.getAllUsers();
-        Pager pg = (Pager) rv.getResult();
-        System.out.println(((IUser) pg.getResult().iterator().next()).getFirstName());
+//        ReturnValue rv = service.getAllUsers();
+//        Pager pg = (Pager) rv.getResult();
+//        System.out.println(((IUser) pg.getResult().iterator().next()).getFirstName());
     } catch (Exception e) {
         e.printStackTrace();
     }

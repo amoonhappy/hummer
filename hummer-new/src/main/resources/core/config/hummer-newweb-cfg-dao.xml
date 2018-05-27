@@ -8,4 +8,7 @@
           singleton="true">
         <properties name="userDAO" type="refBean" value="userDAO"/>
     </bean-->
+    <bean id="testDAO" class="org.hummer.newweb.dao.user.impl.TestDAO"
+          singleton="true">
+    </bean>
 </component>

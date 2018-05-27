@@ -55,15 +55,6 @@ import java.util.List;
 public class BasicHibernateDAO implements IBasicDAO {
     private static final Logger log = Log4jUtils.getLogger(BasicHibernateDAO.class);
     protected IPagerHandler pagerHandler;
-    private IBasicDAO proxy = null;
-
-    public IBasicDAO getProxy() {
-        return proxy;
-    }
-
-    public void setProxy(IBasicDAO proxy) {
-        this.proxy = proxy;
-    }
 
     /**
      * the entry of pager handler Type 2 Setter injection
