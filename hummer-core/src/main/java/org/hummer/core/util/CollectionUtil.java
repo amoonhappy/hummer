@@ -13,7 +13,7 @@
  */
 package org.hummer.core.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.*;
 

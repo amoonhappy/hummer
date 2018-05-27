@@ -1,13 +1,13 @@
 package org.hummer.core.config.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.hummer.core.config.intf.IConfigManager;
 import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.config.intf.IPropConfigParser;
 import org.hummer.core.config.intf.IXMLConfiguration;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
+import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

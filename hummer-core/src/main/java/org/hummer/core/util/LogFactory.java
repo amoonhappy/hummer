@@ -13,22 +13,23 @@
  */
 package org.hummer.core.util;
 
-import org.apache.log4j.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * @author jeff.zhou
  */
+@Deprecated
 public class LogFactory {
 
     public static Logger getPerformanceLog(Class clazz) {
-        return Logger.getLogger(clazz);
+        return LoggerFactory.getLogger(clazz);
     }
 
     public static Logger getSystemLog(Class clazz) {
-        return Logger.getLogger(clazz);
+        return LoggerFactory.getLogger(clazz);
     }
 
     public static Logger getApplicationLog(Class clazz) {
-        return Logger.getLogger(clazz);
+        return LoggerFactory.getLogger(clazz);
     }
 }

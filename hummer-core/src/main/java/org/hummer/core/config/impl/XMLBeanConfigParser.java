@@ -1,7 +1,6 @@
 package org.hummer.core.config.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.dom4j.Element;
 import org.hummer.core.config.intf.IXMLBeanConfig;
 import org.hummer.core.config.intf.IXMLConfigParser;
@@ -9,6 +8,7 @@ import org.hummer.core.config.intf.IXMLConfiguration;
 import org.hummer.core.util.ClassLoaderUtil;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;

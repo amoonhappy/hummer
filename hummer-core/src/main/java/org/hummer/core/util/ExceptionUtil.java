@@ -14,13 +14,13 @@
 package org.hummer.core.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.hummer.core.constants.ExceptionConstant;
 import org.hummer.core.context.impl.LocaleUtil;
 import org.hummer.core.exception.BusinessException;
 import org.hummer.core.exception.ErrorInfo;
 import org.hummer.core.message.impl.SQLLogInfo;
 import org.hummer.core.model.intf.IModel;
+import org.slf4j.Logger;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -35,7 +35,7 @@ public class ExceptionUtil {
      * Set of String 2-digit codes that indicate RDBMS integrity violation
      */
     // private static Set INTEGRITY_VIOLATION_CODES = newweb HashSet();
-    protected static final Logger logger = Logger.getLogger(ExceptionUtil.class);
+    protected static final Logger logger = Log4jUtils.getLogger(ExceptionUtil.class);
 
     // Populate reference data.
     static {

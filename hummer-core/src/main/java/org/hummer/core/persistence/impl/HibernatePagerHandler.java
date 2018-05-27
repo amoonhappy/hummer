@@ -13,7 +13,6 @@
  */
 package org.hummer.core.persistence.impl;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -26,10 +25,8 @@ import org.hummer.core.exception.BusinessException;
 import org.hummer.core.model.intf.IModel;
 import org.hummer.core.pagination.Pager;
 import org.hummer.core.persistence.intf.IPagerHandler;
-import org.hummer.core.util.ExceptionUtil;
-import org.hummer.core.util.HQLUtil;
-import org.hummer.core.util.HibernateUtil;
-import org.hummer.core.util.JDBCUtil;
+import org.hummer.core.util.*;
+import org.slf4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,7 +45,7 @@ public class HibernatePagerHandler implements IPagerHandler {
 
     public static final String COUNT_ALIAS = "countNum";
 
-    protected transient final Logger log = Logger.getLogger(getClass());
+    protected transient final Logger log = Log4jUtils.getLogger(getClass());
     private IPagerHandler proxy = null;
 
     public IPagerHandler getProxy() {

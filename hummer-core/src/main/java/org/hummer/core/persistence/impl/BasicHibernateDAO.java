@@ -14,7 +14,6 @@
 package org.hummer.core.persistence.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
@@ -30,6 +29,7 @@ import org.hummer.core.persistence.intf.HibernateCallback;
 import org.hummer.core.persistence.intf.IBasicDAO;
 import org.hummer.core.persistence.intf.IPagerHandler;
 import org.hummer.core.util.*;
+import org.slf4j.Logger;
 
 import javax.sql.RowSet;
 import java.io.IOException;
@@ -53,7 +53,7 @@ import java.util.List;
  * @author jeff.zhou
  */
 public class BasicHibernateDAO implements IBasicDAO {
-    private static final Logger log = Logger.getLogger(BasicHibernateDAO.class);
+    private static final Logger log = Log4jUtils.getLogger(BasicHibernateDAO.class);
     protected IPagerHandler pagerHandler;
     private IBasicDAO proxy = null;
 

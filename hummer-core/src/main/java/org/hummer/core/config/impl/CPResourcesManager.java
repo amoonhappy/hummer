@@ -1,8 +1,8 @@
 package org.hummer.core.config.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;

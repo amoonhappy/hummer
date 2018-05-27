@@ -20,6 +20,7 @@ import org.hummer.core.context.impl.ContextHolder;
 /**
  * @author jinyangzhou
  */
+@Deprecated
 public class LoggerWrapper {
     // private static Logger log = Logger.getLogger(LoggerWrapper.class);
 

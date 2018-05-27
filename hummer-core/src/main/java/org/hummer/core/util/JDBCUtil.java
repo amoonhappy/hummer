@@ -14,10 +14,10 @@
 package org.hummer.core.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.hummer.core.constants.Constant;
 import org.hummer.core.constants.ExceptionConstant;
 import org.hummer.core.exception.BusinessException;
+import org.slf4j.Logger;
 
 import java.sql.*;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
  * @author jeff.zhou
  */
 public class JDBCUtil {
-    protected transient static final Logger log = Logger.getLogger(JDBCUtil.class);
+    protected transient static final Logger log = Log4jUtils.getLogger(JDBCUtil.class);
 
     /**
      * this mothods replace the parameters in the prepared statement

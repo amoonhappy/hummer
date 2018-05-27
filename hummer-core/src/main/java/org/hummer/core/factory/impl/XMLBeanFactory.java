@@ -4,7 +4,6 @@ import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
 import org.hummer.core.aop.impl.InterceptorChainCGLibCallback;
 import org.hummer.core.aop.intf.Interceptor;
 import org.hummer.core.config.impl.CPConfigManager;
@@ -15,6 +14,7 @@ import org.hummer.core.exception.NoBeanDefinationException;
 import org.hummer.core.factory.intf.IBeanFactory;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
+import org.slf4j.Logger;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;

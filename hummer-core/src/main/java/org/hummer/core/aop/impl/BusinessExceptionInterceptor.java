@@ -1,7 +1,6 @@
 package org.hummer.core.aop.impl;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
@@ -14,6 +13,8 @@ import org.hummer.core.message.impl.Messages;
 import org.hummer.core.message.intf.IMessage;
 import org.hummer.core.service.impl.ReturnValue;
 import org.hummer.core.service.intf.IService;
+import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,7 +24,7 @@ import java.util.List;
  * @author jeff.zhou
  */
 public class BusinessExceptionInterceptor implements org.aopalliance.intercept.MethodInterceptor {
-    private static final Logger log = Logger.getLogger(BusinessExceptionInterceptor.class);
+    private static final Logger log = Log4jUtils.getLogger(BusinessExceptionInterceptor.class);
 
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         ReturnValue value;

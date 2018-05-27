@@ -1,8 +1,8 @@
 package org.hummer.core.util;
 
-import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
+import org.slf4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;

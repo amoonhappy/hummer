@@ -15,7 +15,8 @@
  */
 package org.hummer.core.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Hashtable;
 
@@ -34,13 +35,13 @@ import java.util.Hashtable;
  * @since 1.0.0
  */
 public class Log4jUtils {
-    private static Hashtable<Class, Logger> loggerCache = new Hashtable<Class, Logger>();
+    private static Hashtable<Class, Logger> loggerCache = new Hashtable<>();
 
     public static Logger getLogger(Class clazz) {
         // Class clazz = objInstance.getClass();
         Logger ret = loggerCache.get(clazz);
         if (ret == null) {
-            ret = Logger.getLogger(clazz);
+            ret = LoggerFactory.getLogger(clazz);
             loggerCache.put(clazz, ret);
         }
 

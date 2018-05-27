@@ -1,9 +1,9 @@
 package org.hummer.core.aop.impl;
 
-import org.apache.log4j.Logger;
 import org.apache.oro.text.regex.*;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
+import org.slf4j.Logger;
 
 /**
  * iFOP Spacee for Developer Party

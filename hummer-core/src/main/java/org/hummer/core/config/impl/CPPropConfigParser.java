@@ -1,9 +1,9 @@
 package org.hummer.core.config.impl;
 
-import org.apache.log4j.Logger;
 import org.hummer.core.config.intf.ICPPropConfigParser;
 import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;

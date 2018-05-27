@@ -14,13 +14,14 @@
 package org.hummer.core.persistence.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.hummer.core.constants.SearchConstant;
 import org.hummer.core.model.ModelFactory;
 import org.hummer.core.model.intf.IModel;
 import org.hummer.core.util.BlankObjectUtil;
 import org.hummer.core.util.HQLUtil;
+import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.SerializableUtil;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -31,7 +32,7 @@ import java.util.*;
 public class SearchCondition {
     public static final int UPPER_CASE = 0;
     public static final int LOWER_CASE = 1;
-    private static final Logger LOG = Logger.getLogger(SearchCondition.class);
+    private static final Logger LOG = Log4jUtils.getLogger(SearchCondition.class);
     private boolean enableQueryCache = true;
 
     /**

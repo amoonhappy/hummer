@@ -4,9 +4,9 @@ import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
 import org.hummer.core.aop.intf.Interceptor;
 import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;

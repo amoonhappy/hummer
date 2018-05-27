@@ -1,13 +1,13 @@
 package org.hummer.core.model;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.hummer.core.model.intf.ICompositePKModel;
 import org.hummer.core.model.intf.IModel;
 import org.hummer.core.model.intf.ISingleLongPKModel;
 import org.hummer.core.model.intf.ISingleStringPKModel;
 import org.hummer.core.util.BlankObjectUtil;
 import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.Name;
@@ -25,7 +25,7 @@ import java.util.*;
  * @version $id: $
  */
 public class ModelFactory implements ObjectFactory {
-    public static final String OBJECT_GETCLASSMETHOD = "getClass";
+    //public static final String OBJECT_GETCLASSMETHOD = "getClass";
 
     private static final int LEN_PACKAGE_PRE = ModelFactory.class.getPackage().getName().length() + 1;
 
@@ -253,7 +253,7 @@ public class ModelFactory implements ObjectFactory {
                         }
                     }
                 } catch (Exception ex) {
-                    logger.error(ex);
+                    logger.error(ex.toString());
                 }
             }
 

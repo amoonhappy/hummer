@@ -14,12 +14,12 @@
 package org.hummer.core.aop.impl;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.log4j.Logger;
 import org.hummer.core.constants.ExceptionConstant;
 import org.hummer.core.exception.BusinessException;
 import org.hummer.core.message.impl.SQLLogInfo;
 import org.hummer.core.util.ExceptionUtil;
 import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
 import java.sql.SQLException;
 

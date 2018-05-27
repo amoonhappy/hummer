@@ -1,8 +1,8 @@
 package org.hummer.core.aop.impl;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.log4j.Logger;
 import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
 /**
  * iFOP Spacee for Developer Party

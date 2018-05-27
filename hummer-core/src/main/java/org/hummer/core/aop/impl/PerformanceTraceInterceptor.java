@@ -14,34 +14,39 @@
 package org.hummer.core.aop.impl;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.log4j.Logger;
+import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
 /**
  * @author jeff.zhou
  */
 public class PerformanceTraceInterceptor extends Perl5DynamicMethodInterceptor {
-    private static final Logger log = Logger.getLogger(PerformanceTraceInterceptor.class);
+    private static final Logger log = Log4jUtils.getLogger(PerformanceTraceInterceptor.class);
 
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Class targetClass = ((CglibMethodInvocation) methodInvocation).getTargetClass();
         //TODO we can use multiple thread to write the perf log to the perf analysis log file
         Object returnValue;
         String methodName = methodInvocation.getMethod().getName();
-        StringBuilder info = new StringBuilder();
-        info.append("**PerLOG** [");
-        info.append(targetClass.getSimpleName());
-        info.append(".");
-        info.append(methodName);
-        info.append("] spend time: ");
+        String simpleName = targetClass.getSimpleName();
+
+//        StringBuilder info = new StringBuilder();
+//        info.append("**PerLOG** [");
+//        info.append(simpleName);
+//        info.append(".");
+//        info.append(methodName);
+//        info.append("] spend time: ");
 
         long startTime = System.currentTimeMillis();
         returnValue = methodInvocation.proceed();
 
         long endTime = System.currentTimeMillis();
         long spendTime = endTime - startTime;
-        info.append(spendTime);
-        info.append(" ms.");
-        log.info(info.toString());
+        //info.append(spendTime);
+        //info.append(" ms.");
+        //log.info(info.toString());
+
+        log.info("**PerLog** [{}.{}] spend time: {} ms.", simpleName, methodName, spendTime);
 
         return returnValue;
     }
