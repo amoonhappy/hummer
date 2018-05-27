@@ -36,23 +36,19 @@ public class XMLBeanFactory implements IBeanFactory {
         if (ids != null) {
             String enabledBeanIds = (String) ids.get("enabledBeanIds");
             String[] enabledIcs; //= StringUtil.joinArray(enabledBeanIds, ",");
-            if (log.isInfoEnabled()) {
-                log.info("enabledBeanIds:[" + enabledBeanIds + "]");
-            }
+            log.info("enabledBeanIds: [{}]", enabledBeanIds);
             enabledIcs = StringUtil.joinArray(enabledBeanIds, ",");
             //StringUtils.delimitedListToStringArray(enabledBeanIds, ",", " ");
 
             for (int i = 0; i < enabledIcs.length; i++) {
                 ic.add((Interceptor) getBean(enabledIcs[i]));
-                if (log.isInfoEnabled()) {
-                    log.info("add Interceptor:[" + enabledIcs[i] + "], Seq: [" + i + "]");
-                }
+                log.info("add Interceptor: [{}], Seq: [{}]", enabledIcs[i], i);
             }
         } else {
             log.info("no interceptors loaded, pls check hummer aop xml configuration!");
         }
 
-        // ic.add((Interceptor) getBean("transactionIntercepter"));
+        // ic.add((Interceptor) getBean("transactionInterceptor"));
         // ic.add((Interceptor) getBean("performanceLog"));
     }
 
@@ -71,7 +67,7 @@ public class XMLBeanFactory implements IBeanFactory {
                         singletonBeanCache.put(beanId, beanConfig2BeanObject(singletonBeanConfigCache.get(beanId)));
                     } else {
                         // if not singleton, the bean should be created during access
-                        log.info("bean [" + beanId + "] is not singleton!");
+                        log.info("bean [{}] is not singleton!", beanId);
                     }
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     log.error("init Bean Objects failed!", e);
@@ -91,10 +87,10 @@ public class XMLBeanFactory implements IBeanFactory {
             ret = singletonBeanCache.get(name);
             if (ret == null) {
                 try {
-                    log.info("bean: [" + name + "] is not found in singleton bean cache, try to create new one");
+                    log.info("bean: [{}] is not found in singleton bean cache, try to create new one", name);
                     return beanConfig2BeanObject(singletonBeanConfigCache.get(name));
                 } catch (Exception e) {
-                    log.info("bean: [" + name + "] is not properly defined in the bean xml, pls try to check the xml configuration!");
+                    log.info("bean: [{}]  is not properly defined in the bean xml, pls try to check the xml configuration!", name);
                     return null;
                 }
             }

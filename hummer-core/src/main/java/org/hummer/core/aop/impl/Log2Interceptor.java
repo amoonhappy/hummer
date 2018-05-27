@@ -13,9 +13,10 @@ public class Log2Interceptor extends Perl5DynamicMethodInterceptor {
     private static Logger log = Log4jUtils.getLogger(Log2Interceptor.class);
 
     public Object invoke(MethodInvocation arg0) throws Throwable {
-        log.info("Log2Proxy:before " + arg0.getMethod().getName() + " invoke");
+        String methodName = arg0.getMethod().getName();
+        log.info("Log2Interceptor:before {} invoke", methodName);
         Object ret = arg0.proceed();
-        log.info("Log2Proxy:after " + arg0.getMethod().getName() + " invoke");
+        log.info("Log2Interceptor:after {} invoke", methodName);
         return ret;
     }
 }

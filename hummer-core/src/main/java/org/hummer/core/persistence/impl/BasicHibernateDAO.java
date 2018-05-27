@@ -1070,7 +1070,7 @@ public class BasicHibernateDAO implements IBasicDAO {
             con = HibernateUtil.getConnection();
 
             rs = JDBCUtil.execQuery(con, execSQL, searchCondition.getQueryParam());
-            log.info("execSQL=" + execSQL);
+            log.info("execSQL={}", execSQL);
             //crset = newweb CachedRowSet();
             //crset.populate(rs);
         } finally {
@@ -1104,11 +1104,11 @@ public class BasicHibernateDAO implements IBasicDAO {
     public int execUpdateSQL(SearchCondition searchCondition) throws Exception {
         Connection con = null;
         PreparedStatement pstmt = null;
-        int count = 0;
+        int count;
         try {
             String execSQL = searchCondition.getUpdateSQL();
             con = HibernateUtil.getConnection();
-            log.info("update SQL=" + execSQL);
+            log.info("update SQL={}", execSQL);
 
             count = JDBCUtil.execUpdate(con, execSQL, searchCondition.getUpdateParam());
         } finally {

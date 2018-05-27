@@ -118,7 +118,7 @@ public class HibernatePagerHandler implements IPagerHandler {
                 String sqlCountName = sqlName + COUNT_POSTFIX;
                 String countSQL = session.getNamedQuery(sqlCountName).getQueryString();
                 countSQL = JDBCUtil.trimSQL(countSQL);
-                log.info("count sql=" + countSQL);
+                log.info("count sql={}", countSQL);
                 pstmt = JDBCUtil.proccessParam(con.prepareStatement(countSQL), al);
                 rs = pstmt.executeQuery();
 

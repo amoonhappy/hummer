@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import="org.hummer.core.container.impl.BusinessServiceManager" %>
+<%@ page import="org.hummer.core.container.impl.HummerContainer" %>
 <%@ page import="org.hummer.core.container.intf.IBusinessServiceManager" %>
+<%@ page import="org.hummer.core.container.intf.IHummerContainer" %>
 <%@ page import="org.hummer.core.pagination.Pager" %>
 <%@ page import="org.hummer.core.service.impl.ReturnValue" %>
 <%@ page import="org.hummer.newweb.model.impl.User" %>
@@ -16,8 +17,8 @@
 11
 
 <%
-
-    IBusinessServiceManager bsm = BusinessServiceManager.getInstance();
+    IHummerContainer hummerContainer = HummerContainer.getInstance();
+    IBusinessServiceManager bsm = hummerContainer.getServiceManager();
     IUserService service = (IUserService) bsm.getService("userService");
 
     System.out.println(service);

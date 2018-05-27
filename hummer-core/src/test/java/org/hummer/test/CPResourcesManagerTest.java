@@ -23,28 +23,26 @@ public class CPResourcesManagerTest extends TestCase {
             BufferedReader reader = new BufferedReader(isr);
             String line;
             while ((line = reader.readLine()) != null) {
-                log.info("core:" + line);
+                log.info("core: {}", line);
             }
             reader.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        try {
-
-            InputStream input = CPResourcesManager.getInstance().getLocal(file1);
-            InputStreamReader isr = new InputStreamReader(input);
-            BufferedReader reader = new BufferedReader(isr);
-            String line;
-            while ((line = reader.readLine()) != null) {
-                log.info("local:" + line);
-            }
-            reader.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        try {
+//
+//            InputStream input = CPResourcesManager.getInstance().getLocal(file1);
+//            InputStreamReader isr = new InputStreamReader(input);
+//            BufferedReader reader = new BufferedReader(isr);
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                log.info("local:" + line);
+//            }
+//            reader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

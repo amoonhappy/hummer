@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AjcSettings">
-    <option name="ajcPath" value="$MAVEN_REPOSITORY$/aspectj/aspectjtools/1.5.2a/aspectjtools-1.5.2a.jar" />
-    <option name="delegateToJavac" value="true" />
-  </component>
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile name="Maven default annotation processors profile" enabled="true">
@@ -17,11 +13,11 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="hummer" target="1.5" />
-      <module name="hummer-codegen" target="1.5" />
-      <module name="hummer-core" target="1.5" />
-      <module name="hummer-new" target="1.5" />
-      <module name="hummer-web" target="1.5" />
+      <module name="hummer" target="1.8" />
+      <module name="hummer-codegen" target="1.8" />
+      <module name="hummer-core" target="1.8" />
+      <module name="hummer-new" target="1.8" />
+      <module name="hummer-web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

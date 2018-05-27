@@ -184,8 +184,8 @@ public class JDBCUtil {
         }
 
         log.info("[at parseKeyword()]");
-        log.info("orginal keyword=" + keyword);
-        log.info("processed keyword=" + sb.toString());
+        log.info("Original keyword=[{}]", keyword);
+        log.info("Processed keyword=[{}]", sb.toString());
 
         return sb.toString();
     }

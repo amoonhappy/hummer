@@ -117,11 +117,11 @@ public class HibernateUtil {
         Session s = (Session) threadSession.get();
         try {
             if (s == null || !s.isOpen()) {
-                log.info("open newweb session" + "session is： " + s);
+                log.info("open new session ：[{}] ", s);
                 s = getSessionFactory().openSession();
                 threadSession.set(s);
             } else {
-                log.info("using exsiting session" + s);
+                log.info("using existing session：[{}] ", s);
             }
         } catch (HibernateException ex) {
             throw new HibernateException(ex);
@@ -156,7 +156,7 @@ public class HibernateUtil {
         Transaction tx = (Transaction) threadTransaction.get();
         try {
             if (tx == null) {
-                log.info("Starting newweb database transaction in this thread.");
+                log.info("Starting new database transaction in this thread.");
                 tx = getSession().beginTransaction();
                 tx.begin();
                 threadTransaction.set(tx);

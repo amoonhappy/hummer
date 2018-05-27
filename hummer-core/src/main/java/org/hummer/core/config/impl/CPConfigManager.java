@@ -75,14 +75,17 @@ public class CPConfigManager implements IConfigManager {
         for (Iterator<SupportedAppInfos.SupportedAppInfo> it = apps.iterator(); it.hasNext(); ) {
             appInfo = it.next();
             comp_id = appInfo.getAppName();
-            log.info(comp_id);
-            nameList = findCompConfig(nameList, comp_id);
-
-            Iterator<String> itName = nameList.iterator();
-            while (itName.hasNext()) {
-                String fileName = itName.next();
-                log.info(comp_id + "." + fileName);
-                configCache.put(fileName, CPConfigFactory.getInstance().parse(fileName));
+            if (comp_id != null) {
+                log.info("Initialization Component:[{}]", comp_id);
+                nameList = findCompConfig(nameList, comp_id);
+                if (nameList != null && nameList.size() > 0) {
+                    Iterator<String> itName = nameList.iterator();
+                    while (itName.hasNext()) {
+                        String fileName = itName.next();
+                        log.info("Caching [{}.{}]", comp_id, fileName);
+                        configCache.put(fileName, CPConfigFactory.getInstance().parse(fileName));
+                    }
+                }
             }
         }
     }
@@ -120,15 +123,23 @@ public class CPConfigManager implements IConfigManager {
 
     private Set<String> checkConfigExistorNot(Set<String> nameList, String s) {
         URL url = this.getClass().getClassLoader().getResource(CPResourcesManager.CORE_PREFIX + s);
-        log.info("checkConfigExistorNot: " + s);
-        log.info("checkConfigExistorNot: " + url);
+        log.info("checkConfigExistorNot: {}", s);
+        log.info("checkConfigExistorNot: {}", url);
+
+        if (nameList == null) {
+            nameList = new HashSet<>();
+        }
 
         if (url != null) {
             nameList.add(s);
         } else {
             URL urlaop_local = this.getClass().getClassLoader().getResource(CPResourcesManager.LOCAL_PREFIX + s);
-            if (urlaop_local != null)
+            if (urlaop_local != null) {
                 nameList.add(s);
+            } else {
+                //if the configuration files of defined comp_id are not found, return null
+                return null;
+            }
         }
         return nameList;
     }
@@ -151,9 +162,7 @@ public class CPConfigManager implements IConfigManager {
                     comp_ver_key = StringUtils.replace(HUMMER_COMPONENT_VER, HUMMER_COMPONENT_REPLACEMENT, comp_id);
                     comp_ver = (String) archConfig.getValue(comp_ver_key);
                     SupportedAppInfos.appReg(comp_id, comp_ver);
-                    if (log.isInfoEnabled()) {
-                        log.info("Supported Component:[" + comp_id + "] ver:[" + comp_ver + "]");
-                    }
+                    log.info("Supported Component:[{}], Version:[{}]", comp_id, comp_ver);
                 }
             }
         }
