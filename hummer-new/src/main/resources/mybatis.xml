@@ -83,13 +83,33 @@
             <!-- 数据源类型：type = UNPOOLED、POOLED、JNDI1.UNPOOLED：这个数据源的实现是每次被请求时简单打开和关闭连接。它有一点慢，这是对简单应用程序的一个很好的选择，因为它不需要及时的可用连接。
     不同的数据库对这个的表现也是不一样的，所以对某些数据库来说配置数据源并不重要，这个配置也是闲置的 2.POOLED：这是JDBC连接对象的数据源连接池的实现，用来避免创建新的连接实例时必要的初始连接和认证时间。
     这是一种当前Web应用程序用来快速响应请求很流行的方法。3.JNDI：这个数据源的实现是为了使用如Spring或应用服务器这类的容器，容器可以集中或在外部配置数据源，然后放置一个JNDI上下文的引用 -->
-            <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql:///hummer"/>
+            <dataSource type="org.hummer.core.persistence.impl.HummerDataSourceFactory">
+                <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
                 <property name="username" value="hummer"/>
                 <property name="password" value="hummer"/>
-                <!-- 默认连接事务隔离级别 <property name="defaultTransactionIsolationLevel" value=""
-                    /> -->
+                <!-- 默认连接事务隔离级别 <property name="defaultTransactionIsolationLevel" value=""/> -->
+                <!--for hikari-->
+                <!--<property name="jdbcUrl" value="jdbc:mysql:///hummer?characterEncoding=utf-8"/>-->
+                <!--<property name="readOnly" value="false"/>-->
+                <!--<property name="connectionTimeout" value="60000"/>-->
+                <!--<property name="idleTimeout" value="30000"/>-->
+                <!--<property name="maxLifetime" value="1800000"/>-->
+                <!--<property name="maximumPoolSize" value="60"/>-->
+                <!--<property name="minimumIdle" value="10"/>-->
+                <!--for druid-->
+                <property name="url" value="jdbc:mysql:///hummer?characterEncoding=utf-8"/>
+                <property name="filters" value="stat"/>
+                <property name="maxActive" value="60"/>
+                <property name="initialSize" value="10"/>
+                <property name="minIdle" value="10"/>
+                <property name="maxWait" value="60000"/>
+                <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+                <property name="minEvictableIdleTimeMillis" value="30000"/>
+                <property name="testWhileIdle" value="true"/>
+                <property name="testOnBorrow" value="false"/>
+                <property name="testOnReturn" value="false"/>
+                <property name="poolPreparedStatements" value="true"/>
+                <property name="maxOpenPreparedStatements" value="20"/>
             </dataSource>
         </environment>
         <!-- 环境配置2 -->
