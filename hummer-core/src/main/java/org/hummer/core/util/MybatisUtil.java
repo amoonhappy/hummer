@@ -33,6 +33,8 @@ public class MybatisUtil {
     public static void buildSessionFactory() {
         try {
             Reader reader = Resources.getResourceAsReader(CONFIG_FILE);
+            //https://blog.csdn.net/zjf280441589/article/details/50760942
+            //TODO: datasource injection
             sessionFactory = new SqlSessionFactoryBuilder().build(reader);
         } catch (IOException e) {
             e.printStackTrace();

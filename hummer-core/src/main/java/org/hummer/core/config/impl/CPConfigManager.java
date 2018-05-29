@@ -21,7 +21,6 @@ public class CPConfigManager implements IConfigManager {
     private Map<String, IConfiguration> configCache = new HashMap<>();
 
     private CPConfigManager() {
-
         try {
             initialArchConfig();
         } catch (FileNotFoundException e) {
@@ -147,7 +146,11 @@ public class CPConfigManager implements IConfigManager {
     private void initialArchConfig() throws FileNotFoundException {
         IPropConfigParser parser = new PropConfigParser();
 
-        archConfig = parser.parse(archConfigFileName);
+        archConfig = parser.parse(HUMMER_CFG_MAIN_PROPERTIES);
+    }
+
+    public IConfiguration getHummerMainCfg() {
+        return archConfig;
     }
 
     private void initSupportedApp() {
