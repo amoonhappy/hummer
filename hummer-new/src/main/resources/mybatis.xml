@@ -58,17 +58,18 @@
     <!--<plugins>-->
     <!--<plugin interceptor="com.xhm.util.PageInterceptor"></plugin>-->
     <!--</plugins>-->
-    <!--<plugins>-->
-    <!--<plugin interceptor="com.github.pagehelper.PageHelper">-->
-    <!--<property name="dialect" value="mysql"/>-->
-    <!--<property name="offsetAsPageNum" value="false"/>-->
-    <!--<property name="rowBoundsWithCount" value="false"/>-->
-    <!--<property name="pageSizeZero" value="true"/>-->
-    <!--<property name="reasonable" value="false"/>-->
-    <!--<property name="supportMethodsArguments" value="false"/>-->
-    <!--<property name="returnPageInfo" value="none"/>-->
-    <!--</plugin>-->
-    <!--</plugins>-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="helperDialect" value="mysql"/>
+            <!--<property name="dialect" value="mysql"/>-->
+            <property name="offsetAsPageNum" value="false"/>
+            <property name="rowBoundsWithCount" value="false"/>
+            <property name="pageSizeZero" value="true"/>
+            <property name="reasonable" value="false"/>
+            <property name="supportMethodsArguments" value="false"/>
+            <property name="returnPageInfo" value="none"/>
+        </plugin>
+    </plugins>
     <!--配置environment环境-->
     <environments default="development">
         <!-- 环境配置1，每个SqlSessionFactory对应一个环境 -->
@@ -83,8 +84,8 @@
     不同的数据库对这个的表现也是不一样的，所以对某些数据库来说配置数据源并不重要，这个配置也是闲置的 2.POOLED：这是JDBC连接对象的数据源连接池的实现，用来避免创建新的连接实例时必要的初始连接和认证时间。
     这是一种当前Web应用程序用来快速响应请求很流行的方法。3.JNDI：这个数据源的实现是为了使用如Spring或应用服务器这类的容器，容器可以集中或在外部配置数据源，然后放置一个JNDI上下文的引用 -->
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/hummer"/>
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql:///hummer"/>
                 <property name="username" value="hummer"/>
                 <property name="password" value="hummer"/>
                 <!-- 默认连接事务隔离级别 <property name="defaultTransactionIsolationLevel" value=""
@@ -95,7 +96,7 @@
         <environment id="development2">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://localhost:3306/xhm"/>
                 <property name="username" value="root"/>
                 <property name="password" value="root"/>
