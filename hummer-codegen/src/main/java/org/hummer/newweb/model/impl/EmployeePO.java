@@ -3,37 +3,67 @@ package org.hummer.newweb.model.impl;
 import java.io.Serializable;
 
 public class EmployeePO implements Serializable {
-    private static final long serialVersionUID = 1L;
     private Long id;
+
     private Long createTime;
+
     private Long updateTime;
+
     private String address;
+
     private String email;
+
     private String imageAddress;
+
     private String job;
+
     private String loginName;
+
     private String markName;
+
     private String phone;
+
     private String sex;
+
     private String signature;
+
     private String telephone;
+
     private String userId;
+
     private String userName;
+
     private String userSystem;
+
     private String userType;
+
     private String weixinId;
+
     private Long turnoverTime;
+
     private Long workingTime;
+
     private Long appId;
+
     private Long count;
+
     private Long firstLogin;
+
     private Integer deleteFlag;
+
     private Integer loginMaxCount;
+
     private Byte createType;
+
     private String ldapDn;
+
     private String phoneType;
+
     private String pinyinName;
+
     private String initial;
+
+    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;

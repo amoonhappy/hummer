@@ -5,6 +5,7 @@
 
 <generatorConfiguration>
     <properties resource="mysql.properties"/>
+
     <context id="sqlserverTables" targetRuntime="MyBatis3">
         <!-- 生成的pojo，将implements Serializable-->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>

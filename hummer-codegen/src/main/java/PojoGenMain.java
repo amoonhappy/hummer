@@ -39,6 +39,7 @@ public class PojoGenMain {
         }
         try {
             myBatisGenerator.generate(null);
+            log.info("Generation Successful! ");
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
