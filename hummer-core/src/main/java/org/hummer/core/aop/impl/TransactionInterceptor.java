@@ -101,7 +101,7 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
         } finally {
             MybatisUtil.closeSession();
         }
-        log.info("commit transaction after [{}.{}]", simpleName, methodName);
+        log.info("Commit transaction after [{}.{}]", simpleName, methodName);
         //log.info("params = [{}]", methodInvocation.getArguments());
 
 
