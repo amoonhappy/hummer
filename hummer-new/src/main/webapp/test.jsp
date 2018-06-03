@@ -28,6 +28,8 @@
         user.setLastName("xxx");
         // Serializable ret = rv.getResult();
         service.insertUser(user);
+//        user.setLastName("JSP Update Test");
+//        service.updateUser(user);
 
 //        ReturnValue rv = service.getAllUsers();
 //        Pager pg = (Pager) rv.getResult();
