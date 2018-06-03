@@ -26,7 +26,6 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
         String simpleName = targetClass.getSimpleName();
         String methodName = methodInvocation.getMethod().getName();
         Object result = null;
-        log.info("Start transaction before [{}.{}] ", simpleName, methodName);
 //        log.info("Method found:[{}]", method.getName());
 //        log.info("Method found Annotation:[{}]", method.getAnnotations());
 //        log.info("target Class found Annotation {}", targetClass.isAnnotationPresent(Transactional.class));
@@ -91,19 +90,23 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
 
 //        } else {//apply default transaction strategy
         try {
+            log.info("Starting transaction before [{}.{}]", simpleName, methodName);
             MybatisUtil.getSession();
+            log.info("Started transaction before [{}.{}]", simpleName, methodName);
             result = methodInvocation.proceed();
+            log.info("Committing transaction after [{}.{}]", simpleName, methodName);
             MybatisUtil.getSession().commit();
+            log.info("Committed transaction after [{}.{}]", simpleName, methodName);
         } catch (Exception e) {
-            log.error("exec method [{}.{}] failed! rollback transaction", simpleName, methodName, e);
+            log.error("Execute method [{}.{}] failed! Rolling back transaction", simpleName, methodName, e);
             log.info("params = [{}]", methodInvocation.getArguments());
             MybatisUtil.getSession().rollback();
+            log.info("Rolled back transaction after [{}.{}]", simpleName, methodName);
         } finally {
+            log.info("Closing SqlSession [{}.{}]", simpleName, methodName);
             MybatisUtil.closeSession();
+            log.info("Closed transaction after [{}.{}]", simpleName, methodName);
         }
-        log.info("Commit transaction after [{}.{}]", simpleName, methodName);
-        //log.info("params = [{}]", methodInvocation.getArguments());
-
 
         return result;
     }
