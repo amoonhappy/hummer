@@ -20,7 +20,7 @@ public class HummerDataSourceFactory extends UnpooledDataSourceFactory {
     final static Logger log = Log4jUtils.getLogger(HummerDataSourceFactory.class);
     IHummerContainer hummerContainer = HummerContainer.getInstance();
     String type = hummerContainer.getDataSourcePoolType();
-    public static HummerDataSourceFactory hummerDataSourceFactory;
+//    public static HummerDataSourceFactory hummerDataSourceFactory;
 
     public HummerDataSourceFactory() {
         log.info("Hummer DS Pool Type is: [{}]", type);
@@ -51,10 +51,5 @@ public class HummerDataSourceFactory extends UnpooledDataSourceFactory {
             log.error("create datasource failed!", e);
             throw new RuntimeException("create datasource failed!");
         }
-        hummerDataSourceFactory = this;
-    }
-
-    public static HummerDataSourceFactory getInstance() {
-        return hummerDataSourceFactory;
     }
 }
