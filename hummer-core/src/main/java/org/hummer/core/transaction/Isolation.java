@@ -1,7 +1,7 @@
 package org.hummer.core.transaction;
 
 public enum Isolation {
-    DEFAULT(-1),
+    DEFAULT(4),
     READ_UNCOMMITTED(1),
     READ_COMMITTED(2),
     REPEATABLE_READ(4),

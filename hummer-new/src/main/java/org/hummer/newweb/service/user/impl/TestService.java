@@ -22,7 +22,7 @@ public class TestService extends BasicTestService implements ITestService {
     }
 
     //@Override
-    //@Transactional(propagation = Propagation.MANDATORY, timeout = 30000, isolation = Isolation.READ_COMMITTED)
+    @Transactional
     public void insertUser(IUser user) {
         IHummerContainer hummerContainer = HummerContainer.getInstance();
         IBusinessServiceManager bsm = hummerContainer.getServiceManager();
@@ -30,16 +30,18 @@ public class TestService extends BasicTestService implements ITestService {
         saveUser(user);
 //        user.setFirstName("changed by test");
         service.updateUser(user);
+
+        updateUser(user);
     }
 
-    //@Transactional
+    @Transactional
     public void updateUser(IUser user) {
         user.setFirstName("updated by test");
         testDAO.updateModel(user);
         //throw new RuntimeException("aaaa");
     }
 
-    //@Transactional
+    @Transactional
     public void saveUser(IUser user) {
         testDAO.insert(user);
     }

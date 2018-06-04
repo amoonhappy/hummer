@@ -12,6 +12,9 @@ import java.sql.Connection;
 
 public class MybatisUtil {
     private static final ThreadLocal<SqlSession> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<SqlSession> newThreadLocal = new ThreadLocal<>();
+    //    private static final ThreadLocal<SqlSession> newThreadLocal = new ThreadLocal<>();
+//    private static final ThreadLocal<SqlSession> newThreadLocal = new ThreadLocal<>();
     private static String CONFIG_FILE = "mybatis.xml";
     private static SqlSessionFactory sessionFactory;
     private static final Logger log = Log4jUtils.getLogger(MybatisUtil.class);
@@ -19,7 +22,7 @@ public class MybatisUtil {
     private MybatisUtil() {
     }
 
-//    public static SqlSession RegisterTransaction() {
+    //        public static SqlSession RegisterTransaction() {
 //        SqlSession session = threadLocal.get();
 //
 //        if (session == null) {
@@ -40,6 +43,25 @@ public class MybatisUtil {
 //        RegisterTransaction();
 //        //sqlSession.getConnection().setAutoCommit(false);
 //    }
+    public static SqlSession getNewSession(boolean createNew) {
+        if (createNew) {
+            ThreadLocal<SqlSession> temp = new ThreadLocal<>();
+            newThreadLocal = temp;
+        } else {
+
+        }
+        SqlSession session = newThreadLocal.get();
+
+        if (session == null) {
+            if (sessionFactory == null) {
+                buildSessionFactory();
+            }
+            session = (sessionFactory != null) ? sessionFactory.openSession() : null;
+            newThreadLocal.set(session);
+        }
+
+        return session;
+    }
 
     public static SqlSession getSession() {
         SqlSession session = threadLocal.get();

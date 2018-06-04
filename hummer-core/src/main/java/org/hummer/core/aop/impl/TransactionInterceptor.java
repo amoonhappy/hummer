@@ -1,9 +1,14 @@
 package org.hummer.core.aop.impl;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.ibatis.session.SqlSession;
+import org.hummer.core.transaction.Transaction;
+import org.hummer.core.transaction.TransactionManager;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.MybatisUtil;
 import org.slf4j.Logger;
+
+import java.lang.reflect.Method;
 
 
 /**
@@ -24,87 +29,49 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Class targetClass = methodInvocation.getThis().getClass();
         String simpleName = targetClass.getSimpleName();
-        String methodName = methodInvocation.getMethod().getName();
+        Method method = methodInvocation.getMethod();
+        String methodName = method.getName();
         Object result = null;
-//        log.info("Method found:[{}]", method.getName());
-//        log.info("Method found Annotation:[{}]", method.getAnnotations());
-//        log.info("target Class found Annotation {}", targetClass.isAnnotationPresent(Transactional.class));
-//        Annotation[] annotations = method.getAnnotations();
-        //get Transaction parameters and if annotation is found then apply the strategy
-//        if (annotations != null && annotations.length > 0) {
-//            Transactional transactional = (Transactional) annotations[0];
-//            Propagation propagation = transactional.propagation();
-//            Isolation isolation = transactional.isolation();
-//            boolean readOnly = transactional.readOnly();
-//            int timeout = transactional.timeout();
-//
-//            log.info("method [{}]'s Transactional parameters [0]: Propagation = [{}]", methodName, propagation);
-//            log.info("method [{}]'s Transactional parameters [1]: Isolation = [{}]", methodName, isolation.value());
-//            log.info("method [{}]'s Transactional parameters [2]: readOnly = [{}]", methodName, readOnly);
-//            log.info("method [{}]'s Transactional parameters [3]: timeout = [{}]", methodName, timeout);
-//            List<TransactionSynchronization> transactionSynchronizations = TransactionSynchronizationManager.getSynchronizations();
-//            if (transactionSynchronizations != null && transactionSynchronizations.size() > 0) {
-//                log.info("when exec method [{}] already in a transactions chain", methodName);
-//                log.info("Register Transaction", methodName);
-//                MybatisUtil.RegisterTransaction();
-//                TransactionSynchronizationManager.setActualTransactionActive(true);
-//            } else {
-//                log.info("when exec method [{}] don't have Transactions", methodName);
-//                TransactionSynchronizationManager.initSynchronization();
-//                MybatisUtil.begin();
-//                log.info("when exec method [{}] set the connections autocommit to false", methodName);
-//                TransactionSynchronizationManager.setActualTransactionActive(true);
-//            }
-//            try {
-//                //find whether the class is registered or not
-//                result = methodInvocation.proceed();
-//                transactionSynchronizations = TransactionSynchronizationManager.getSynchronizations();
-//                for (TransactionSynchronization transactionSynchronization : transactionSynchronizations) {
-//                    transactionSynchronization.beforeCommit(readOnly);
-//                    transactionSynchronization.beforeCompletion();
-//                }
-        //set autocommit status
-//            switch (propagation) {
-//                case REQUIRED:
-//                    break;
-//                case SUPPORTS:
-//                    break;
-//                case MANDATORY:
-//                    break;
-//                case REQUIRES_NEW:
-//                    break;
-//                case NOT_SUPPORTED:
-//                    break;
-//                case NEVER:
-//                    break;
-//                case NESTED:
-//                    break;
-//            }
-//            } catch (Exception e) {
-//                log.error("exec method [{}.{}] failed! rollback transaction", simpleName, methodName, e);
-//                log.info("params = [{}]", methodInvocation.getArguments());
-//                MybatisUtil.getSession().rollback();
-//            } finally {
-//                MybatisUtil.closeSession();
-//            }
+        SqlSession sqlSession = null;
 
-//        } else {//apply default transaction strategy
+        Transaction transaction = TransactionManager.RegisterTransaction(targetClass, methodInvocation.getMethod());
         try {
             log.info("Starting transaction before [{}.{}]", simpleName, methodName);
-            MybatisUtil.getSession();
+
+            if (transaction.needNewTransaction()) {
+                sqlSession = MybatisUtil.getNewSession(false);
+            } else {
+                sqlSession = MybatisUtil.getSession();
+            }
+            sqlSession.getConnection().setTransactionIsolation(transaction.getIsolationLevel());
+            sqlSession.getConnection().setReadOnly(transaction.isReadonly());
             log.info("Started transaction before [{}.{}]", simpleName, methodName);
             result = methodInvocation.proceed();
             log.info("Committing transaction after [{}.{}]", simpleName, methodName);
-            MybatisUtil.getSession().commit();
+            if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
+                //do nothing
+            } else {
+                sqlSession.commit();
+            }
             log.info("Committed transaction after [{}.{}]", simpleName, methodName);
         } catch (Exception e) {
             log.error("Execute method [{}.{}] failed! Rolling back transaction", simpleName, methodName, e);
             log.info("params = [{}]", methodInvocation.getArguments());
-            MybatisUtil.getSession().rollback();
+            if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
+                //do nothing
+            } else {
+                sqlSession.rollback();
+            }
             log.info("Rolled back transaction after [{}.{}]", simpleName, methodName);
         } finally {
             log.info("Closing SqlSession [{}.{}]", simpleName, methodName);
-            MybatisUtil.closeSession();
+            if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
+                //do nothing
+            } else {
+                //MybatisUtil.closeSession();
+                sqlSession.close();
+            }
+            TransactionManager.clearupAfterCompletion(targetClass);
             log.info("Closed transaction after [{}.{}]", simpleName, methodName);
         }
 
