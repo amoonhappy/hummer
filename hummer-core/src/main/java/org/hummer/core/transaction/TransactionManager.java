@@ -1,5 +1,8 @@
 package org.hummer.core.transaction;
 
+import org.hummer.core.transaction.annotation.Isolation;
+import org.hummer.core.transaction.annotation.Propagation;
+import org.hummer.core.transaction.annotation.Transactional;
 import org.hummer.core.transaction.exceptions.IllegalTransactionStateException;
 import org.hummer.core.transaction.exceptions.NoTransactionException;
 

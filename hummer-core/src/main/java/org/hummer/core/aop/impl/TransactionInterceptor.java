@@ -36,35 +36,34 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
 
         Transaction transaction = TransactionManager.RegisterTransaction(targetClass, methodInvocation.getMethod());
         try {
-            log.info("Starting transaction before [{}.{}]", simpleName, methodName);
-
+            log.debug("Starting transaction before [{}.{}]", simpleName, methodName);
             if (transaction.needNewTransaction()) {
                 sqlSession = MybatisUtil.getNewSession(false);
+                log.debug("Starting a transaction on a new SqlSession before [{}.{}]", simpleName, methodName);
             } else {
                 sqlSession = MybatisUtil.getSession();
             }
             sqlSession.getConnection().setTransactionIsolation(transaction.getIsolationLevel());
             sqlSession.getConnection().setReadOnly(transaction.isReadonly());
-            log.info("Started transaction before [{}.{}]", simpleName, methodName);
+            log.debug("Started transaction before [{}.{}]", simpleName, methodName);
             result = methodInvocation.proceed();
-            log.info("Committing transaction after [{}.{}]", simpleName, methodName);
+            log.debug("Committing transaction after [{}.{}]", simpleName, methodName);
             if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
                 //do nothing
             } else {
                 sqlSession.commit();
             }
-            log.info("Committed transaction after [{}.{}]", simpleName, methodName);
+            log.debug("Committed transaction after [{}.{}]", simpleName, methodName);
         } catch (Exception e) {
             log.error("Execute method [{}.{}] failed! Rolling back transaction", simpleName, methodName, e);
-            log.info("params = [{}]", methodInvocation.getArguments());
             if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
                 //do nothing
             } else {
                 sqlSession.rollback();
+                log.debug("Rolled back transaction after [{}.{}]", simpleName, methodName);
             }
-            log.info("Rolled back transaction after [{}.{}]", simpleName, methodName);
         } finally {
-            log.info("Closing SqlSession [{}.{}]", simpleName, methodName);
+            log.debug("Closing SqlSession [{}.{}]", simpleName, methodName);
             if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
                 //do nothing
             } else {
@@ -72,7 +71,7 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
                 sqlSession.close();
             }
             TransactionManager.clearupAfterCompletion(targetClass);
-            log.info("Closed transaction after [{}.{}]", simpleName, methodName);
+            log.debug("Closed transaction after [{}.{}]", simpleName, methodName);
         }
 
         return result;

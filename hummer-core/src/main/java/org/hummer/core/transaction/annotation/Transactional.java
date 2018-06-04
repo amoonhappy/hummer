@@ -1,4 +1,4 @@
-package org.hummer.core.transaction;
+package org.hummer.core.transaction.annotation;
 
 import java.lang.annotation.*;
 

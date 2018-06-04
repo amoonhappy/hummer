@@ -1,5 +1,8 @@
 package org.hummer.core.transaction;
 
+import org.hummer.core.transaction.annotation.Isolation;
+import org.hummer.core.transaction.annotation.Propagation;
+
 public class Transaction {
     private Isolation isolationlevel = Isolation.DEFAULT;
     private int timeout = -1;

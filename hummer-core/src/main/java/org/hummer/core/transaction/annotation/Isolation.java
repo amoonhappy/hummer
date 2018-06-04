@@ -1,4 +1,4 @@
-package org.hummer.core.transaction;
+package org.hummer.core.transaction.annotation;
 
 public enum Isolation {
     DEFAULT(4),
