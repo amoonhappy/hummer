@@ -13,21 +13,23 @@
  */
 package org.hummer.cafe.dao.test;
 
-import org.apache.log4j.Logger;
-import org.hummer.core.container.impl.BusinessServiceManager;
+import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.container.intf.IBusinessServiceManager;
+import org.hummer.core.container.intf.IHummerContainer;
 import org.hummer.core.persistence.impl.SearchCondition;
 import org.hummer.core.util.HibernateUtil;
+import org.hummer.core.util.Log4jUtils;
 import org.hummer.test.BaseDAOTestCase;
 import org.hummer.web.dao.user.intf.IUserDAO;
 import org.hummer.web.model.impl.User;
 import org.hummer.web.model.intf.IUser;
+import org.slf4j.Logger;
 
 /**
  * @author jeff.zhou
  */
 public class UserDAOTest extends BaseDAOTestCase {
-    private final Logger log = Logger.getLogger(BaseDAOTestCase.class);
+    private final Logger log = Log4jUtils.getLogger(BaseDAOTestCase.class);
     IUserDAO userDAO = null;
 
     @Override
@@ -42,7 +44,8 @@ public class UserDAOTest extends BaseDAOTestCase {
     }
 
     public void testDeleteUsers() throws Exception {
-        IBusinessServiceManager bsm = BusinessServiceManager.getInstance();
+        IHummerContainer iHummerContainer = HummerContainer.getInstance();
+        IBusinessServiceManager bsm = iHummerContainer.getServiceManager();
         userDAO = (IUserDAO) bsm.getService("userDAO");
         System.out.println(userDAO);
 
@@ -55,7 +58,8 @@ public class UserDAOTest extends BaseDAOTestCase {
     }
 
     public void testSaveUsers() throws Exception {
-        IBusinessServiceManager bsm = BusinessServiceManager.getInstance();
+        IHummerContainer iHummerContainer = HummerContainer.getInstance();
+        IBusinessServiceManager bsm = iHummerContainer.getServiceManager();
         userDAO = (IUserDAO) bsm.getService("userDAO");
         System.out.println(userDAO);
         IUser user = new User();
@@ -67,7 +71,8 @@ public class UserDAOTest extends BaseDAOTestCase {
     }
 
     public void testGetAllUsers() throws Exception {
-        IBusinessServiceManager bsm = BusinessServiceManager.getInstance();
+        IHummerContainer iHummerContainer = HummerContainer.getInstance();
+        IBusinessServiceManager bsm = iHummerContainer.getServiceManager();
         userDAO = (IUserDAO) bsm.getService("userDAO");
         System.out.println(userDAO);
 

@@ -15,14 +15,15 @@ package org.hummer.test;
 
 import junit.framework.TestCase;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
 import org.hummer.core.util.CollectionUtil;
+import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
 import java.util.*;
 
 public class BaseDAOTestCase extends TestCase {
 
-    private final Logger log = Logger.getLogger(BaseDAOTestCase.class);
+    private final Logger log = Log4jUtils.getLogger(BaseDAOTestCase.class);
 
     protected ResourceBundle rb;
 
