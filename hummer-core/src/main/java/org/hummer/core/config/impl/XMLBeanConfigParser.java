@@ -1,6 +1,6 @@
 package org.hummer.core.config.impl;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.hummer.core.config.intf.IXMLBeanConfig;
 import org.hummer.core.config.intf.IXMLConfigParser;

@@ -13,7 +13,7 @@
  */
 package org.hummer.core.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hummer.core.constants.ExceptionConstant;
 import org.hummer.core.exception.BusinessException;
 import org.hummer.core.model.ModelFactory;

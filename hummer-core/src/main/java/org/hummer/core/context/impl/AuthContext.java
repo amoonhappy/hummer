@@ -13,20 +13,19 @@
  */
 package org.hummer.core.context.impl;
 
-import org.acegisecurity.userdetails.UserDetails;
 import org.hummer.core.context.intf.IContext;
 
 /**
  * @author jinyangzhou
  */
 public class AuthContext implements IContext {
-    private UserDetails authUser = null;
+//    private UserDetails authUser = null;
 
-    public UserDetails getAuthUser() {
-        return authUser;
-    }
+//    public UserDetails getAuthUser() {
+//        return authUser;
+//    }
 
-    public void setAuthUser(UserDetails authUser) {
-        this.authUser = authUser;
-    }
+//    public void setAuthUser(UserDetails authUser) {
+//        this.authUser = authUser;
+//    }
 }

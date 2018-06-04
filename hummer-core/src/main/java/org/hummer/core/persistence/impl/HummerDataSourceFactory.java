@@ -25,27 +25,35 @@ public class HummerDataSourceFactory extends UnpooledDataSourceFactory {
     public HummerDataSourceFactory() {
         log.info("Hummer DS Pool Type is: [{}]", type);
         try {
-            if (type != null && IHummerContainer.DS_POOL_DRUID.equals(type)) {
-                this.dataSource = new DruidDataSource();
-                log.debug("Created DS of [{}]", type);
-            } else if (type != null && IHummerContainer.DS_POOL_HIKARI.equals(type)) {
-                this.dataSource = new HikariDataSource();
-                log.debug("Created DS of [{}]", type);
-            } else {
-                this.dataSource = new PooledDataSource();
-            }
-            if (type != null && (IHummerContainer.DS_POOL_DRUID.equals(type) || IHummerContainer.DS_POOL_HIKARI.equals(type))) {
-                Properties properties = new Properties();
-                InputStream in = IHummerContainer.class.getClassLoader().getResourceAsStream("ds_" + type + ".properties");
-                properties.load(in);
-                this.setProperties(properties);
-                log.info("Loading : [ds_{}.properties]", type);
-            } else {
-                Properties properties = new Properties();
-                InputStream in = IHummerContainer.class.getClassLoader().getResourceAsStream("ds_default.properties");
-                properties.load(in);
-                this.setProperties(properties);
-                log.info("Loading : [ds_default.properties]");
+            synchronized (this) {
+                if (type != null && IHummerContainer.DS_POOL_DRUID.equals(type)) {
+                    if (this.dataSource != null) {
+                        this.dataSource = new DruidDataSource();
+                        log.debug("Created DS of [{}]", type);
+                    }
+                } else if (type != null && IHummerContainer.DS_POOL_HIKARI.equals(type)) {
+                    if (this.dataSource != null) {
+                        this.dataSource = new HikariDataSource();
+                        log.debug("Created DS of [{}]", type);
+                    }
+                } else {
+                    if (this.dataSource != null) {
+                        this.dataSource = new PooledDataSource();
+                    }
+                }
+                if (type != null && (IHummerContainer.DS_POOL_DRUID.equals(type) || IHummerContainer.DS_POOL_HIKARI.equals(type))) {
+                    Properties properties = new Properties();
+                    InputStream in = IHummerContainer.class.getClassLoader().getResourceAsStream("ds_" + type + ".properties");
+                    properties.load(in);
+                    this.setProperties(properties);
+                    log.info("Loading : [ds_{}.properties]", type);
+                } else {
+                    Properties properties = new Properties();
+                    InputStream in = IHummerContainer.class.getClassLoader().getResourceAsStream("ds_default.properties");
+                    properties.load(in);
+                    this.setProperties(properties);
+                    log.info("Loading : [ds_default.properties]");
+                }
             }
         } catch (Exception e) {
             log.error("create datasource failed!", e);

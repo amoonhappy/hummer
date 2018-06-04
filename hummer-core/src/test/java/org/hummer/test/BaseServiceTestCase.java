@@ -14,13 +14,9 @@
 package org.hummer.test;
 
 import junit.framework.TestCase;
-import org.acegisecurity.userdetails.User;
-import org.acegisecurity.userdetails.UserDetails;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hummer.core.context.impl.AuthContext;
-import org.hummer.core.context.impl.ContextHolder;
 import org.hummer.core.util.CollectionUtil;
 
 import java.util.Map;
@@ -48,11 +44,11 @@ public class BaseServiceTestCase extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         // set User Authentication Information
-        UserDetails authUser = new User("", "", false, false, false, false, null);
-        AuthContext authContext = new AuthContext();
-        authContext.setAuthUser(authUser);
+//        UserDetails authUser = new User("", "", false, false, false, false, null);
+//        AuthContext authContext = new AuthContext();
+//        authContext.setAuthUser(authUser);
 
-        ContextHolder.setAuthContext(authContext);
+//        ContextHolder.setAuthContext(authContext);
     }
 
     /**

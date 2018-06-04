@@ -1,7 +1,6 @@
 package org.hummer.core.transaction.exceptions;
 
-import org.springframework.transaction.TransactionException;
-import org.springframework.util.Assert;
+import org.hummer.core.util.Assert;
 
 /**
  * Exception thrown when a general transaction system error is encountered,

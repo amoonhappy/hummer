@@ -13,7 +13,7 @@
  */
 package org.hummer.core.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hummer.core.constants.SearchConstant;
 import org.hummer.core.model.ModelFactory;
 import org.hummer.core.model.intf.ICompositePKModel;

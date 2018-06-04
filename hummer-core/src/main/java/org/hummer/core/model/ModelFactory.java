@@ -1,6 +1,6 @@
 package org.hummer.core.model;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hummer.core.model.intf.ICompositePKModel;
 import org.hummer.core.model.intf.IModel;
 import org.hummer.core.model.intf.ISingleLongPKModel;

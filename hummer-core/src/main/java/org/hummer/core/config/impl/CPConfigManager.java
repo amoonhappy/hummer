@@ -1,6 +1,6 @@
 package org.hummer.core.config.impl;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hummer.core.config.intf.IConfigManager;
 import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.config.intf.IPropConfigParser;
