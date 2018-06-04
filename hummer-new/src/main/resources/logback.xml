@@ -31,7 +31,7 @@
     </logger>
     -->
     <logger name="org.hummer" additivity="false">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.apache" additivity="false">
@@ -47,7 +47,7 @@
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="com.alibaba" additivity="false">
-        <level value="DEBUG"/>
+        <level value="ERROR"/>
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="com.zaxxer" additivity="false">
