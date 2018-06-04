@@ -13,8 +13,6 @@
  */
 package org.hummer.newweb.dao.user.impl;
 
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.hummer.core.pagination.Pager;
 import org.hummer.core.persistence.impl.BasicHibernateDAO;
 import org.hummer.core.persistence.impl.SearchCondition;
@@ -40,16 +38,4 @@ public class UserHibernateDAO extends BasicHibernateDAO implements IUserDAO {
 
         return super.searchByHQL(searchCondition);
     }
-
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = new User();
-        user.setFirstName(username);
-        try {
-            return (UserDetails) super.getObject(user);
-        } catch (Exception e) {
-            throw new UsernameNotFoundException("");
-        }
-
-    }
-
 }

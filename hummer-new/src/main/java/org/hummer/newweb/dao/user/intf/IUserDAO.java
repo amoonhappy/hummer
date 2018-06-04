@@ -13,13 +13,12 @@
  */
 package org.hummer.newweb.dao.user.intf;
 
-import org.acegisecurity.userdetails.UserDetailsService;
 import org.hummer.core.pagination.Pager;
 import org.hummer.core.persistence.intf.IBasicDAO;
 
 /**
  * @author jeff.zhou
  */
-public interface IUserDAO extends IBasicDAO, UserDetailsService {
+public interface IUserDAO extends IBasicDAO {
     Pager getAllUsers() throws Exception;
 }

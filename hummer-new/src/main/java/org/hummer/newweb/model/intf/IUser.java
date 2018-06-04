@@ -13,14 +13,13 @@
  */
 package org.hummer.newweb.model.intf;
 
-import org.acegisecurity.userdetails.UserDetails;
 import org.hummer.core.model.intf.IAuditableModel;
 import org.hummer.core.model.intf.ISingleStringPKModel;
 
 /**
  * @author jeff.zhou
  */
-public interface IUser extends ISingleStringPKModel, IAuditableModel, UserDetails {
+public interface IUser extends ISingleStringPKModel, IAuditableModel {
 
     /**
      * @hibernate.property column="firstname" length="50"

@@ -2,7 +2,6 @@ package org.hummer.newweb.model.impl;
 
 // Generated 2009-3-28 14:15:17 by Hibernate Tools 3.2.4.CR1
 
-import org.acegisecurity.GrantedAuthority;
 import org.hummer.newweb.model.intf.IUser;
 
 import java.util.Date;
@@ -206,40 +205,4 @@ public class User implements IUser {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public GrantedAuthority[] getAuthorities() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public String getPassword() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public String getUsername() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public boolean isAccountNonExpired() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean isAccountNonLocked() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean isCredentialsNonExpired() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
 }

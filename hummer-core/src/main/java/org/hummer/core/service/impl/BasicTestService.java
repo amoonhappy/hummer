@@ -4,6 +4,7 @@ import org.hummer.core.model.intf.IModel;
 import org.hummer.core.persistence.intf.IBasicTestDAO;
 import org.hummer.core.service.intf.IBasicTestService;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -19,7 +20,7 @@ public class BasicTestService implements IBasicTestService {
     }
 
     @Override
-    public void insertModel(IModel iModel) {
+    public void insertModel(IModel iModel) throws SQLException {
         dao.insertModel(iModel);
     }
 

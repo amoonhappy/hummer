@@ -43,8 +43,8 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
             } else {
                 sqlSession = MybatisUtil.getSession();
             }
-            sqlSession.getConnection().setTransactionIsolation(transaction.getIsolationLevel());
-            sqlSession.getConnection().setReadOnly(transaction.isReadonly());
+            //sqlSession.getConnection().setTransactionIsolation(transaction.getIsolationLevel());
+            //sqlSession.getConnection().setReadOnly(transaction.isReadonly());
             log.debug("Started transaction before [{}.{}]", simpleName, methodName);
             result = methodInvocation.proceed();
             log.debug("Committing transaction after [{}.{}]", simpleName, methodName);
@@ -67,8 +67,12 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
             if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
                 //do nothing
             } else {
-                //MybatisUtil.closeSession();
-                sqlSession.close();
+                // must use this method to clean threadLocal
+                if (transaction.needNewTransaction()) {
+                    MybatisUtil.closeNewSession();
+                } else {
+                    MybatisUtil.closeSession();
+                }
             }
             TransactionManager.clearupAfterCompletion(targetClass);
             log.debug("Closed transaction after [{}.{}]", simpleName, methodName);

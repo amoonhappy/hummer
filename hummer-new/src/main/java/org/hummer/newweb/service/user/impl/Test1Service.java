@@ -16,7 +16,7 @@ public class Test1Service extends BasicTestService implements ITest1Service {
         testDAO.insert(user);
     }
 
-    @Transactional(propagation = Propagation.NEVER)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void updateUser(IUser user) {
         user.setLastName("updated by test1");
         testDAO.updateModel(user);

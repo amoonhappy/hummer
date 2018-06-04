@@ -43,6 +43,16 @@ public class MybatisUtil {
 //        RegisterTransaction();
 //        //sqlSession.getConnection().setAutoCommit(false);
 //    }
+
+    public static void closeNewSession() {
+        SqlSession session = newThreadLocal.get();
+        newThreadLocal.set(null);
+
+        if (session != null) {
+            session.close();
+        }
+    }
+
     public static SqlSession getNewSession(boolean createNew) {
         if (createNew) {
             ThreadLocal<SqlSession> temp = new ThreadLocal<>();

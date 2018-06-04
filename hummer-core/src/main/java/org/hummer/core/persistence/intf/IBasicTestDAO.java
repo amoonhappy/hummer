@@ -4,8 +4,10 @@ import org.hummer.core.model.intf.IModel;
 import org.hummer.core.model.intf.ISingleStringPKModel;
 import org.hummer.core.pagination.Pager;
 
+import java.sql.SQLException;
+
 public interface IBasicTestDAO {
-    int insertModel(IModel iModel);
+    int insertModel(IModel iModel) throws SQLException;
 
     void deleteModel(ISingleStringPKModel iModel);
 
