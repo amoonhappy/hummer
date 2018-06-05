@@ -1,7 +1,7 @@
 package org.hummer.core.aop.impl;
 
-import com.alibaba.druid.util.StringUtils;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.lang3.StringUtils;
 import org.hummer.core.cache.annotation.CacheEvict;
 import org.hummer.core.cache.annotation.CacheEvicts;
 import org.hummer.core.cache.impl.CacheManager;

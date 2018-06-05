@@ -75,13 +75,13 @@ public class CPConfigManager implements IConfigManager {
             appInfo = it.next();
             comp_id = appInfo.getAppName();
             if (comp_id != null) {
-                log.info("Initialization Component:[{}]", comp_id);
+                log.debug("Initialization Component:[{}]", comp_id);
                 nameList = findCompConfig(nameList, comp_id);
                 if (nameList != null && nameList.size() > 0) {
                     Iterator<String> itName = nameList.iterator();
                     while (itName.hasNext()) {
                         String fileName = itName.next();
-                        log.info("Caching [{}.{}]", comp_id, fileName);
+                        log.debug("Caching [{}.{}]", comp_id, fileName);
                         configCache.put(fileName, CPConfigFactory.getInstance().parse(fileName));
                     }
                 }
@@ -122,8 +122,8 @@ public class CPConfigManager implements IConfigManager {
 
     private Set<String> checkConfigExistorNot(Set<String> nameList, String s) {
         URL url = this.getClass().getClassLoader().getResource(CPResourcesManager.CORE_PREFIX + s);
-        log.info("checkConfigExistorNot: {}", s);
-        log.info("checkConfigExistorNot: {}", url);
+        log.debug("checkConfigExistorNot: {}", s);
+        log.debug("checkConfigExistorNot: {}", url);
 
         if (nameList == null) {
             nameList = new HashSet<>();
