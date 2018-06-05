@@ -12,6 +12,10 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
 
+/**
+ * Cache Evict AOP, work with {@link ICacheable} interface config file hummer-app-cfg-aop.xml to determine which
+ * method of the a cacheable class should be cached
+ */
 public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
     private static final Logger log = Log4jUtils.getLogger(CacheInterceptor.class);
 

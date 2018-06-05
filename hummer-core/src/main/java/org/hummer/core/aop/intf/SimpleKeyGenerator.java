@@ -2,6 +2,9 @@ package org.hummer.core.aop.intf;
 
 import java.lang.reflect.Method;
 
+/**
+ * Simple Redis Cache Key Generator
+ */
 public class SimpleKeyGenerator implements KeyGenerator {
     public SimpleKeyGenerator() {
     }

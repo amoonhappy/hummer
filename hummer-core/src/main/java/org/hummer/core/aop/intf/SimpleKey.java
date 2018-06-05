@@ -6,6 +6,9 @@ import org.hummer.core.util.Assert;
 import java.io.Serializable;
 import java.util.Arrays;
 
+/**
+ * Simple Redis Key
+ */
 public class SimpleKey implements Serializable {
     public static final SimpleKey EMPTY = new SimpleKey(new Object[0]);
     private final Object[] params;

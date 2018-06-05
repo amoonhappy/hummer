@@ -3,7 +3,7 @@ package org.hummer.core.aop.intf;
 import java.lang.reflect.Method;
 
 /**
- * iFOP Spacee for Developer Party
+ * Used to determine whether a method should be wrapped by CGLIB proxy for AOP
  *
  * @author jeff.zhou
  */

@@ -1,7 +1,7 @@
 package org.hummer.core.aop.intf;
 
 /**
- * iFOP Spacee for Developer Party
+ * Hummer Framework's AOP interface extends aopalliance
  *
  * @author jeff.zhou
  */

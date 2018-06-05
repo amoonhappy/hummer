@@ -13,6 +13,10 @@ import org.slf4j.Logger;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+/**
+ * Cache Evict AOP, work with {@link CacheEvict} and {@link CacheEvicts} to determine which
+ * Redis cache will be evicted from redis cache
+ */
 public class CacheEvictInterceptor extends Perl5DynamicMethodInterceptor {
     private static final Logger log = Log4jUtils.getLogger(CacheEvictInterceptor.class);
 

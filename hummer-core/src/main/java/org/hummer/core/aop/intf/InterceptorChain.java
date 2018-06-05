@@ -3,7 +3,7 @@ package org.hummer.core.aop.intf;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
- * iFOP Spacee for Developer Party
+ * Hummer Framework's AOP interface extends aopalliance
  *
  * @author jeff.zhou
  */
