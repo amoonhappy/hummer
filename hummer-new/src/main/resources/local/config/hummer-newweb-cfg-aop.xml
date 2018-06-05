@@ -4,7 +4,7 @@
     <!-- performance log interceptor should always be the 1st one-->
     <bean id="enabledBeanIds">
         <properties name="enabledBeanIds" type="String"
-                    value="performanceLog,transactionInterceptor"/>
+                    value="performanceLog,transactionInterceptor,cacheInterceptor"/>
     </bean>
     <!-- Interceptors definition -->
     <bean id="transactionInterceptor" class="org.hummer.core.aop.impl.TransactionInterceptor"
@@ -34,6 +34,19 @@
 			^[a-z|A-Z|.|0-9]+Service.insert[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.delete[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.update[a-z|A-Z|.|0-9]*
+			">
+        </properties>
+        <properties name="xmlExcludePattern" type="String" value="^set,^toString">
+        </properties>
+    </bean>
+    <bean id="cacheInterceptor" class="org.hummer.core.aop.impl.CacheInterceptor"
+          singleton="true">
+        <properties name="xmlPattern" type="String"
+                    value="
+			^[a-z|A-Z|.|0-9]+Service.get[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.select[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.query[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.search[a-z|A-Z|.|0-9]*
 			">
         </properties>
         <properties name="xmlExcludePattern" type="String" value="^set,^toString">

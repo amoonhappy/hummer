@@ -14,7 +14,6 @@
     <!--keyProperty： （仅对 insert有用）标记一个属性， MyBatis 会通过 getGeneratedKeys或者通过 insert 语句的 selectKey 子元素设置它的值。默认：不设置。 -->
     <!--#{}中的内容，为占位符，当参数为某个JavaBean时，表示放置该Bean对象的属性值  -->
 
-
     <insert id="TestDAO_insert" useGeneratedKeys="true" keyProperty="id">
         insert into users (firstName,lastName,role) values (#{firstName},#{lastName},#{role})
     </insert>

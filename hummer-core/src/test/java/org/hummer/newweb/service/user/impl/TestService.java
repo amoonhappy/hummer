@@ -19,23 +19,6 @@ public class TestService extends BasicTestService implements ITestService, ICach
 
     @Override
     public Collection getAllUsers() {
-//        IUser[] ret = new IUser[10];
-//        ret[0] = new User();
-//        ret[1] = new User();
-//        ret[2] = new User();
-//        ret[3] = new User();
-//        ret[4] = new User();
-//        ret[5] = new User();
-//        ret[6] = new User();
-//        ret[7] = new User();
-//        ret[8] = new User();
-//        ret[9] = new User();
-//
-//        for (IUser iUser : ret) {
-//            int i = 0;
-//            iUser.setFirstName(i++ + "");
-//        }
-//        return ret;
         return testDAO.getAllModels();
     }
 

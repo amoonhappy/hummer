@@ -2,8 +2,10 @@ package org.hummer.newweb.service.user.intf;
 
 import org.hummer.newweb.model.intf.IUser;
 
+import java.util.Collection;
+
 public interface ITestService {
-    IUser getAllUsers();
+    Collection getAllUsers();
 
     void insertUser(IUser user);
 

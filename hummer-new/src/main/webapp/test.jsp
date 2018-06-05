@@ -5,6 +5,7 @@
 <%@ page import="org.hummer.newweb.model.impl.User" %>
 <%@ page import="org.hummer.newweb.model.intf.IUser" %>
 <%@ page import="org.hummer.newweb.service.user.intf.ITestService" %>
+<%@ page import="java.util.List" %>
 
 <html>
 <head>
@@ -21,19 +22,32 @@
 
     System.out.println(service);
     try {
-        // ReturnValue rv = service.getAllUsers();
+
+        //get all users test
+        List<IUser> result = (List<IUser>) service.getAllUsers();
+        if (result != null) {
+            System.out.println("查询结果总数：" + result.size());
+            for (IUser user : result) {
+                System.out.println(user.getId() + ":" + user.getFirstName());
+            }
+        } else {
+            System.out.println("查询结果为空！");
+        }
+        //insert user test
         IUser user = new User();
-        ///user.setId("2222333");
         user.setFirstName("??");
         user.setLastName("xxx");
-        // Serializable ret = rv.getResult();
         service.insertUser(user);
-//        user.setLastName("JSP Update Test");
-//        service.updateUser(user);
-
-//        ReturnValue rv = service.getAllUsers();
-//        Pager pg = (Pager) rv.getResult();
-//        System.out.println(((IUser) pg.getResult().iterator().next()).getFirstName());
+        //get all users test after insert
+        result = (List<IUser>) service.getAllUsers();
+        if (result != null) {
+            System.out.println("查询结果总数：" + result.size());
+            for (IUser user1 : result) {
+                System.out.println(user1.getId() + ":" + user1.getFirstName());
+            }
+        } else {
+            System.out.println("查询结果为空！");
+        }
     } catch (Exception e) {
         e.printStackTrace();
     }
