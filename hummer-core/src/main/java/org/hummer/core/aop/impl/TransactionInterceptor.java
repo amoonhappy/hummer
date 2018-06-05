@@ -43,8 +43,9 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
             } else {
                 sqlSession = MybatisUtil.getSession();
             }
-            //sqlSession.getConnection().setTransactionIsolation(transaction.getIsolationLevel());
-            //sqlSession.getConnection().setReadOnly(transaction.isReadonly());
+            sqlSession.getConnection().setTransactionIsolation(transaction.getIsolationLevel());
+            sqlSession.getConnection().setReadOnly(transaction.isReadonly());
+
             log.debug("Started transaction before [{}.{}]", simpleName, methodName);
             result = methodInvocation.proceed();
             log.debug("Committing transaction after [{}.{}]", simpleName, methodName);

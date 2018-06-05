@@ -1,5 +1,6 @@
 package org.hummer.newweb.service.user.impl;
 
+import org.hummer.core.cache.annotation.CacheEvict;
 import org.hummer.core.cache.intf.ICacheable;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.container.intf.IBusinessServiceManager;
@@ -13,9 +14,11 @@ import org.hummer.newweb.service.user.intf.ITestService;
 
 import java.util.Collection;
 
+@CacheEvict(evictForMethod = "insertUser", evictOnClass = TestService.class, evictOnMethod = "getAllUsers")
+@CacheEvict(evictForMethod = "updateUser", evictOnClass = TestService.class, evictOnMethod = "getAllUsers")
+@CacheEvict(evictForMethod = "saveUser", evictOnClass = TestService.class, evictOnMethod = "getAllUsers")
 public class TestService extends BasicTestService implements ITestService, ICacheable {
     private ITestDAO testDAO;
-
 
     @Override
     public Collection getAllUsers() {

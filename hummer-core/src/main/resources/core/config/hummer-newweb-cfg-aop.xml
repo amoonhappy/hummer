@@ -1,7 +1,7 @@
 <component name="hummer-newweb" type="aop">
     <bean id="enabledBeanIds">
         <properties name="enabledBeanIds" type="String"
-                    value="performanceLog,transactionInterceptor,cacheInterceptor"/>
+                    value="performanceLog,transactionInterceptor,cacheInterceptor,cacheEvictInterceptor"/>
     </bean>
     <!-- other bean definition -->
     <bean id="transactionInterceptor" class="org.hummer.core.aop.impl.TransactionInterceptor"
@@ -39,5 +39,16 @@
         </properties>
         <properties name="xmlExcludePattern" type="String" value="^set,^toString">
         </properties>
+    </bean>
+    <bean id="cacheEvictInterceptor" class="org.hummer.core.aop.impl.CacheEvictInterceptor"
+          singleton="true">
+        <properties name="xmlPattern" type="String"
+                    value="
+			^[a-z|A-Z|.|0-9]+Service.insert[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.update[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.delete[a-z|A-Z|.|0-9]*
+			"/>
+        <properties name="xmlExcludePattern" type="String" value="^set,^toString"/>
     </bean>
 </component>

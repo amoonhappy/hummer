@@ -3,6 +3,7 @@ package org.hummer.core.aop.impl;
 import org.aopalliance.intercept.MethodInvocation;
 import org.hummer.core.aop.intf.KeyGenerator;
 import org.hummer.core.aop.intf.SimpleKeyGenerator;
+import org.hummer.core.cache.impl.CacheManager;
 import org.hummer.core.cache.impl.RedisDaoImpl;
 import org.hummer.core.cache.intf.ICacheable;
 import org.hummer.core.cache.intf.RedisDo;
@@ -18,6 +19,9 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Object returnValue;
         Class targetClass = methodInvocation.getThis().getClass();
+        String targetClassName = targetClass.getName();
+        Method method = methodInvocation.getMethod();
+        String methodName = method.getName();
         Class[] interfaces = targetClass.getInterfaces();
         boolean cacheable = false;
         if (interfaces != null && interfaces.length > 0) {
@@ -29,17 +33,13 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
                 }
             }
         }
-
+        //如果类实现了ICacheable接口
         if (cacheable) {
-            Method method = methodInvocation.getMethod();
-
+            RedisDo redisDao = new RedisDaoImpl();
             KeyGenerator keyGenerator = new SimpleKeyGenerator();
             Object key = keyGenerator.generate(null, method, method.getParameters());
-            String name = method.getName();
-            String targetClassName = targetClass.getName();
             log.info("generated key is [{}]", key);
 
-            RedisDo redisDao = new RedisDaoImpl();
             //优先查询Redis
             returnValue = redisDao.RedisGet(key);
             if (returnValue == null) {
@@ -47,10 +47,13 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
                 returnValue = methodInvocation.proceed();
                 //将结果集放入Redis缓存
                 redisDao.RedisSet(key, returnValue);
-                log.info("store to redis for [{}].[{}]", targetClassName, name);
+                //将key=类名+方法名 和 value = keyGenerator生成的RedisKye保存起来
+                CacheManager.registerCacheKey(targetClass, method, key);
+                log.info("store redis key to CacheManager for [{}].[{}]", targetClassName, methodName);
+                log.info("store data to redis for [{}].[{}]", targetClassName, methodName);
             } else {
-                log.info("get from redis for [{}].[{}]", targetClassName, name);
-                log.info("return value is [{}]", returnValue);
+                log.info("get data from redis for [{}].[{}]", targetClassName, methodName);
+                log.info("data is [{}]", returnValue);
             }
         } else {
             returnValue = methodInvocation.proceed();
