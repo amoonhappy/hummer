@@ -193,19 +193,6 @@ public class XMLBeanFactory implements IBeanFactory {
 
             eh.setCallbacks(callbacks);
             ret = eh.create();
-            try {
-                BeanUtils.setProperty(ret, "proxy", ret);
-                if (log.isDebugEnabled()) {
-                    try {
-                        Object temp = BeanUtils.getProperty(ret, "proxy");
-                        log.debug("successfully set the proxy properties " + temp + "of instance: " + simpleName);
-                    } catch (NoSuchMethodException e) {
-                        log.warn("could not found proxy properties of instance: " + simpleName);
-                    }
-                }
-            } catch (Exception e) {
-                log.error("error when set the proxy properties of instance: " + simpleName, e);
-            }
         } catch (InstantiationException | IllegalAccessException e) {
             log.error("error when initial the proxy of instance: " + simpleName, e);
         } catch (Throwable e) {

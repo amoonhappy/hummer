@@ -1,11 +1,11 @@
 package org.hummer.core.service.impl;
 
 import org.hummer.core.model.intf.IModel;
+import org.hummer.core.model.intf.ISingleStringPKModel;
 import org.hummer.core.persistence.intf.IBasicTestDAO;
 import org.hummer.core.service.intf.IBasicTestService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class BasicTestService implements IBasicTestService {
@@ -26,16 +26,16 @@ public class BasicTestService implements IBasicTestService {
 
     @Override
     public void deleteMOdel(IModel iModel) {
-
+        dao.deleteModel((ISingleStringPKModel) iModel);
     }
 
     @Override
     public IModel getModel(IModel iModel) {
-        return null;
+        return dao.getModel((ISingleStringPKModel) iModel);
     }
 
     @Override
     public Collection getAllModels() {
-        return new ArrayList();
+        return dao.getAllModels();
     }
 }

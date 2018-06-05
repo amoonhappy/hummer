@@ -6,6 +6,65 @@ import java.io.*;
  * Utitlity methods for <code>Serializable</code> objects.
  */
 public class SerializableUtil {
+    /**
+     * 将对象序列化成字节码
+     *
+     * @param obj
+     * @return
+     */
+    public static byte[] toByte(Object obj) {
+        ObjectOutputStream oos = null; //对象输出流
+        ByteArrayOutputStream baos = null;//字节数组输出流
+
+        byte[] bt = null;
+
+        try {
+            baos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(baos);
+            oos.writeObject(obj);
+            bt = baos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (baos != null) {
+                try {
+                    baos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return bt;
+    }
+
+    /**
+     * 反序列化，将byte字节转换为对象
+     *
+     * @param bt byte[]
+     * @return Object
+     */
+    public static Object toObject(byte[] bt) {
+        ByteArrayInputStream bais = null;
+        Object object = null;
+
+
+        try {
+            bais = new ByteArrayInputStream(bt);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            object = ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bais != null) {
+                try {
+                    bais.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return object;
+    }
 
     /**
      * Clone a <code>Serializable</code> object; for use when a

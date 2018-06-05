@@ -1,0 +1,43 @@
+<component name="hummer-newweb" type="aop">
+    <bean id="enabledBeanIds">
+        <properties name="enabledBeanIds" type="String"
+                    value="performanceLog,transactionInterceptor,cacheInterceptor"/>
+    </bean>
+    <!-- other bean definition -->
+    <bean id="transactionInterceptor" class="org.hummer.core.aop.impl.TransactionInterceptor"
+          singleton="true">
+        <properties name="xmlPattern" type="String"
+                    value="
+			^[a-z|A-Z|.|0-9]+Service.add[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*">
+        </properties>
+        <properties name="xmlExcludePattern" type="String"
+                    value="^get,^set,^toString">
+        </properties>
+    </bean>
+    <bean id="performanceLog" class="org.hummer.core.aop.impl.PerformanceTraceInterceptor"
+          singleton="true">
+        <properties name="xmlPattern" type="String"
+                    value="
+			^[a-z|A-Z|.|0-9]+Service.add[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.get[a-z|A-Z|.|0-9]*
+			">
+        </properties>
+        <properties name="xmlExcludePattern" type="String" value="^set,^toString">
+        </properties>
+    </bean>
+    <bean id="cacheInterceptor" class="org.hummer.core.aop.impl.CacheInterceptor"
+          singleton="true">
+        <properties name="xmlPattern" type="String"
+                    value="
+			^[a-z|A-Z|.|0-9]+Service.get[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.select[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.query[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.search[a-z|A-Z|.|0-9]*
+			">
+        </properties>
+        <properties name="xmlExcludePattern" type="String" value="^set,^toString">
+        </properties>
+    </bean>
+</component>

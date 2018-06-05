@@ -2,9 +2,9 @@ package org.hummer.core.persistence.intf;
 
 import org.hummer.core.model.intf.IModel;
 import org.hummer.core.model.intf.ISingleStringPKModel;
-import org.hummer.core.pagination.Pager;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface IBasicTestDAO {
     int insertModel(IModel iModel) throws SQLException;
@@ -15,6 +15,6 @@ public interface IBasicTestDAO {
 
     int updateModel(ISingleStringPKModel iModel);
 
-    Pager getAllModels();
+    List getAllModels();
 
 }
