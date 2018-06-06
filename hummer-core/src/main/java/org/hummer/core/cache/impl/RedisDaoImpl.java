@@ -60,7 +60,16 @@ public class RedisDaoImpl implements RedisDo {
      * @param value
      */
     public void RedisSet(Object key, Object value) {
-        GetJedis().set(serializeObj(key), serializeObj(value));
+        Jedis redis = null;
+        try {
+            redis = GetJedis();
+
+            redis.set(serializeObj(key), serializeObj(value));
+        } finally {
+            if (redis != null) {
+                redis.close();
+            }
+        }
     }
 
     /**
@@ -70,7 +79,17 @@ public class RedisDaoImpl implements RedisDo {
      * @return
      */
     public Object RedisGet(Object key) {
-        return unSerializeByte(GetJedis().get(serializeObj(key)));
+        Jedis redis = null;
+        Object ret;
+        try {
+            redis = GetJedis();
+            ret = unSerializeByte(redis.get(serializeObj(key)));
+        } finally {
+            if (redis != null) {
+                redis.close();
+            }
+        }
+        return ret;
     }
 
     /**
@@ -81,7 +100,10 @@ public class RedisDaoImpl implements RedisDo {
      * @return
      */
     public Object RedisGetSet(Object key, Object value) {
-        return unSerializeByte(GetJedis().getSet(serializeObj(key), serializeObj(value)));
+        Jedis redis = GetJedis();
+        Object ret = unSerializeByte(redis.getSet(serializeObj(key), serializeObj(value)));
+        redis.close();
+        return ret;
     }
 
     /**
@@ -90,7 +112,9 @@ public class RedisDaoImpl implements RedisDo {
      * @param keysvalues
      */
     public void RedisMset(Object... keysvalues) {
-        List<Object> list = new LinkedList<Object>();
+        List<Object> list = new LinkedList<>();
+        Jedis redis = GetJedis();
+
         int i = 0;
         if (keysvalues != null) {
             for (Object object : keysvalues) {
@@ -99,9 +123,10 @@ public class RedisDaoImpl implements RedisDo {
             }
         }
         for (i = 0; i < list.size(); i++) {
-            GetJedis().set(serializeObj(list.get(i)), serializeObj(list.get(i + 1)));
+            redis.set(serializeObj(list.get(i)), serializeObj(list.get(i + 1)));
             i = i + 1;
         }
+        redis.close();
     }
 
     /**
@@ -163,7 +188,11 @@ public class RedisDaoImpl implements RedisDo {
      * @return
      */
     public Long RedisTTL(Object key) {
-        return GetJedis().ttl(serializeObj(key));
+        Long ret;
+        Jedis redis = GetJedis();
+        ret = redis.ttl(serializeObj(key));
+        redis.close();
+        return ret;
     }
 
     /**
@@ -173,6 +202,8 @@ public class RedisDaoImpl implements RedisDo {
      */
     public void RedisDel(Object... keys) {
         List<Object> list = new LinkedList<Object>();
+        Jedis redis = GetJedis();
+
         int i = 0;
         if (keys != null) {
             for (Object object : keys) {
@@ -181,8 +212,9 @@ public class RedisDaoImpl implements RedisDo {
             }
         }
         for (i = 0; i < list.size(); i++) {
-            GetJedis().del(serializeObj(list.get(i)));
+            redis.del(serializeObj(list.get(i)));
         }
+        redis.close();
     }
 
     /**
@@ -192,6 +224,8 @@ public class RedisDaoImpl implements RedisDo {
      * @param newkey
      */
     public void RedisRename(Object key, Object newkey) {
-        GetJedis().rename(serializeObj(key), serializeObj(newkey));
+        Jedis redis = GetJedis();
+        redis.rename(serializeObj(key), serializeObj(newkey));
+        redis.close();
     }
 }

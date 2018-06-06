@@ -87,7 +87,12 @@ public abstract class Perl5DynamicMethodInterceptor extends DynamicChainMethodIn
      * <code>String</code>.
      */
     protected boolean matches(String pattern, int patternIndex) {
-        return this.matcher.matches(pattern, this.patterns[patternIndex]);
+        try {
+            return this.matcher.matches(pattern, this.patterns[patternIndex]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+
+        }
     }
 
     /**
