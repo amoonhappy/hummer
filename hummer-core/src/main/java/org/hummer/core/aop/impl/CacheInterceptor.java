@@ -47,7 +47,6 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
                 log.info("store data to redis for [{}].[{}]", targetClassName, methodName);
             } else {
                 log.info("get data from redis for [{}].[{}]", targetClassName, methodName);
-                log.info("data is [{}]", returnValue);
             }
         } else {
             returnValue = methodInvocation.proceed();

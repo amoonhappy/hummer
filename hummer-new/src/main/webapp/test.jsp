@@ -26,27 +26,27 @@
         //get all users test
         List<IUser> result = (List<IUser>) service.getAllUsers();
         if (result != null) {
-            System.out.println("查询结果总数：" + result.size());
-            for (IUser user : result) {
-                System.out.println(user.getId() + ":" + user.getFirstName());
-            }
+            System.out.println("First search getAllUsers:" + result.size());
+//            for (IUser user : result) {
+//                System.out.println(user.getId() + ":" + user.getFirstName());
+//            }
         } else {
-            System.out.println("查询结果为空！");
+            System.out.println("getAllUsers return null!");
         }
         //insert user test
         IUser user = new User();
-        user.setFirstName("??");
-        user.setLastName("xxx");
+        user.setFirstName("new test");
+        user.setLastName("new test");
         service.insertUser(user);
         //get all users test after insert
         result = (List<IUser>) service.getAllUsers();
         if (result != null) {
-            System.out.println("查询结果总数：" + result.size());
-            for (IUser user1 : result) {
-                System.out.println(user1.getId() + ":" + user1.getFirstName());
-            }
+            System.out.println("2nd search getAllUsers:" + result.size());
+//            for (IUser user1 : result) {
+//                System.out.println(user1.getId() + ":" + user1.getFirstName());
+//            }
         } else {
-            System.out.println("查询结果为空！");
+            System.out.println("getAllUsers return null!");
         }
     } catch (Exception e) {
         e.printStackTrace();
