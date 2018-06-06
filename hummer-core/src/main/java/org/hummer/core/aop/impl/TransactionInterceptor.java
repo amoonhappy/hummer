@@ -43,7 +43,7 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
             } else {
                 sqlSession = MybatisUtil.getSession();
             }
-            sqlSession.getConnection().setTransactionIsolation(transaction.getIsolationLevel());
+            //sqlSession.getConnection().setTransactionIsolation(transaction.getIsolationLevel());
             sqlSession.getConnection().setReadOnly(transaction.isReadonly());
 
             log.debug("Started transaction before [{}.{}]", simpleName, methodName);
@@ -64,21 +64,25 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
                 log.debug("Rolled back transaction after [{}.{}]", simpleName, methodName);
             }
         } finally {
-            log.debug("Closing SqlSession [{}.{}]", simpleName, methodName);
             if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
                 //do nothing
             } else {
+
                 // must use this method to clean threadLocal
                 if (transaction.needNewTransaction()) {
+                    log.debug("Closing New SqlSession [{}.{}]", simpleName, methodName);
                     MybatisUtil.closeNewSession();
+                    log.debug("Closed New SqlSession after [{}.{}]", simpleName, methodName);
                 } else {
+                    log.debug("Closing SqlSession [{}.{}]", simpleName, methodName);
                     MybatisUtil.closeSession();
+                    log.debug("Closed SqlSession after [{}.{}]", simpleName, methodName);
+//                }
                 }
+                TransactionManager.clearupAfterCompletion(targetClass);
             }
-            TransactionManager.clearupAfterCompletion(targetClass);
-            log.debug("Closed transaction after [{}.{}]", simpleName, methodName);
-        }
 
-        return result;
+            return result;
+        }
     }
 }

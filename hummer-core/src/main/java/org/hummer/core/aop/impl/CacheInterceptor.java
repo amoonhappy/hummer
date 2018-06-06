@@ -26,22 +26,12 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         String targetClassName = targetClass.getName();
         Method method = methodInvocation.getMethod();
         String methodName = method.getName();
-        Class[] interfaces = targetClass.getInterfaces();
-        boolean cacheable = false;
-        if (interfaces != null && interfaces.length > 0) {
-            for (int i = 0; i < interfaces.length; i++) {
-                Class ints = interfaces[i];
-                if (ints != null && ints.equals(ICacheable.class)) {
-                    cacheable = true;
-                    break;
-                }
-            }
-        }
+        boolean cacheable = isCacheable(targetClass);
         //如果类实现了ICacheable接口
         if (cacheable) {
             RedisDo redisDao = new RedisDaoImpl();
             KeyGenerator keyGenerator = new SimpleKeyGenerator();
-            Object key = keyGenerator.generate(null, method, method.getParameters());
+            Object key = keyGenerator.generate(null, method, (Object[]) method.getParameters());
             log.info("generated key is [{}]", key);
 
             //优先查询Redis
@@ -63,5 +53,20 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
             returnValue = methodInvocation.proceed();
         }
         return returnValue;
+    }
+
+    private boolean isCacheable(Class targetClass) {
+        boolean ret = false;
+        Class[] interfaces = targetClass.getInterfaces();
+        if (interfaces != null && interfaces.length > 0) {
+            for (int i = 0; i < interfaces.length; i++) {
+                Class ints = interfaces[i];
+                if (ints != null && ints.equals(ICacheable.class)) {
+                    ret = true;
+                    break;
+                }
+            }
+        }
+        return ret;
     }
 }

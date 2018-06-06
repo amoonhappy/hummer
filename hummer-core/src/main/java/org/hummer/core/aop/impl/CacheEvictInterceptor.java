@@ -47,7 +47,7 @@ public class CacheEvictInterceptor extends Perl5DynamicMethodInterceptor {
                             redisDao.RedisDel(redisKey);
                             CacheManager.deleteCacheKey(evictOnClass, evictOnMethod);
                         } else {
-                            log.error("Redis key not found in CacheManager! Pls check CacheEvict Annotation Value in [{}] Class, CacheEvict:evictForMethod=[{}],evictOnClass=[{}],evictOnMethod=[{}]", targetClassName, methodName, evictOnClass.getSimpleName(), evictOnMethod);
+                            log.warn("Redis key not found in CacheManager! Pls check CacheEvict Annotation Value in [{}] Class, CacheEvict:evictForMethod=[{}],evictOnClass=[{}],evictOnMethod=[{}]", targetClassName, methodName, evictOnClass.getSimpleName(), evictOnMethod);
                         }
                         // Only 1 method to be matched
                         break;

@@ -1,7 +1,7 @@
 package org.hummer.core.transaction.annotation;
 
 public enum Isolation {
-    DEFAULT(4),
+    DEFAULT(1),
     READ_UNCOMMITTED(1),
     READ_COMMITTED(2),
     REPEATABLE_READ(4),

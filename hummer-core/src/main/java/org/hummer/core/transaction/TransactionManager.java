@@ -10,7 +10,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 public abstract class TransactionManager {
-    private static ThreadLocal<Class> transactionExist = new ThreadLocal<>();
+    private static final ThreadLocal<Class> transactionExist = new ThreadLocal<>();
 
     public static Transaction RegisterTransaction(Class clazz, Method method) {
         Transaction transaction = new Transaction();
