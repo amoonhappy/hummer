@@ -16,4 +16,6 @@ public interface IBasicTestDAO {
 
     List getAllModels();
 
+    IModel getModel(Integer id);
+
 }

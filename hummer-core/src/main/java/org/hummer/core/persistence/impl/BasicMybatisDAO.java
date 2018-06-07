@@ -30,11 +30,13 @@ public abstract class BasicMybatisDAO implements IBasicTestDAO {
 
     public IModel getModel(ISingleStringPKModel iModel) {
         IModel ret;
-        try {
-            ret = MybatisUtil.getSession().selectOne(getModelName() + SQL_ID_GET, iModel.getId());
-        } finally {
-            MybatisUtil.closeSession();
-        }
+        ret = MybatisUtil.getSession().selectOne(getModelName() + SQL_ID_GET, iModel.getId());
+        return ret;
+    }
+
+    public IModel getModel(Integer id) {
+        IModel ret;
+        ret = MybatisUtil.getSession().selectOne(getModelName() + SQL_ID_GET, id);
         return ret;
     }
 

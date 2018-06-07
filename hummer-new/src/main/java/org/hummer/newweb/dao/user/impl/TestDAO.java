@@ -15,4 +15,9 @@ public class TestDAO extends BasicMybatisDAO implements ITestDAO {
         return super.insertModel(a);
     }
 
+    @Override
+    public IUser getUserById(Integer id) {
+        return (IUser) super.getModel(id);
+    }
+
 }

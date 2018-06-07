@@ -11,6 +11,7 @@ import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 /**
  * Cache Evict AOP, work with {@link ICacheable} interface config file hummer-app-cfg-aop.xml to determine which
@@ -31,24 +32,32 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         if (cacheable) {
             RedisDo redisDao = new RedisDaoImpl();
             KeyGenerator keyGenerator = new SimpleKeyGenerator();
-            Object key = keyGenerator.generate(null, method, (Object[]) method.getParameters());
-            log.info("generated key is [{}]", key);
+            int paramCount = method.getParameterCount();
+            Parameter[] parameters = method.getParameters();
+            Object[] params = new Object[paramCount];
+            for (int i = 0; i < paramCount; i++) {
+                params[i] = parameters[i].hashCode();
+            }
+            Object key = keyGenerator.generate(null, method, params);
+            log.info("[{}].[{}] is cacheable\ntry to retrieve from redis cache!", targetClassName, methodName);
 
             //优先查询Redis
             returnValue = redisDao.RedisGet(key);
             if (returnValue == null) {
+                log.debug("no redis cache found for [{}].[{}]!", targetClassName, methodName);
                 //如果Redis中没有，执行方法
                 returnValue = methodInvocation.proceed();
                 //将结果集放入Redis缓存
                 redisDao.RedisSet(key, returnValue);
                 //将key=类名+方法名 和 value = keyGenerator生成的RedisKye保存起来
                 CacheManager.registerCacheKey(targetClass, method, key);
-                log.info("store redis key to CacheManager for [{}].[{}]", targetClassName, methodName);
-                log.info("store data to redis for [{}].[{}]", targetClassName, methodName);
+                log.debug("store redis key to CacheManager for [{}].[{}]", targetClassName, methodName);
+                log.debug("store data to redis for [{}].[{}]", targetClassName, methodName);
             } else {
-                log.info("get data from redis for [{}].[{}]", targetClassName, methodName);
+                log.debug("get data from redis for [{}].[{}]", targetClassName, methodName);
             }
         } else {
+            log.info("[{}].[{}] is not cacheable\nexecute method to get result directly", targetClassName, methodName);
             returnValue = methodInvocation.proceed();
         }
         return returnValue;

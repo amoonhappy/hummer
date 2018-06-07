@@ -46,6 +46,11 @@ public class TestService extends BasicTestService implements ITestService, ICach
         testDAO.insert(user);
     }
 
+    @Override
+    public IUser getUserById(Integer id) {
+        return testDAO.getUserById(id);
+    }
+
     public ITestDAO getTestDAO() {
         return testDAO;
     }

@@ -27,6 +27,8 @@ public class CacheEvictInterceptor extends Perl5DynamicMethodInterceptor {
         String targetClassName = targetClass.getName();
         Method method = methodInvocation.getMethod();
         String methodName = method.getName();
+
+        returnValue = methodInvocation.proceed();
         //check whether need to evict Redis Cache
         Annotation[] annotations = targetClass.getAnnotations();
         if (annotations != null && annotations.length > 0) {
@@ -57,8 +59,6 @@ public class CacheEvictInterceptor extends Perl5DynamicMethodInterceptor {
         } else {
             log.debug("No Redis Cache to be evicted for [{}].[{}], Pls add CacheEvict Annotation", targetClassName, methodName);
         }
-        returnValue = methodInvocation.proceed();
-
         return returnValue;
     }
 }

@@ -33,7 +33,11 @@
 			^[a-z|A-Z|.|0-9]+ServiceLocal.get[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.insert[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.delete[a-z|A-Z|.|0-9]*,
-			^[a-z|A-Z|.|0-9]+Service.update[a-z|A-Z|.|0-9]*
+			^[a-z|A-Z|.|0-9]+Service.update[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.get[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.select[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.query[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.search[a-z|A-Z|.|0-9]*
 			">
         </properties>
         <properties name="xmlExcludePattern" type="String" value="^set,^toString"/>

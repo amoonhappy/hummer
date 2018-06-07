@@ -25,7 +25,7 @@ public class HummerDataSourceFactory extends UnpooledDataSourceFactory {
     public HummerDataSourceFactory() {
         log.info("Hummer DS Pool Type is: [{}]", type);
         try {
-            synchronized (this) {
+            synchronized (this.dataSource) {
                 if (type != null && IHummerContainer.DS_POOL_DRUID.equals(type)) {
                     if (this.dataSource != null) {
                         this.dataSource = new DruidDataSource();

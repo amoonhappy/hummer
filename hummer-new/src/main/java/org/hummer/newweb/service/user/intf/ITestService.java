@@ -12,4 +12,6 @@ public interface ITestService {
     void updateUser(IUser user);
 
     void saveUser(IUser user);
+
+    IUser getUserById(Integer id);
 }
