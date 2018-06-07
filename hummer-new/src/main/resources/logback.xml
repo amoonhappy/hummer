@@ -48,12 +48,12 @@
         <appender-ref ref="PerfFile"/>
     </logger>
     <logger name="org.hummer" additivity="false">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.hummer.core.aop.impl.CacheInterceptor" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="FILE"/>
+        <level value="DEBUG"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.apache" additivity="false">
         <level value="ERROR"/>
@@ -72,8 +72,8 @@
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="com.zaxxer" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="FILE"/>
+        <level value="ERROR"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
     <!-- 相当于logger元素，只是name值已经确定为root了 -->
     <root level="warn">

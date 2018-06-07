@@ -10,6 +10,8 @@ import org.hummer.newweb.service.user.intf.ITestService;
 
 import java.util.Collection;
 
+@CacheEvict(evictForMethod = "saveUser", evictOnClass = TestService.class, evictOnMethod = "getUserById")
+@CacheEvict(evictForMethod = "updateUser", evictOnClass = TestService.class, evictOnMethod = "getUserById")
 @CacheEvict(evictForMethod = "insertUser", evictOnClass = TestService.class, evictOnMethod = "getAllUsers")
 @CacheEvict(evictForMethod = "updateUser", evictOnClass = TestService.class, evictOnMethod = "getAllUsers")
 @CacheEvict(evictForMethod = "saveUser", evictOnClass = TestService.class, evictOnMethod = "getAllUsers")
