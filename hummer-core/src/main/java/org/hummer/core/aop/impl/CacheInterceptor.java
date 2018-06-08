@@ -11,7 +11,6 @@ import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 
 /**
  * Cache Evict AOP, work with {@link ICacheable} interface config file hummer-app-cfg-aop.xml to determine which
@@ -30,16 +29,13 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         boolean cacheable = isCacheable(targetClass);
         //如果类实现了ICacheable接口
         if (cacheable) {
+            CglibMethodInvocation cglibMethodInvocation = (CglibMethodInvocation) methodInvocation;
+            Object[] args = cglibMethodInvocation.arguments;
             RedisDo redisDao = new RedisDaoImpl();
             KeyGenerator keyGenerator = new SimpleKeyGenerator();
-            int paramCount = method.getParameterCount();
-            Parameter[] parameters = method.getParameters();
-            Object[] params = new Object[paramCount];
-            for (int i = 0; i < paramCount; i++) {
-                params[i] = parameters[i].hashCode();
-            }
-            Object key = keyGenerator.generate(null, method, params);
-            log.info("[{}].[{}] is cacheable\ntry to retrieve from redis cache!", targetClassName, methodName);
+
+            Object key = keyGenerator.generate(null, method, args);
+            log.info("[{}].[{}] is cacheable, try to retrieve from redis cache!", targetClassName, methodName);
 
             //优先查询Redis
             returnValue = redisDao.RedisGet(key);
@@ -57,7 +53,7 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
                 log.debug("get data from redis for [{}].[{}]", targetClassName, methodName);
             }
         } else {
-            log.info("[{}].[{}] is not cacheable\nexecute method to get result directly", targetClassName, methodName);
+            log.info("[{}].[{}] is not cacheable, execute method to get result directly", targetClassName, methodName);
             returnValue = methodInvocation.proceed();
         }
         return returnValue;

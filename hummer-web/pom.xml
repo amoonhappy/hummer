@@ -11,7 +11,15 @@
 
     <artifactId>hummer-web</artifactId>
     <packaging>war</packaging>
-
+    <!-- dependency version control-->
+    <properties>
+        <springVersion>5.0.6.RELEASE</springVersion>
+        <jstlVersion>1.2</jstlVersion>
+        <taglibVersion>1.1.2</taglibVersion>
+        <jsonVersion>1.9.13</jsonVersion>
+        <jacksonVersion>2.5.0</jacksonVersion>
+        <mysqlVersion>5.1.38</mysqlVersion>
+    </properties>
     <dependencies>
         <!-- mysql jdbc -->
         <dependency>
@@ -25,11 +33,11 @@
             <artifactId>aopalliance</artifactId>
             <version>1.0</version>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-            <version>5.0.5.RELEASE</version>
-        </dependency-->
+            <version>${springVersion}</version>
+        </dependency>
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
@@ -91,12 +99,62 @@
             <artifactId>jedis</artifactId>
             <version>2.9.0</version>
         </dependency>
+        <!-- spring-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
         <!--Spring MVC-->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>5.0.6.RELEASE</version>
+            <artifactId>spring-web</artifactId>
+            <version>${springVersion}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${springVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+        <!-- Jackson可以轻松的将Java对象转换成json对象和xml文档,同样也可以将json、xml转换成Java对象-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.9.4</version>
+        </dependency>
+        <!--Fast json-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -179,9 +237,9 @@
                 <version>2.8.2</version>
                 <configuration>
                     <skip>true</skip>
+                    <sources>1.8</sources>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

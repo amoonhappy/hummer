@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/mvc
-           http://www.springframework.org/schema/mvc/spring-mvc.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context.xsd">
-    <!-- 扩充了注解驱动，可以将请求参数绑定到控制参数-->
-    <mvc:annotation-driven/>
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- 将/META-INF下在资源映射到/resources/下-->
     <!--<mvc:resources location="/,classpath:/META-INF/publicResources/" mapping="/resources/**"/>-->
     <!--会在Spring MVC上下文中定义一个org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler，
     它会像一个检查员，对进入DispatcherServlet的URL进行筛查，如果发现是静态资源的请求，就将该请求转由Web应用服务器默认的Servlet处理，
     如果不是静态资源的请求，才由DispatcherServlet继续处理。-->
     <mvc:default-servlet-handler/>
+    <context:component-scan base-package="org.hummer"/>
     <!-- 视图解析器 -->
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:prefix="/WEB-INF/jsp/"
-          p:suffix=".jsp"
-    />
+    <!-- 对模型视图名称的解析,在请求时模型视图名称添加前后缀 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="views/"/>      <!-- 前缀 -->
+        <property name="suffix" value=".jsp"/>   <!-- 后缀 -->
+    </bean>
     <!-- 避免IE执行AJAX时，返回JSON出现下载文件 -->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="messageConverters">
@@ -51,15 +51,8 @@
             </list>
         </property>
     </bean>
-    <!--<mvc:message-converters>-->
-    <!--<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"/>-->
-    <!--</mvc:message-converters>-->
-    <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
-    <context:component-scan base-package="org.hummer.newweb.controller">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:exclude-filter type="annotation"
-                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
-    </context:component-scan>
+
+
     <!-- 静态资源处理 css js images -->
     <mvc:resources location="/resources/**" mapping="/resource/"/>
 
