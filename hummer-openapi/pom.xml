@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hummer-core</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>hummer-openapi</artifactId>
+    <packaging>war</packaging>
     <!-- dependency version control-->
     <properties>
         <springVersion>5.0.6.RELEASE</springVersion>
@@ -203,9 +203,22 @@
             <version>${junitVersion}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>hummer</groupId>
+            <artifactId>hummer-core</artifactId>
+            <version>${hummerVersion}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
+            <!-- war打包插件, 设定war包名称不带版本号 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warName>${project.artifactId}</warName>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

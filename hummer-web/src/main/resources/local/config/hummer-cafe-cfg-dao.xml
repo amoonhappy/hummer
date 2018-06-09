@@ -1,8 +1,0 @@
-<component name="hummer-cafe" type="dsv">
-    <!-- DAO definition -->
-    <bean id="userDAO" class="org.hummer.web.dao.user.impl.UserHibernateDAO"
-          singleton="true">
-        <properties name="pagerHandler" type="refBean" value="pagerHandler"/>
-    </bean>
-
-</component>

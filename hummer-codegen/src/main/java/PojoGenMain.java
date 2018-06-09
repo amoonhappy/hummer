@@ -16,35 +16,31 @@ import java.util.List;
 public class PojoGenMain {
     public static void main(String[] args) {
         final Logger log = LoggerFactory.getLogger("test");
-        List<String> warnings = new ArrayList<String>();
+        List<String> warnings = new ArrayList<>();
         boolean overwrite = true;
-        String genCfg = "/mbgConfiguration.xml";
+        String genCfg = "/generatorConfig.xml";
         File configFile = new File(PojoGenMain.class.getResource(genCfg).getFile());
         log.info("File is {}", configFile);
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = null;
         try {
             config = cp.parseConfiguration(configFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XMLParserException e) {
+        } catch (IOException | XMLParserException e) {
             e.printStackTrace();
         }
         DefaultShellCallback callback = new DefaultShellCallback(overwrite);
         MyBatisGenerator myBatisGenerator = null;
         try {
+            assert config != null;
             myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();
         }
         try {
+            assert myBatisGenerator != null;
             myBatisGenerator.generate(null);
             log.info("Generation Successful! ");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (SQLException | IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

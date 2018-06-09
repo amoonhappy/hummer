@@ -9,8 +9,11 @@
         <module name="hummer-codegen" />
         <module name="hummer-core" />
         <module name="hummer-new" />
-        <module name="hummer-web" />
+        <module name="hummer-openapi" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="hummer-web" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

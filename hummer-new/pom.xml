@@ -14,24 +14,48 @@
     <!-- dependency version control-->
     <properties>
         <springVersion>5.0.6.RELEASE</springVersion>
+        <springRedisVersion>1.7.2.RELEASE</springRedisVersion>
+        <jedisVersion>2.9.0</jedisVersion>
         <jstlVersion>1.2</jstlVersion>
         <taglibVersion>1.1.2</taglibVersion>
         <jsonVersion>1.9.13</jsonVersion>
         <jacksonVersion>2.5.0</jacksonVersion>
-        <mysqlVersion>5.1.38</mysqlVersion>
+        <mysqlVersion>8.0.11</mysqlVersion>
+        <mybatisVersion>3.4.6</mybatisVersion>
+        <aopVersion>1.0</aopVersion>
+        <cglibVersion>2.1_3</cglibVersion>
+        <slf4jVersion>1.7.21</slf4jVersion>
+        <logbackVersion>1.1.7</logbackVersion>
+        <hikariVersion>3.1.0</hikariVersion>
+        <druidVersion>1.1.3</druidVersion>
+        <fasterxmlVersion>2.9.4</fasterxmlVersion>
+        <fastJsonVersion>1.2.47</fastJsonVersion>
+        <servletVersion>3.1.0</servletVersion>
+        <apacheLangVersion>3.1</apacheLangVersion>
+        <apacheBeanUtilsVersion>1.9.3</apacheBeanUtilsVersion>
+        <dom4jVersion>1.6.1</dom4jVersion>
+        <apacheCollectionsVersion>3.2.1</apacheCollectionsVersion>
+        <junitVersion>4.12</junitVersion>
+        <hummerVersion>1.0-SNAPSHOT</hummerVersion>
+        <oroVersion>2.0.8</oroVersion>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>oro</groupId>
+            <artifactId>oro</artifactId>
+            <version>${oroVersion}</version>
+        </dependency>
         <!-- mysql jdbc -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.11</version>
+            <version>${mysqlVersion}</version>
         </dependency>
         <!-- Hummer AOP-->
         <dependency>
             <groupId>aopalliance</groupId>
             <artifactId>aopalliance</artifactId>
-            <version>1.0</version>
+            <version>${aopVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -41,35 +65,30 @@
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
-            <version>2.1_3</version>
+            <version>${cglibVersion}</version>
         </dependency>
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.21</version>
+            <version>${slf4jVersion}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.1.7</version>
+            <version>${logbackVersion}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.1.7</version>
+            <version>${logbackVersion}</version>
         </dependency>
 
         <!-- DB persistence -->
-        <!--<dependency>-->
-        <!--<groupId>org.mybatis</groupId>-->
-        <!--<artifactId>mybatis-spring</artifactId>-->
-        <!--<version>1.3.2</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>3.4.6</version>
+            <version>${mybatisVersion}</version>
         </dependency>
         <!-- mybatis PageHelper 分页插件 -->
         <dependency>
@@ -81,23 +100,23 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>3.1.0</version>
+            <version>${hikariVersion}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>1.1.3</version>
+            <version>${druidVersion}</version>
         </dependency>
         <!-- redis相关 -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
-            <version>1.7.2.RELEASE</version>
+            <version>${springRedisVersion}</version>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>2.9.0</version>
+            <version>${jedisVersion}</version>
         </dependency>
         <!-- spring-->
         <dependency>
@@ -117,11 +136,6 @@
             <artifactId>spring-context</artifactId>
             <version>${springVersion}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${springVersion}</version>
-        </dependency>
         <!--Spring MVC-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -133,92 +147,66 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${springVersion}</version>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.13</version>
-        </dependency>
         <!-- Jackson可以轻松的将Java对象转换成json对象和xml文档,同样也可以将json、xml转换成Java对象-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.4</version>
+            <version>${fasterxmlVersion}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.9.4</version>
+            <version>${fasterxmlVersion}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.9.4</version>
+            <version>${fasterxmlVersion}</version>
         </dependency>
         <!--Fast json-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.47</version>
+            <version>${fastJsonVersion}</version>
         </dependency>
         <!-- servlet 3.1.0 -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>${servletVersion}</version>
             <scope>provided</scope>
         </dependency>
-        <!--dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4.7</version>
-        </dependency-->
-        <!--dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>5.0.5.RELEASE</version>
-        </dependency-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.1</version>
+            <version>${apacheLangVersion}</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.9.3</version>
+            <version>${apacheBeanUtilsVersion}</version>
         </dependency>
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
-            <version>1.6.1</version>
+            <version>${dom4jVersion}</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
+            <version>${apacheCollectionsVersion}</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.acegisecurity</groupId>-->
-        <!--<artifactId>acegi-security-tiger</artifactId>-->
-        <!--<version>1.0.7</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.hibernate</groupId>-->
-        <!--<artifactId>hibernate-core</artifactId>-->
-        <!--<version>3.3.2.GA</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junitVersion}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>hummer</groupId>
             <artifactId>hummer-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${hummerVersion}</version>
         </dependency>
     </dependencies>
     <build>
@@ -233,11 +221,18 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.2</version>
                 <configuration>
                     <skip>true</skip>
-                    <sources>1.8</sources>
                 </configuration>
             </plugin>
         </plugins>
