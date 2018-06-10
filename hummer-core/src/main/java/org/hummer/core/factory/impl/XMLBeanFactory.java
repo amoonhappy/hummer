@@ -32,6 +32,13 @@ public class XMLBeanFactory implements IBeanFactory {
         initialBeanObject();
         // use aop xml configuration attribute enabledBeanIds to register
         // interceptors
+        initialInterceptors();
+
+        // ic.add((Interceptor) getBean("transactionInterceptor"));
+        // ic.add((Interceptor) getBean("performanceLog"));
+    }
+
+    private void initialInterceptors() {
         Map ids = (Map) getBean("enabledBeanIds");
         if (ids != null) {
             String enabledBeanIds = (String) ids.get("enabledBeanIds");
@@ -47,9 +54,6 @@ public class XMLBeanFactory implements IBeanFactory {
         } else {
             log.info("no interceptors loaded, pls check hummer aop xml configuration!");
         }
-
-        // ic.add((Interceptor) getBean("transactionInterceptor"));
-        // ic.add((Interceptor) getBean("performanceLog"));
     }
 
     public static IBeanFactory getInstance() {
@@ -60,6 +64,8 @@ public class XMLBeanFactory implements IBeanFactory {
         singletonBeanConfigCache = CPConfigManager.getInstance().getAllXMLConfiguration();
         singletonBeanCache = new HashMap<>();
         ic = new LinkedList<>();
+        initialBeanObject();
+        initialInterceptors();
     }
 
     private void initialBeanObject() {
@@ -151,7 +157,6 @@ public class XMLBeanFactory implements IBeanFactory {
                         String propertiesName = it.next();
                         String value = propertiesValue.get(propertiesName);
                         BeanUtils.setProperty(obj, propertiesName, value);
-
                     }
                 }
 
@@ -175,7 +180,7 @@ public class XMLBeanFactory implements IBeanFactory {
         return obj;
     }
 
-    public Object getProxy(Class clazz) {
+    private Object getProxy(Class clazz) {
         Object ret = null;
         String simpleName = clazz.getSimpleName();
         try {
