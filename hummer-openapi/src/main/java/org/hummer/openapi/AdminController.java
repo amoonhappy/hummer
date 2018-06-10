@@ -43,9 +43,9 @@ public class AdminController {
     @RequestMapping(value = "/serverInfo", method = {RequestMethod.GET})
     public Map<String, String> serverInfo(ServletRequest request) {
         Map<String, String> ret = new HashMap<>();
-        ret.put("Local Name", request.getLocalName());
-        ret.put("Local Addr", request.getLocalAddr());
-        ret.put("Local Port", String.valueOf(request.getLocalPort()));
+        ret.put("Server Name", request.getLocalName());
+        ret.put("Server IP", request.getLocalAddr());
+        ret.put("Server Port", String.valueOf(request.getLocalPort()));
         return ret;
     }
 
@@ -53,6 +53,11 @@ public class AdminController {
     public Map<String, String> getHummerStatus() {
         IHummerContainer iHummerContainer = HummerContainer.getInstance();
         Map<String, String> ret = new HashMap<>();
+        ret = checkHummerStatus(iHummerContainer, ret);
+        return ret;
+    }
+
+    private Map<String, String> checkHummerStatus(IHummerContainer iHummerContainer, Map<String, String> ret) {
         if (!ObjectUtil.isNull(iHummerContainer)) {
             Set<SupportedAppInfos.SupportedAppInfo> supportedAppInfos = iHummerContainer.getConfigManager().getSupportedComponents();
             String dataSourceType = iHummerContainer.getDataSourcePoolType();
@@ -74,16 +79,7 @@ public class AdminController {
         IHummerContainer iHummerContainer = HummerContainer.getInstance();
         iHummerContainer.reInit();
         IHummerContainer newHummerContainer = HummerContainer.getInstance();
-        if (!ObjectUtil.isNull(newHummerContainer)) {
-            String dataSourceType = iHummerContainer.getDataSourcePoolType();
-            ret.put("retCode", "0");
-            ret.put("retMsg", "Hummer Container is re-initialized");
-            ret.put("Data Source Type", dataSourceType);
-            ret.put("HummerContainer", newHummerContainer.toString());
-        } else {
-            ret.put("retCode", "-1");
-            ret.put("retMsg", "Hummer Container is not initialized");
-        }
+        ret = checkHummerStatus(newHummerContainer, ret);
         return ret;
     }
 
