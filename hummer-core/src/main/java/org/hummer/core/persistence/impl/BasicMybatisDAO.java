@@ -2,6 +2,7 @@ package org.hummer.core.persistence.impl;
 
 
 import org.hummer.core.model.intf.IModel;
+import org.hummer.core.model.intf.ISingleLongPKModel;
 import org.hummer.core.model.intf.ISingleStringPKModel;
 import org.hummer.core.persistence.intf.IBasicTestDAO;
 import org.hummer.core.util.MybatisUtil;
@@ -24,7 +25,7 @@ public abstract class BasicMybatisDAO implements IBasicTestDAO {
         return MybatisUtil.getSession().insert(getModelName() + SQL_ID_INSERT, iModel);
     }
 
-    public void deleteModel(ISingleStringPKModel iModel) {
+    public void deleteModel(ISingleLongPKModel iModel) {
         MybatisUtil.getSession().delete(getModelName() + SQL_ID_DELETE, iModel);
     }
 

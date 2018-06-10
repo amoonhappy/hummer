@@ -13,5 +13,7 @@ public interface ITestService {
 
     void saveUser(IUser user);
 
+    void deleteUser(String id);
+
     IUser getUserById(Integer id);
 }

@@ -22,7 +22,7 @@
       update users set firstName=#{firstName},lastName=#{lastName},role=#{role} where id=#{id}
     </update>
 
-    <delete id="TestDAO_delete" parameterType="int">
+    <delete id="TestDAO_delete" parameterType="long">
      delete from users where id=#{id}
     </delete>
 

@@ -3,15 +3,14 @@ package org.hummer.newweb.controller;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.container.intf.IBusinessServiceManager;
 import org.hummer.core.container.intf.IHummerContainer;
+import org.hummer.newweb.model.impl.User;
 import org.hummer.newweb.service.user.intf.ITestService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 @RequestMapping("/rest/v1")
@@ -33,8 +32,6 @@ public class TestController {
         IHummerContainer iHummerContainer = HummerContainer.getInstance();
         IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
         ITestService testService = (ITestService) bsv.getService("testService");
-        //Map ret = new HashMap();
-        //ret.put("1",testService.getUserById(Integer.valueOf(userId)));
         return (List) testService.getAllUsers();
     }
 
@@ -50,43 +47,36 @@ public class TestController {
         return ret;
     }
 
-//    @RequestMapping(value = "userService", method = {RequestMethod.POST})
-//    @ResponseBody
-//    public Object addUser(IUser user) {
-//        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-//        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-//        ITestService testService = (ITestService) bsv.getService("testService");
-//        testService.insertUser(user);
-//        return new String("successful");
-//    }
-
     @RequestMapping(value = "/user/{userId}", method = {RequestMethod.DELETE})
-    public Object getUser(@PathVariable("userId") String userId) {
-//        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-//        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-//        ITestService testService = (ITestService) bsv.getService("testService");
+    public Object deleteUserById(@PathVariable("userId") String userId) {
+        IHummerContainer iHummerContainer = HummerContainer.getInstance();
+        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
+        ITestService testService = (ITestService) bsv.getService("testService");
+        testService.deleteUser(userId);
         return "successful for userId delete" + userId;
     }
 
-    @RequestMapping(value = "/user", method = {RequestMethod.GET})
-    public Object saveUser(HttpServletRequest request) {
-        long startTime = System.currentTimeMillis();
-        Enumeration<String> headers = request.getHeaders("X-xSimple-IMEI");
-        long secondTime = System.currentTimeMillis();
-        String time1 = String.valueOf(secondTime - startTime);
-
-        headers.hasMoreElements();
-
-        long thirdTime = System.currentTimeMillis();
-
-        String time2 = String.valueOf(thirdTime - secondTime);
-
-        System.out.println("request.getHeaders:[" + time1 + "]");
-        System.out.println("headers.hasMoreElements:[" + time2 + "]");
-
-        return "successful user";
+    @RequestMapping(value = "/user", method = {RequestMethod.POST})
+    public Object insertUser(User user) {
+        IHummerContainer iHummerContainer = HummerContainer.getInstance();
+        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
+        ITestService testService = (ITestService) bsv.getService("testService");
+        testService.insertUser(user);
+        System.out.println(user.getFirstName());
+//        testService.insertUser(mv.getModel());
+        return user;
     }
 
+    @RequestMapping(value = "/user", method = {RequestMethod.PUT})
+    public Object updateUserById(User user) {
+        IHummerContainer iHummerContainer = HummerContainer.getInstance();
+        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
+        ITestService testService = (ITestService) bsv.getService("testService");
+//        user.setId(userId);
+        testService.updateUser(user);
+        System.out.println(user.getFirstName());
+        return user;
+    }
 
     // for example: init the data of selector in a form
     /*

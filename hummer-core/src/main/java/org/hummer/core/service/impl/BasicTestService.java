@@ -1,6 +1,7 @@
 package org.hummer.core.service.impl;
 
 import org.hummer.core.model.intf.IModel;
+import org.hummer.core.model.intf.ISingleLongPKModel;
 import org.hummer.core.model.intf.ISingleStringPKModel;
 import org.hummer.core.persistence.intf.IBasicTestDAO;
 import org.hummer.core.service.intf.IBasicTestService;
@@ -24,8 +25,8 @@ public class BasicTestService implements IBasicTestService {
     }
 
     @Override
-    public void deleteMOdel(IModel iModel) {
-        dao.deleteModel((ISingleStringPKModel) iModel);
+    public void deleteModel(IModel iModel) {
+        dao.deleteModel((ISingleLongPKModel) iModel);
     }
 
     @Override

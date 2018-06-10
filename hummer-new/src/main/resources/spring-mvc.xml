@@ -51,8 +51,10 @@
             </list>
         </property>
     </bean>
-
-
+    <!--to enable form-data handle by Spring MVC otherwise only x-www-form-urlencoded data can be handled by Spring-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    </bean>
     <!-- 静态资源处理 css js images -->
     <mvc:resources location="WEB-INF/resources/**" mapping="/resource/"/>
 

@@ -8,7 +8,7 @@ import java.util.Collection;
 public interface IBasicTestService {
     void insertModel(IModel iModel) throws SQLException;
 
-    void deleteMOdel(IModel iModel);
+    void deleteModel(IModel iModel);
 
     IModel getModel(IModel iModel);
 
