@@ -22,5 +22,6 @@ public class HummerInitServlet extends ContextLoaderListener {
         super.contextInitialized(event);
         IHummerContainer hummerContainer = HummerContainer.getInstance();
         IBusinessServiceManager bsvMgr = hummerContainer.getServiceManager();
+        bsvMgr.getService("testService");
     }
 }
