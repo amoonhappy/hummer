@@ -127,4 +127,6 @@ public interface IBeanFactory {
      * @since 1.1.2
      */
     Class getType(String name) throws NoBeanDefinationException;
+
+    void reInit();
 }

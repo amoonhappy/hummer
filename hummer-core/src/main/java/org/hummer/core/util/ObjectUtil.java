@@ -19,7 +19,7 @@ import java.util.Arrays;
  * @author Rod Johnson
  * @author Rob Harrop
  * @author Chris Beams
- * @see org.apache.commons.lang.ObjectUtils
+ * @see org.apache.commons.lang3.ObjectUtils
  * @since 19.03.2004
  */
 public class ObjectUtil {
@@ -33,6 +33,15 @@ public class ObjectUtil {
     private static final String ARRAY_END = "}";
     private static final String EMPTY_ARRAY = ARRAY_START + ARRAY_END;
     private static final String ARRAY_ELEMENT_SEPARATOR = ", ";
+
+
+    public static boolean isNull(Object o) {
+        if (o != null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     /**
      * Return whether the given throwable is a checked exception: that is,

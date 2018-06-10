@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 
 public class HummerContainer implements IHummerContainer {
     private static final Logger log = Log4jUtils.getLogger(HummerContainer.class);
-    private static HummerContainer instance = new HummerContainer();
+    private static IHummerContainer instance = new HummerContainer();
     IBusinessServiceManager serviceManager;
     CPConfigManager configManager;
     //Default DS is druid
@@ -21,6 +21,16 @@ public class HummerContainer implements IHummerContainer {
 
     public static IHummerContainer getInstance() {
         return instance;
+    }
+
+    public CPConfigManager getConfigManager() {
+        return configManager;
+    }
+
+    public void reInit() {
+        configManager.reInit();
+        serviceManager.reInit();
+        init();
     }
 
     /**
@@ -49,9 +59,5 @@ public class HummerContainer implements IHummerContainer {
 
     public String getDataSourcePoolType() {
         return dsType;
-    }
-
-    public void setServiceManager(IBusinessServiceManager serviceManager) {
-        this.serviceManager = serviceManager;
     }
 }

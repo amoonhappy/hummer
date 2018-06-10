@@ -1,15 +1,24 @@
-<component name="hummer-newweb" type="aop">
+<component name="hummer-openapi" type="aop">
+    <!-- Define which Interceptors will be applied to which services-->
+    <!-- the sequence of each interceptors in "value" is the initiation sequence of the interceptor-->
+    <!-- performance log interceptor should always be the 1st one-->
     <bean id="enabledBeanIds">
         <properties name="enabledBeanIds" type="String"
-                    value="performanceLog,transactionInterceptor,cacheInterceptor,cacheEvictInterceptor"/>
+                    value=""/>
     </bean>
-    <!-- other bean definition -->
+    <!-- Interceptors definition -->
     <bean id="transactionInterceptor" class="org.hummer.core.aop.impl.TransactionInterceptor"
           singleton="true">
         <properties name="xmlPattern" type="String"
                     value="
 			^[a-z|A-Z|.|0-9]+Service.add[a-z|A-Z|.|0-9]*,
-			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*">
+			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+ServiceLocal.add[a-z|A-Z|.|0-9]*,
+            ^[a-z|A-Z|.|0-9]+ServiceLocal.save[a-z|A-Z|.|0-9]*,
+            ^[a-z|A-Z|.|0-9]+Service.insert[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.delete[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.update[a-z|A-Z|.|0-9]*
+        ">
         </properties>
         <properties name="xmlExcludePattern" type="String"
                     value="^get,^set,^toString">
@@ -21,11 +30,13 @@
                     value="
 			^[a-z|A-Z|.|0-9]+Service.add[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*,
-			^[a-z|A-Z|.|0-9]+Service.get[a-z|A-Z|.|0-9]*
+			^[a-z|A-Z|.|0-9]+ServiceLocal.get[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.insert[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.delete[a-z|A-Z|.|0-9]*,
+			^[a-z|A-Z|.|0-9]+Service.update[a-z|A-Z|.|0-9]*
 			">
         </properties>
-        <properties name="xmlExcludePattern" type="String" value="^set,^toString">
-        </properties>
+        <properties name="xmlExcludePattern" type="String" value="^set,^toString"/>
     </bean>
     <bean id="cacheInterceptor" class="org.hummer.core.aop.impl.CacheInterceptor"
           singleton="true">
@@ -37,8 +48,7 @@
 			^[a-z|A-Z|.|0-9]+Service.search[a-z|A-Z|.|0-9]*
 			">
         </properties>
-        <properties name="xmlExcludePattern" type="String" value="^set,^toString">
-        </properties>
+        <properties name="xmlExcludePattern" type="String" value="^set,^toString"/>
     </bean>
     <bean id="cacheEvictInterceptor" class="org.hummer.core.aop.impl.CacheEvictInterceptor"
           singleton="true">

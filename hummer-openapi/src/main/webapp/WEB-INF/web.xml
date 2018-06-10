@@ -3,7 +3,7 @@
          version="2.4"
          xmlns="http://java.sun.com/xml/ns/j2ee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-    <display-name>hummer-new</display-name>
+    <display-name>hummer-openapi</display-name>
     <servlet>
         <servlet-name>springMVC</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -24,7 +24,7 @@
         </param-value>
     </context-param>
     <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+        <listener-class>org.hummer.openapi.HummerInitServlet</listener-class>
     </listener>
     <!-- 中文过滤器 -->
     <filter>

@@ -21,17 +21,7 @@ public class CPConfigManager implements IConfigManager {
     private Map<String, IConfiguration> configCache = new HashMap<>();
 
     private CPConfigManager() {
-        try {
-            initialArchConfig();
-        } catch (FileNotFoundException e) {
-            log.error("Arch Config not found", e);
-        }
-        initSupportedApp();
-        try {
-            initialComponentConfig();
-        } catch (IOException e) {
-            log.error("Comp Config not found", e);
-        }
+        init();
     }
 
     public static CPConfigManager getInstance() {
@@ -89,24 +79,6 @@ public class CPConfigManager implements IConfigManager {
         }
     }
 
-    //    private void findCompConfig(Set<String> nameList, String comp_id) {
-//        JarFile jar;
-//        Enumeration<JarEntry> jarEntries;
-//        jar = CPResourcesManager.getInstance().getJar(comp_id);
-//        jarEntries = jar == null ? null : jar.entries();
-//        while (jarEntries != null && jarEntries.hasMoreElements()) {
-//            String fileName;
-//            JarEntry je = jarEntries.nextElement();
-//            fileName = je.getName();
-//            if ((StringUtils.contains(je.getName(), CPResourcesManager.CORE_PREFIX) || StringUtils.contains(je
-//                    .getName(), CPResourcesManager.LOCAL_PREFIX))
-//                    && (je.getName().endsWith(".properties") || je.getName().endsWith(".xml"))) {
-//                fileName = StringUtils.replace(fileName, CPResourcesManager.CORE_PREFIX, "");
-//                fileName = StringUtils.replace(fileName, CPResourcesManager.LOCAL_PREFIX, "");
-//                nameList.add(fileName);
-//            }
-//        }
-//    }
     private Set<String> findCompConfig(Set<String> nameList, String comp_id) {
         String aop_config_file_name = comp_id + "-cfg-aop.xml";
         String bean_config_file_name = comp_id + "-cfg-bean.xml";
@@ -151,6 +123,31 @@ public class CPConfigManager implements IConfigManager {
 
     public IConfiguration getHummerMainCfg() {
         return archConfig;
+    }
+
+    public Set<SupportedAppInfos.SupportedAppInfo> getSupportedComponents() {
+        Set<SupportedAppInfos.SupportedAppInfo> supported = SupportedAppInfos.getRegAppInfos();
+        return supported;
+    }
+
+    private void init() {
+        try {
+            initialArchConfig();
+        } catch (FileNotFoundException e) {
+            log.error("Arch Config not found", e);
+        }
+        initSupportedApp();
+        try {
+            initialComponentConfig();
+        } catch (IOException e) {
+            log.error("Comp Config not found", e);
+        }
+    }
+
+    public void reInit() {
+        archConfig = null;
+        configCache = new HashMap<>();
+        this.init();
     }
 
     private void initSupportedApp() {

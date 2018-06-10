@@ -56,6 +56,12 @@ public class XMLBeanFactory implements IBeanFactory {
         return instance;
     }
 
+    public void reInit() {
+        singletonBeanConfigCache = CPConfigManager.getInstance().getAllXMLConfiguration();
+        singletonBeanCache = new HashMap<>();
+        ic = new LinkedList<>();
+    }
+
     private void initialBeanObject() {
         if (singletonBeanConfigCache != null) {
             Set<String> beanIds = singletonBeanConfigCache.keySet();

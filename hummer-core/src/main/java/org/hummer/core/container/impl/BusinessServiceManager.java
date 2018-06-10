@@ -19,4 +19,8 @@ public class BusinessServiceManager implements IBusinessServiceManager {
     public Object getService(String serviceName) {
         return XMLBeanFactory.getInstance().getBean(serviceName);
     }
+
+    public void reInit() {
+        XMLBeanFactory.getInstance().reInit();
+    }
 }
