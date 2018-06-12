@@ -36,13 +36,11 @@ public class TestController {
     }
 
     @RequestMapping(value = "/user/{userId}", method = {RequestMethod.GET})
-    public List getUserById(@PathVariable("userId") String userId) {
+    public List<org.hummer.newweb.model.intf.IUser> getUserById(@PathVariable("userId") String userId) {
         IHummerContainer iHummerContainer = HummerContainer.getInstance();
         IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
         ITestService testService = (ITestService) bsv.getService("testService");
-        //Map ret = new HashMap();
-        //ret.put("1",testService.getUserById(Integer.valueOf(userId)));
-        List ret = new ArrayList();
+        List<org.hummer.newweb.model.intf.IUser> ret = new ArrayList<>();
         ret.add(testService.getUserById(Integer.valueOf(userId)));
         return ret;
     }
@@ -63,7 +61,6 @@ public class TestController {
         ITestService testService = (ITestService) bsv.getService("testService");
         testService.insertUser(user);
         System.out.println(user.getFirstName());
-//        testService.insertUser(mv.getModel());
         return user;
     }
 
@@ -72,7 +69,6 @@ public class TestController {
         IHummerContainer iHummerContainer = HummerContainer.getInstance();
         IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
         ITestService testService = (ITestService) bsv.getService("testService");
-//        user.setId(userId);
         testService.updateUser(user);
         System.out.println(user.getFirstName());
         return user;

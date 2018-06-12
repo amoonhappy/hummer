@@ -25,19 +25,19 @@ import org.hummer.newweb.service.user.intf.IUserService;
 public class UserService extends BasicService implements IUserService {
     IUserDAO userDAO = null;
 
-    /*
+    /**
      * (non-Javadoc)
      *
-     * @see org.opensource.hummer.example.service.intf.IUserService#setUserDAO(org.opensource.hummer.example.dao.UserDAO)
+     * @see org.hummer.newweb.service.user.intf.IUserService#setUserDAO(IUserDAO)
      */
     public void setUserDAO(IUserDAO dao) {
         this.userDAO = dao;
     }
 
-    /*
+    /**
      * (non-Javadoc)
      *
-     * @see org.opensource.hummer.example.service.intf.IUserService#getAllUsers()
+     * @see org.hummer.newweb.service.user.intf.ITestService##getAllUsers()
      */
     public ReturnValue getAllUsers() throws Exception {
         ReturnValue ret = new ReturnValue();
