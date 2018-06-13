@@ -1,0 +1,17 @@
+<component name="hummer-newweb" type="bsv">
+    <!--<bean id="userService"-->
+    <!--class="org.hummer.newweb.service.user.impl.UserServiceLocal"-->
+    <!--singleton="true" transType="required">-->
+    <!--<properties name="userDAO" type="refBean" value="userDAO"/>-->
+    <!--</bean>-->
+    <bean id="testService"
+          class="org.hummer.newweb.service.user.impl.TestService"
+          singleton="true" transType="required">
+        <properties name="testDAO" type="refBean" value="testDAO"/>
+    </bean>
+    <bean id="test1Service"
+          class="org.hummer.newweb.service.user.impl.Test1Service"
+          singleton="true" transType="required">
+        <properties name="testDAO" type="refBean" value="testDAO"/>
+    </bean>
+</component>

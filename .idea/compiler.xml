@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="hummer-boot" />
         <module name="hummer-codegen" />
         <module name="hummer-core" />
         <module name="hummer-new" />
@@ -13,8 +14,11 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="hummer-springboot" target="1.8" />
-      <module name="hummer-web" target="1.5" />
+      <module name="hummer-boot" target="1.8" />
+        <module name="hummer-core" target="1.8" />
+        <module name="hummer-new" target="1.8" />
+        <module name="hummer-openapi" target="1.8" />
+        <module name="hummer-codegen" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

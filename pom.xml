@@ -14,6 +14,7 @@
         <module>hummer-codegen</module>
         <module>hummer-new</module>
         <module>hummer-openapi</module>
+        <module>hummer-boot</module>
     </modules>
     <build>
         <plugins>
