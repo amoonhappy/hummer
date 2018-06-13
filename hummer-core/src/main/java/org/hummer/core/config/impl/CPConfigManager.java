@@ -17,7 +17,7 @@ import java.util.*;
 public class CPConfigManager implements IConfigManager {
     private static Logger log = Log4jUtils.getLogger(CPConfigManager.class);
     private static CPConfigManager instance = new CPConfigManager();
-    private IConfiguration archConfig;
+    private static IConfiguration archConfig;
     private Map<String, IConfiguration> configCache = new HashMap<>();
 
     private CPConfigManager() {
@@ -113,6 +113,10 @@ public class CPConfigManager implements IConfigManager {
             }
         }
         return nameList;
+    }
+
+    public IConfiguration getArchConfig() {
+        return archConfig;
     }
 
     private void initialArchConfig() throws FileNotFoundException {

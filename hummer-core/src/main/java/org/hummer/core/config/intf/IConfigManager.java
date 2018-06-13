@@ -25,4 +25,6 @@ public interface IConfigManager {
 
     Set<SupportedAppInfos.SupportedAppInfo> getSupportedComponents();
 
+    IConfiguration getArchConfig();
+
 }

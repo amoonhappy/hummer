@@ -13,12 +13,5 @@
         <module name="hummer-openapi" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="hummer-boot" target="1.8" />
-        <module name="hummer-core" target="1.8" />
-        <module name="hummer-new" target="1.8" />
-        <module name="hummer-openapi" target="1.8" />
-        <module name="hummer-codegen" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

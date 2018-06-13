@@ -43,7 +43,11 @@
         <apacheHttpClientVersion>4.3.3</apacheHttpClientVersion>
     </properties>
     <dependencies>
-
+        <dependency>
+            <groupId>hummer</groupId>
+            <artifactId>hummer-new</artifactId>
+            <version>${hummerVersion}</version>
+        </dependency>
         <dependency>
             <groupId>hummer</groupId>
             <artifactId>hummer-core</artifactId>
@@ -212,6 +216,7 @@
             <version>${junitVersion}</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
     <build>
         <plugins>
