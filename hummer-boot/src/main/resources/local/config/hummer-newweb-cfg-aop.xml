@@ -18,11 +18,9 @@
             ^[a-z|A-Z|.|0-9]+Service.insert[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.delete[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.update[a-z|A-Z|.|0-9]*
-        ">
-        </properties>
+        "/>
         <properties name="xmlExcludePattern" type="String"
-                    value="^get,^set,^toString">
-        </properties>
+                    value="^get,^set,^toString"/>
     </bean>
     <bean id="performanceLog" class="org.hummer.core.aop.impl.PerformanceTraceInterceptor"
           singleton="true">
@@ -38,8 +36,7 @@
 			^[a-z|A-Z|.|0-9]+Service.select[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.query[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.search[a-z|A-Z|.|0-9]*
-			">
-        </properties>
+			"/>
         <properties name="xmlExcludePattern" type="String" value="^set,^toString"/>
     </bean>
     <bean id="cacheInterceptor" class="org.hummer.core.aop.impl.CacheInterceptor"
@@ -50,8 +47,7 @@
 			^[a-z|A-Z|.|0-9]+Service.select[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.query[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+Service.search[a-z|A-Z|.|0-9]*
-			">
-        </properties>
+			"/>
         <properties name="xmlExcludePattern" type="String" value="^set,^toString"/>
     </bean>
     <bean id="cacheEvictInterceptor" class="org.hummer.core.aop.impl.CacheEvictInterceptor"
