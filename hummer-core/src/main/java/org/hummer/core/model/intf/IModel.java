@@ -10,4 +10,5 @@ import java.io.Serializable;
  * @version $id: $
  */
 public interface IModel extends Serializable {
+    String getId();
 }

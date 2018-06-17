@@ -4,6 +4,7 @@ import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.container.intf.IBusinessServiceManager;
 import org.hummer.core.container.intf.IHummerContainer;
 import org.hummer.newweb.model.impl.User;
+import org.hummer.newweb.model.intf.IUser;
 import org.hummer.newweb.service.user.intf.ITestService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,18 @@ public class TestController {
 
             return mv;
         }*/
+
+    @RequestMapping(value = "/user/{firstName}/{role}", method = {RequestMethod.GET})
+    public List selectActiveUsersByName(@PathVariable("firstName") String firstName, @PathVariable("role") String role) {
+        IHummerContainer iHummerContainer = HummerContainer.getInstance();
+        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
+        ITestService testService = (ITestService) bsv.getService("testService");
+        IUser user = new User();
+        user.setFirstName(firstName);
+        user.setRole(role);
+        return testService.getUserByFirstNameAndStatus(user);
+    }
+
     @RequestMapping(value = "/user/all", method = {RequestMethod.GET})
     public List selectAllUser() {
         IHummerContainer iHummerContainer = HummerContainer.getInstance();
@@ -60,7 +73,6 @@ public class TestController {
         IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
         ITestService testService = (ITestService) bsv.getService("testService");
         testService.insertUser(user);
-        System.out.println(user.getFirstName());
         return user;
     }
 
@@ -70,7 +82,6 @@ public class TestController {
         IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
         ITestService testService = (ITestService) bsv.getService("testService");
         testService.updateUser(user);
-        System.out.println(user.getFirstName());
         return user;
     }
 

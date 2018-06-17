@@ -1,23 +1,23 @@
 package org.hummer.newweb.service.user.impl;
 
-import org.hummer.core.cache.annotation.CacheEvict;
+import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.cache.intf.ICacheable;
-import org.hummer.core.container.impl.HummerContainer;
-import org.hummer.core.container.intf.IBusinessServiceManager;
-import org.hummer.core.container.intf.IHummerContainer;
 import org.hummer.core.service.impl.BasicTestService;
 import org.hummer.core.transaction.annotation.Transactional;
 import org.hummer.newweb.dao.user.intf.ITestDAO;
 import org.hummer.newweb.model.intf.IUser;
-import org.hummer.newweb.service.user.intf.ITest1Service;
 import org.hummer.newweb.service.user.intf.ITestService;
 
 import java.util.Collection;
+import java.util.List;
 
-@CacheEvict(evictForMethod = "insertUser", evictOnClass = TestService.class, evictOnMethod = "getAllUsers")
-@CacheEvict(evictForMethod = "updateUser", evictOnClass = TestService.class, evictOnMethod = "getAllUsers")
-@CacheEvict(evictForMethod = "saveUser", evictOnClass = TestService.class, evictOnMethod = "getAllUsers")
 public class TestService extends BasicTestService implements ITestService, ICacheable {
+
+    @Override
+    public String getCacheName() {
+        return TestService.class.getName();
+    }
+
     private ITestDAO testDAO;
 
     @Override
@@ -28,21 +28,12 @@ public class TestService extends BasicTestService implements ITestService, ICach
     //@Override
     @Transactional
     public void insertUser(IUser user) {
-        IHummerContainer hummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager bsm = hummerContainer.getServiceManager();
-        ITest1Service service = (ITest1Service) bsm.getService("test1Service");
-        saveUser(user);
-//        user.setFirstName("changed by test");
-        service.updateUser(user);
-
-        updateUser(user);
+        testDAO.insert(user);
     }
 
     @Transactional
     public void updateUser(IUser user) {
-        user.setFirstName("updated by test");
         testDAO.updateModel(user);
-        //throw new RuntimeException("aaaa");
     }
 
     @Transactional
@@ -50,11 +41,35 @@ public class TestService extends BasicTestService implements ITestService, ICach
         testDAO.insert(user);
     }
 
-    public ITestDAO getTestDAO() {
-        return testDAO;
+    @Override
+    public void deleteUser(String id) {
+//        ISingleLongPKModel singleLongPKModel = new User1();
+//        singleLongPKModel.setId(Long.valueOf(id));
+//
+//        testDAO.deleteModel(singleLongPKModel);
     }
 
-    public void setTestDAO(ITestDAO testDAO) {
-        this.testDAO = testDAO;
+    @Override
+    @CacheKey(cacheName = "user", key = "#p0")
+    public IUser getUserById(Integer id) {
+        return testDAO.getUserById(id);
     }
+
+
+    @CacheKey(cacheName = "user", key = "#p0.concat(#p1.id).concat(#p2)")
+    public IUser getLatestUser(String status, IUser user, Integer time) {
+        return testDAO.getUserById(Integer.valueOf("30000"));
+    }
+
+    @CacheKey(cacheName = "user", key = "#p0.id")
+    public IUser getUserById(IUser user) {
+        return testDAO.getUserById(Integer.valueOf(user.getId()));
+    }
+
+
+    @Override
+    public IUser getLatestUser(String status, IUser user, Integer time, List list) {
+        return null;
+    }
+
 }

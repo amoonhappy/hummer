@@ -1,62 +1,35 @@
 package org.hummer.core.aop.impl;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.lang3.StringUtils;
 import org.hummer.core.cache.annotation.CacheEvict;
 import org.hummer.core.cache.annotation.CacheEvicts;
-import org.hummer.core.cache.impl.CacheManager;
-import org.hummer.core.cache.impl.RedisDaoImpl;
-import org.hummer.core.cache.intf.RedisDo;
+import org.hummer.core.cache.impl.CacheEvictorThread;
 import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
  * Cache Evict AOP, work with {@link CacheEvict} and {@link CacheEvicts} to determine which
  * Redis cache will be evicted from redis cache
+ * {@link org.hummer.core.cache.annotation.CacheModelEvict}
+ * {@link org.hummer.core.cache.annotation.CacheModelEvicts}
  */
+@SuppressWarnings("all")
 public class CacheEvictInterceptor extends Perl5DynamicMethodInterceptor {
     private static final Logger log = Log4jUtils.getLogger(CacheEvictInterceptor.class);
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Object returnValue;
-        Class targetClass = methodInvocation.getThis().getClass();
-        String targetClassName = targetClass.getName();
+        Object targetObject = methodInvocation.getThis();
+        Object[] args = methodInvocation.getArguments();
         Method method = methodInvocation.getMethod();
-        String methodName = method.getName();
 
+        //得到结果
         returnValue = methodInvocation.proceed();
-        //check whether need to evict Redis Cache
-        Annotation[] annotations = targetClass.getAnnotations();
-        if (annotations != null && annotations.length > 0) {
-            RedisDo redisDao = new RedisDaoImpl();
-
-            CacheEvicts cacheEvicts = (CacheEvicts) annotations[0];
-            CacheEvict[] cacheEvicts1 = cacheEvicts.value();
-            if (cacheEvicts1 != null && cacheEvicts1.length > 0) {
-                for (CacheEvict cacheEvict : cacheEvicts1) {
-                    String evictForMethod = cacheEvict.evictForMethod();
-                    String evictOnMethod = cacheEvict.evictOnMethod();
-                    Class evictOnClass = cacheEvict.evictOnClass();
-                    if (StringUtils.equals(methodName, evictForMethod)) {
-                        log.debug("matched evictForMethod [{}].[{}] on [{}].[{}]", targetClassName, methodName, evictOnClass.getSimpleName(), evictOnMethod);
-                        Object redisKey = CacheManager.getCacheKey(evictOnClass, evictOnMethod);
-                        if (redisKey != null) {
-                            log.debug("delete Redis key for [{}].[{}] on [{}].[{}]", targetClassName, methodName, evictOnClass.getSimpleName(), evictOnMethod);
-                            redisDao.RedisDel(redisKey);
-                            CacheManager.deleteCacheKey(evictOnClass, evictOnMethod);
-                        } else {
-                            log.warn("Redis key not found in CacheManager! Pls check CacheEvict Annotation Value in [{}] Class, CacheEvict:evictForMethod=[{}],evictOnClass=[{}],evictOnMethod=[{}]", targetClassName, methodName, evictOnClass.getSimpleName(), evictOnMethod);
-                        }
-                    }
-                }
-            }
-        } else {
-            log.debug("No Redis Cache to be evicted for [{}].[{}], Pls add CacheEvict Annotation", targetClassName, methodName);
-        }
+        //多线程祛除Cache方法
+        CacheEvictorThread.evictCaches(targetObject, args, method);
         return returnValue;
     }
 }

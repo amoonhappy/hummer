@@ -166,7 +166,7 @@ public class HQLUtil {
 
         if (param instanceof ISingleLongPKModel) {
             ISingleLongPKModel singleLongPKModel = (ISingleLongPKModel) param;
-            Long pk = singleLongPKModel.getId();
+            Long pk = Long.valueOf(singleLongPKModel.getId());
 
             if ((pk == null) || (pk.longValue() == 0)) {
                 return false;

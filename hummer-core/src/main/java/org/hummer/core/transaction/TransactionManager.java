@@ -17,15 +17,21 @@ public abstract class TransactionManager {
         Annotation[] annotations = method.getAnnotations();
         Propagation propagation = Propagation.REQUIRED;
         if (annotations != null && annotations.length > 0) {
-            Transactional transactional = (Transactional) annotations[0];
-            propagation = transactional.propagation();
-            Isolation isolation = transactional.isolation();
-            boolean readOnly = transactional.readOnly();
-            int timeout = transactional.timeout();
-            transaction.setIsolationlevel(isolation);
-            transaction.setReadonly(readOnly);
-            transaction.setTimeout(timeout);
-            transaction.setPropagation(propagation);
+            for (Annotation ann : annotations) {
+                if (ann != null && ann instanceof Transactional) {
+                    Transactional transactional = (Transactional) ann;
+                    propagation = transactional.propagation();
+                    Isolation isolation = transactional.isolation();
+                    boolean readOnly = transactional.readOnly();
+                    int timeout = transactional.timeout();
+                    transaction.setIsolationlevel(isolation);
+                    transaction.setReadonly(readOnly);
+                    transaction.setTimeout(timeout);
+                    transaction.setPropagation(propagation);
+                    break;
+                }
+            }
+
         }
         /*-------------------------------------------------------------
         |                      环境已经存在事务

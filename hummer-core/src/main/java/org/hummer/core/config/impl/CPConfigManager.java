@@ -1,6 +1,7 @@
 package org.hummer.core.config.impl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hummer.core.cache.impl.CacheManager;
 import org.hummer.core.config.intf.IConfigManager;
 import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.config.intf.IPropConfigParser;
@@ -15,6 +16,8 @@ import java.net.URL;
 import java.util.*;
 
 public class CPConfigManager implements IConfigManager {
+    private static final String HUMMER_CACHE_EXPIRATION_ENABLED = "hummer.cache.expiration.enabled";
+    private static final String HUMMER_CACHE_EXPIRATION_TIME = "hummer.cache.expiration.time";
     private static Logger log = Log4jUtils.getLogger(CPConfigManager.class);
     private static CPConfigManager instance = new CPConfigManager();
     private static IConfiguration archConfig;
@@ -22,6 +25,19 @@ public class CPConfigManager implements IConfigManager {
 
     private CPConfigManager() {
         init();
+        postInit();
+    }
+
+    private void postInit() {
+        initCacheConfig();
+    }
+
+    private void initCacheConfig() {
+        boolean expEnabled = Boolean.valueOf((String) archConfig.getValue(HUMMER_CACHE_EXPIRATION_ENABLED));
+        int expPeriod = Integer.valueOf((String) archConfig.getValue(HUMMER_CACHE_EXPIRATION_TIME));
+
+        CacheManager.setExpirationEnabled(expEnabled);
+        CacheManager.setExpirationPeriod(expPeriod);
     }
 
     public static CPConfigManager getInstance() {

@@ -42,4 +42,8 @@ public interface IUser extends ISingleStringPKModel, IAuditableModel {
 
     void setStatus(String status);
 
+    String getRole();
+
+    void setRole(String role);
+
 }

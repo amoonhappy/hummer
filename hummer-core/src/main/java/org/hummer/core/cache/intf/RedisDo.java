@@ -1,5 +1,6 @@
 package org.hummer.core.cache.intf;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface RedisDo {
@@ -25,6 +26,8 @@ public interface RedisDo {
     public Long RedisTTL(Object key);
 
     public void RedisDel(Object... keys);
+
+    public void RedisDel(Collection keys);
 
     public void RedisRename(Object key, Object newkey);
 

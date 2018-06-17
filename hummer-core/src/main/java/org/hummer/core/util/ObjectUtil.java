@@ -22,6 +22,7 @@ import java.util.Arrays;
  * @see org.apache.commons.lang3.ObjectUtils
  * @since 19.03.2004
  */
+@SuppressWarnings("unchecked")
 public class ObjectUtil {
 
     private static final int INITIAL_HASH = 7;

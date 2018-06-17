@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("all")
 public class StopWatch {
     private final String id;
     private final List<TaskInfo> taskList;
@@ -96,11 +97,11 @@ public class StopWatch {
         }
     }
 
-    public long getTotalTimeMillis() {
+    private long getTotalTimeMillis() {
         return this.totalTimeMillis;
     }
 
-    public double getTotalTimeSeconds() {
+    private double getTotalTimeSeconds() {
         return (double) this.totalTimeMillis / 1000.0D;
     }
 
@@ -108,7 +109,7 @@ public class StopWatch {
         return this.taskCount;
     }
 
-    public StopWatch.TaskInfo[] getTaskInfo() {
+    private StopWatch.TaskInfo[] getTaskInfo() {
         if (!this.keepTaskList) {
             throw new UnsupportedOperationException("Task info is not being kept!");
         } else {
@@ -116,7 +117,7 @@ public class StopWatch {
         }
     }
 
-    public String shortSummary() {
+    String shortSummary() {
         return "StopWatch '" + this.getId() + "': running time (millis) = " + this.getTotalTimeMillis();
     }
 
@@ -177,15 +178,15 @@ public class StopWatch {
             this.timeMillis = timeMillis;
         }
 
-        public String getTaskName() {
+        String getTaskName() {
             return this.taskName;
         }
 
-        public long getTimeMillis() {
+        long getTimeMillis() {
             return this.timeMillis;
         }
 
-        public double getTimeSeconds() {
+        double getTimeSeconds() {
             return (double) this.timeMillis / 1000.0D;
         }
     }

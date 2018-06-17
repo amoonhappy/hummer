@@ -5,6 +5,7 @@ import org.hummer.core.cache.redis.RedisPool;
 import org.hummer.core.util.SerializableUtil;
 import redis.clients.jedis.Jedis;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -136,7 +137,7 @@ public class RedisDaoImpl implements RedisDo {
      * @return
      */
     public List<Object> RedisMget(Object... keys) {
-        List<byte[]> keyslist = new LinkedList<byte[]>();
+        List<byte[]> keyslist = new LinkedList<>();
         int i = 0;
         if (keys != null) {
             for (Object object : keys) {
@@ -144,7 +145,7 @@ public class RedisDaoImpl implements RedisDo {
                 i++;
             }
         }
-        List<Object> listObj = new LinkedList<Object>();
+        List<Object> listObj = new LinkedList<>();
         for (i = 0; i < keyslist.size(); i++) {
             listObj.add(i, unSerializeByte(GetJedis().get(keyslist.get(i))));
         }
@@ -193,6 +194,22 @@ public class RedisDaoImpl implements RedisDo {
         ret = redis.ttl(serializeObj(key));
         redis.close();
         return ret;
+    }
+
+    /**
+     * 删除一个或者多个键
+     *
+     * @param keys
+     */
+    public void RedisDel(Collection keys) {
+        if (keys != null && keys.size() > 0) {
+            Jedis redis = GetJedis();
+            Object[] oKeys = keys.toArray();
+            for (Object key : oKeys) {
+                redis.del(serializeObj(key));
+            }
+            redis.close();
+        }
     }
 
     /**

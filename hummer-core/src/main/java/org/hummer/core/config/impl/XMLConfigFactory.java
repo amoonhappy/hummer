@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public class XMLConfigFactory {
     public static XMLConfigFactory instance = new XMLConfigFactory();
     private static Logger log = Log4jUtils.getLogger(XMLConfigFactory.class);

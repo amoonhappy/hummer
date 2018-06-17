@@ -18,6 +18,7 @@ import java.util.Set;
 
 @RequestMapping("/rest/hummer")
 @RestController
+@SuppressWarnings("all")
 public class AdminController {
     /*
         @RequestMapping(value = "info/{userNum}", method = {RequestMethod.GET, RequestMethod.POST})

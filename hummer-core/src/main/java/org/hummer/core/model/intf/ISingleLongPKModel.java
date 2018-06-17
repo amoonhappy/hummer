@@ -7,7 +7,5 @@ package org.hummer.core.model.intf;
  * @version $Id: $
  */
 public interface ISingleLongPKModel extends IModel {
-    public Long getId();
-
     public void setId(Long id);
 }

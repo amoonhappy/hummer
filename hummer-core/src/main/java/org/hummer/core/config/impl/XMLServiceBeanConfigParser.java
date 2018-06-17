@@ -5,7 +5,6 @@ import org.hummer.core.config.intf.IXMLBeanConfig;
 import org.hummer.core.config.intf.IXMLBusinessServiceConfig;
 
 //TODO: to implement using separated models?
-@Deprecated
 public class XMLServiceBeanConfigParser extends XMLBeanConfigParser {
     protected IXMLBeanConfig getXMLBeanConfigImpl() {
         return new XMLBizServiceConfig();

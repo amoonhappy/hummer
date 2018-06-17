@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <!-- dependency version control-->
     <properties>
-        <springVersion>5.0.6.RELEASE</springVersion>
+        <springVersion>5.0.7.RELEASE</springVersion>
         <springRedisVersion>1.7.2.RELEASE</springRedisVersion>
         <jedisVersion>2.9.0</jedisVersion>
         <jstlVersion>1.2</jstlVersion>
@@ -38,8 +38,20 @@
         <junitVersion>4.12</junitVersion>
         <hummerVersion>1.0-SNAPSHOT</hummerVersion>
         <oroVersion>2.0.8</oroVersion>
+        <apacheCommonsCodecVersion>1.11</apacheCommonsCodecVersion>
+        <googleFindBugsVersion>2.0.3</googleFindBugsVersion>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>${googleFindBugsVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${apacheCommonsCodecVersion}</version>
+        </dependency>
         <dependency>
             <groupId>oro</groupId>
             <artifactId>oro</artifactId>
@@ -203,6 +215,14 @@
             <version>${junitVersion}</version>
             <scope>test</scope>
         </dependency>
+        <!--when use the SpringEL in the test classes, uncomment below-->
+        <!--<dependency>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>spring-context</artifactId>-->
+        <!--<version>5.0.6.RELEASE</version>-->
+        <!--<scope>test</scope>-->
+        <!--</dependency>-->
+        <!--to avoid warning when using @NunNull annotation-->
     </dependencies>
     <build>
         <plugins>

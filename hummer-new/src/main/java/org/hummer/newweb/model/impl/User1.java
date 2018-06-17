@@ -84,8 +84,8 @@ public class User1 implements IUser1 {
     }
 
     @Override
-    public Long getId() {
-        return this.id;
+    public String getId() {
+        return String.valueOf(this.id);
     }
 
     @Override
