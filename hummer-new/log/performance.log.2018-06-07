@@ -1,0 +1,13 @@
+2018-06-07 18:19:41.761 [http-bio-8080-exec-5] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getUserById': running time (millis) = 68
+2018-06-07 18:19:54.522 [http-bio-8080-exec-5] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getAllUsers': running time (millis) = 1583
+2018-06-07 18:20:05.271 [http-bio-8080-exec-5] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.insertUser': running time (millis) = 28
+2018-06-07 18:20:19.889 [http-bio-8080-exec-5] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getUserById': running time (millis) = 0
+2018-06-07 18:20:38.536 [http-bio-8080-exec-5] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getAllUsers': running time (millis) = 303
+2018-06-07 18:20:48.470 [http-bio-8080-exec-3] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getAllUsers': running time (millis) = 82
+2018-06-07 18:21:12.593 [http-bio-8080-exec-8] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getAllUsers': running time (millis) = 61
+2018-06-07 18:21:33.489 [http-bio-8080-exec-10] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getAllUsers': running time (millis) = 13
+2018-06-07 18:25:07.632 [http-bio-8080-exec-2] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getAllUsers': running time (millis) = 25
+2018-06-07 18:25:41.471 [http-bio-8080-exec-4] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getUserById': running time (millis) = 0
+2018-06-07 18:25:47.205 [http-bio-8080-exec-4] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.insertUser': running time (millis) = 12
+2018-06-07 18:25:54.229 [http-bio-8080-exec-4] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getUserById': running time (millis) = 1
+2018-06-07 18:25:59.679 [http-bio-8080-exec-4] INFO  o.hummer.core.aop.impl.PerformanceTraceInterceptor: StopWatch 'org.hummer.newweb.service.user.impl.TestService.getAllUsers': running time (millis) = 327
