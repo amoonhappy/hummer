@@ -18,29 +18,14 @@ import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author jeff.zhou
  */
 public class PerformanceTraceInterceptor extends Perl5DynamicMethodInterceptor {
     private static final Logger log = Log4jUtils.getLogger(PerformanceTraceInterceptor.class);
-    Lock lock = new ReentrantLock();
 
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-//        Class targetClass = ((CglibMethodInvocation) methodInvocation).getTargetClass();
-//        //TODO we can use multiple thread to write the perf log to the perf analysis log file
-//        Object returnValue;
-//        String methodName = methodInvocation.getMethod().getName();
-//        String simpleName = targetClass.getSimpleName();
-//
-//        long startTime = System.currentTimeMillis();
-//        returnValue = methodInvocation.proceed();
-//
-//        long endTime = System.currentTimeMillis();
-//        long spendTime = endTime - startTime;
-//        log.trace("[{}.{}] spend time: {} ms.", simpleName, methodName, spendTime);
         String name = this.createInvocationTraceName(methodInvocation);
         StopWatch stopWatch = new StopWatch(name);
         stopWatch.start(name);
