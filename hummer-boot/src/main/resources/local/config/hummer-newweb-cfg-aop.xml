@@ -12,7 +12,7 @@
         <properties name="xmlPattern" type="String"
                     value="
 			^[a-z|A-Z|.|0-9]+Service.add[a-z|A-Z|.|0-9]*,
-			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*
+			^[a-z|A-Z|.|0-9]+Service.save[a-z|A-Z|.|0-9]*,
 			^[a-z|A-Z|.|0-9]+ServiceLocal.add[a-z|A-Z|.|0-9]*,
             ^[a-z|A-Z|.|0-9]+ServiceLocal.save[a-z|A-Z|.|0-9]*,
             ^[a-z|A-Z|.|0-9]+Service.insert[a-z|A-Z|.|0-9]*,

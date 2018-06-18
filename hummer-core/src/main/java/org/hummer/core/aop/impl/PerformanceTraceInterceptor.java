@@ -49,7 +49,7 @@ public class PerformanceTraceInterceptor extends Perl5DynamicMethodInterceptor {
         Class clazz = invocation.getThis().getClass();
         //}
 
-        sb.append(clazz.getName());
+        sb.append(clazz.getSimpleName());
         sb.append('.').append(method.getName());
         return sb.toString();
     }

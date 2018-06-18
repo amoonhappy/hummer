@@ -13,11 +13,6 @@ import java.util.List;
 
 public class TestService extends BasicTestService implements ITestService, ICacheable {
 
-    @Override
-    public String getCacheName() {
-        return TestService.class.getName();
-    }
-
     private ITestDAO testDAO;
 
     @Override

@@ -8,7 +8,7 @@ import org.hummer.core.cache.impl.CacheEvaluationContext;
 import org.hummer.core.cache.impl.CacheStoreThread;
 import org.hummer.core.cache.impl.RedisDaoImpl;
 import org.hummer.core.cache.intf.ICacheable;
-import org.hummer.core.cache.intf.RedisDo;
+import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;
@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 @SuppressWarnings("all")
 public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
     private static final Logger log = Log4jUtils.getLogger(CacheInterceptor.class);
+    RedisDaoImpl redisService;
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -42,6 +43,11 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         Object[] args = methodInvocation.getArguments();
 
         if (cacheable) {
+//            Object o = HummerContainer.getInstance().getServiceManager().getService("redisPoolConfig");
+//            Object o1 = HummerContainer.getInstance().getServiceManager().getService("jedisConnFactory");
+//            Object o2 = HummerContainer.getInstance().getServiceManager().getService("redisTemplate");
+//            redisService = (RedisDaoImpl) HummerContainer.getInstance().getServiceManager().getService("redisTool");
+            redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
             Object targetObject = methodInvocation.getThis();
 
             String cacheName = null;
@@ -49,9 +55,8 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
             //get cache annotation
             CacheKey cacheKey = method.getAnnotation(CacheKey.class);
             //优先查询Redis
-            RedisDo redisDao = new RedisDaoImpl();
             Object redisKey = genRedisKey(targetObject, method, args);
-            returnValue = redisDao.RedisGet(redisKey);
+            returnValue = redisService.RedisGet(redisKey);
 
             //如果Redis中没有，执行方法
             if (returnValue == null) {
@@ -62,7 +67,8 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
                 log.debug("get data from redis for [{}].[{}]", targetClassName, methodName);
             }
             //将结果存入Redis//异步执行
-            CacheStoreThread.storeResultToRedis(returnValue, redisKey, cacheKey);
+            CacheStoreThread cacheStoreThread = new CacheStoreThread();
+            cacheStoreThread.storeResultToRedis(returnValue, redisKey, cacheKey);
         } else {
             log.info("[{}].[{}] is not defined as Cacheable, execute method to get result directly", targetClassName, methodName);
             returnValue = methodInvocation.proceed();

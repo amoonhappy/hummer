@@ -14,7 +14,7 @@
     <!-- dependency version control-->
     <properties>
         <springVersion>5.0.7.RELEASE</springVersion>
-        <springRedisVersion>1.7.2.RELEASE</springRedisVersion>
+        <springRedisVersion>2.0.8.RELEASE</springRedisVersion>
         <jedisVersion>2.9.0</jedisVersion>
         <jstlVersion>1.2</jstlVersion>
         <taglibVersion>1.1.2</taglibVersion>

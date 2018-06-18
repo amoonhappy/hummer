@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
@@ -16,8 +14,88 @@
     <!--<context:exclude-filter type="annotation"-->
     <!--expression="org.springframework.web.bind.annotation.ControllerAdvice"/>-->
     <!--</context:component-scan>-->
+    <description>Spring公共配置</description>
+    <beans>
+        <!-- 扩充了注解驱动，可以将请求参数绑定到控制参数-->
+        <!--<context:annotation-config/>-->
+        <!--<context:component-scan base-package="org.hummer"/>-->
+        <context:property-placeholder location="classpath:app.properties"/>
+        <context:component-scan base-package="org.hummer"/>
+        <context:annotation-config/>
+        <!-- Redis配置 -->
+        <!-- jedis pool配置 -->
+        <bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+            <property name="maxIdle" value="${redis.maxIdle}"/>
+            <property name="maxTotal" value="${redis.maxTotal}"/>
+            <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+        </bean>
 
-    <!-- 扩充了注解驱动，可以将请求参数绑定到控制参数-->
-    <mvc:annotation-driven/>
-    <context:component-scan base-package="org.hummer"/>
+        <bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+              p:usePool="true"
+              p:hostName="${redis.host}"
+              p:port="${redis.port}"
+              p:timeout="${redis.timeout}"
+              p:password="${redis.password}"
+              p:poolConfig-ref="redisPoolConfig"/>
+
+        <!-- redis cluster start -->
+        <!--   use 1.  Sentinel begin -->
+        <!-- <bean id="redisSentinelConfiguration"
+           class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
+         <property name="master">
+             <bean class="org.springframework.data.redis.connection.RedisNode">
+                 <property name="name" value="${redis.sentinel.name}"/>
+             </bean>
+         </property>
+         <property name="sentinels">
+             <set>
+                 <bean class="org.springframework.data.redis.connection.RedisNode">
+                     <constructor-arg name="host" value="${redis.sentinel.host}"/>
+                     <constructor-arg name="port" value="${redis.sentinel.port}"/>
+                 </bean>
+                    <bean class="org.springframework.data.redis.connection.RedisNode">
+                     <constructor-arg name="host" value="${redis.sentinel2.host}"/>
+                     <constructor-arg name="port" value="${redis.sentinel2.port}"/>
+                 </bean>
+                    <bean class="org.springframework.data.redis.connection.RedisNode">
+                     <constructor-arg name="host" value="${redis.sentinel3.host}"/>
+                     <constructor-arg name="port" value="${redis.sentinel3.port}"/>
+                 </bean>
+             </set>
+         </property>
+         </bean>
+         <bean id="jedisConnFactory"
+             class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+             p:usePool="true"
+             p:timeout="${redis.timeout}" p:password="${redis.password}"
+             p:poolConfig-ref="redisPoolConfig" >
+
+             <constructor-arg name="sentinelConfig" ref="redisSentinelConfiguration"></constructor-arg>
+             <constructor-arg name="poolConfig" ref="redisPoolConfig"></constructor-arg>
+         </bean> -->
+        <!-- redis cluster over -->
+
+
+        <!-- The sample config of the Redis Master Slave Sentinels -->
+        <!--
+            <bean id="redisSentinelConfiguration" class="com.coracle.rosefinch.core.delegate.CoracleRedisSentinelConfiguration"
+                p:masterName="${redis.sentinel_master_name}" p:sentinelsString="${redis.sentinels}" />
+            <bean id="jedisConnFactory"
+                  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                  p:usePool="true" p:password="${redis.password}"
+                  p:timeout="${redis.timeout}"
+                  p:poolConfig-ref="redispPoolConfig" >
+                      <constructor-arg ref="redisSentinelConfiguration" />
+            </bean>
+        -->
+        <!-- redis template definition -->
+        <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+              p:connectionFactory-ref="jedisConnFactory"/>
+
+        <bean id="redisService" class="org.hummer.core.cache.impl.RedisDaoImpl">
+            <property name="redisTemplate">
+                <ref bean="redisTemplate"/>
+            </property>
+        </bean>
+    </beans>
 </beans>

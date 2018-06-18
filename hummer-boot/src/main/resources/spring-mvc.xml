@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc
@@ -15,6 +15,7 @@
     它会像一个检查员，对进入DispatcherServlet的URL进行筛查，如果发现是静态资源的请求，就将该请求转由Web应用服务器默认的Servlet处理，
     如果不是静态资源的请求，才由DispatcherServlet继续处理。-->
     <mvc:default-servlet-handler/>
+    <mvc:annotation-driven/>
     <context:component-scan base-package="org.hummer"/>
     <!-- 视图解析器 -->
     <!-- 对模型视图名称的解析,在请求时模型视图名称添加前后缀 -->
@@ -51,8 +52,10 @@
             </list>
         </property>
     </bean>
-
-
+    <!--to enable form-data handle by Spring MVC otherwise only x-www-form-urlencoded data can be handled by Spring-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    </bean>
     <!-- 静态资源处理 css js images -->
     <mvc:resources location="WEB-INF/resources/**" mapping="/resource/"/>
 

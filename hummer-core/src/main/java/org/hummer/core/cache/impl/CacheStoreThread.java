@@ -1,7 +1,7 @@
 package org.hummer.core.cache.impl;
 
 import org.hummer.core.cache.annotation.CacheKey;
-import org.hummer.core.cache.intf.RedisDo;
+import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.model.intf.IModel;
 import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
@@ -14,18 +14,19 @@ import static java.util.stream.Collectors.joining;
 @SuppressWarnings("all")
 public class CacheStoreThread {
     private final static Logger log = Log4jUtils.getLogger(CacheStoreThread.class);
+    RedisDaoImpl redisService;
 
-    public static void storeResultToRedis(Object returnValue, Object redisKey, CacheKey cacheKey) {
+    public void storeResultToRedis(Object returnValue, Object redisKey, CacheKey cacheKey) {
         new Thread("CacheStoreThread") {
             public void run() {
+                redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
                 log.debug("entering a new thread:{} on {}", Thread.currentThread().getName(), Thread.currentThread().toString());
                 boolean evictOnAll = cacheKey.evictOnAll();
-                RedisDo redisDao = new RedisDaoImpl();
                 //将结果集放入Redis缓存, 如果返回值为空，也继续存入redis，避免访问数据库
                 if (CacheManager.isExpirationEnabled()) {
-                    redisDao.RedisSetex(redisKey, CacheManager.getExpirationPeriod(), returnValue);
+                    redisService.RedisSetex(redisKey, CacheManager.getExpirationPeriod(), returnValue);
                 } else {
-                    redisDao.RedisSet(redisKey, returnValue);
+                    redisService.RedisSet(redisKey, returnValue);
                 }
 
                 //如果不通过Model.Id祛除Cache，并且返回值不为空

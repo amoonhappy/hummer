@@ -29,7 +29,8 @@ public class CacheEvictInterceptor extends Perl5DynamicMethodInterceptor {
         //得到结果
         returnValue = methodInvocation.proceed();
         //多线程祛除Cache方法
-        CacheEvictorThread.evictCaches(targetObject, args, method);
+        CacheEvictorThread cacheEvictorThread = new CacheEvictorThread();
+        cacheEvictorThread.evictCaches(targetObject, args, method);
         return returnValue;
     }
 }

@@ -5,6 +5,7 @@ import org.hummer.core.cache.annotation.CacheEvicts;
 import org.hummer.core.cache.annotation.CacheModelEvict;
 import org.hummer.core.cache.annotation.CacheModelEvicts;
 import org.hummer.core.cache.intf.RedisDo;
+import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;
@@ -19,25 +20,26 @@ import java.util.Set;
 @SuppressWarnings("all")
 public class CacheEvictorThread {
     private final static Logger log = Log4jUtils.getLogger(CacheEvictorThread.class);
+    RedisDaoImpl redisService;
 
-    public static void evictCaches(Object targetObject, Object[] args, Method method) {
+    public void evictCaches(Object targetObject, Object[] args, Method method) {
 
         new Thread("CacheEvictorThread") {
             public void run() {
+                redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
                 log.debug("entering a new thread:{} on {}", Thread.currentThread().getName(), Thread.currentThread().toString());
-                RedisDo redisDao = new RedisDaoImpl();
                 //获取方法上定义的所有声明，包括CacheEvict和CacheModelEvict两种
                 //先通过CacheEvict祛除Cache
                 CacheEvicts cacheEvicts = method.getAnnotation(CacheEvicts.class);
                 if (cacheEvicts != null) {
                     CacheEvict[] cacheEvicts1 = cacheEvicts.value();
                     for (CacheEvict cacheEvict : cacheEvicts1) {
-                        evictRedisCacheByAnnoKeys(targetObject, args, method, redisDao, cacheEvict);
+                        evictRedisCacheByAnnoKeys(targetObject, args, method, redisService, cacheEvict);
                     }
                 } else {
                     CacheEvict cacheEvict = method.getAnnotation(CacheEvict.class);
                     if (cacheEvict != null) {
-                        evictRedisCacheByAnnoKeys(targetObject, args, method, redisDao, cacheEvict);
+                        evictRedisCacheByAnnoKeys(targetObject, args, method, redisService, cacheEvict);
                     }
                 }
                 //再通过CacheModelEvict祛除Cache
@@ -45,19 +47,19 @@ public class CacheEvictorThread {
                 if (cacheModelEvicts != null) {
                     CacheModelEvict[] cacheModelEvicts1 = cacheModelEvicts.value();
                     for (CacheModelEvict cacheModelEvict : cacheModelEvicts1) {
-                        evictRedisCacheByModelIds(targetObject, args, method, redisDao, cacheModelEvict);
+                        evictRedisCacheByModelIds(targetObject, args, method, redisService, cacheModelEvict);
                     }
                 } else {
                     CacheModelEvict cacheModelEvict = method.getAnnotation(CacheModelEvict.class);
                     if (cacheModelEvict != null) {
-                        evictRedisCacheByModelIds(targetObject, args, method, redisDao, cacheModelEvict);
+                        evictRedisCacheByModelIds(targetObject, args, method, redisService, cacheModelEvict);
                     }
                 }
             }
         }.start();
     }
 
-    private static void evictRedisCacheByAnnoKeys(Object targetObject, Object[] args, Method method, RedisDo
+    private void evictRedisCacheByAnnoKeys(Object targetObject, Object[] args, Method method, RedisDo
             redisDao, CacheEvict cacheEvict) {
         String uniKeyDef = cacheEvict.key();
         String uniCacheName = cacheEvict.cacheName();
@@ -76,7 +78,7 @@ public class CacheEvictorThread {
         }
     }
 
-    private static void evictRedisCacheByModelIds(Object targetObject, Object[] args, Method method, RedisDo
+    private void evictRedisCacheByModelIds(Object targetObject, Object[] args, Method method, RedisDo
             redisDao, CacheModelEvict cacheEvict) {
         String evictCacheKeyDef = cacheEvict.key();
         Class evictModelClass = cacheEvict.modelClass();

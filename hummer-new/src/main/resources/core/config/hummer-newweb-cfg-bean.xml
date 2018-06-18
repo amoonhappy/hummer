@@ -4,4 +4,5 @@
     <!--class="org.hummer.core.persistence.impl.HibernatePagerHandler"-->
     <!--singleton="false">-->
     <!--</bean>-->
+    <!-- redis template definition -->
 </component>

@@ -5,11 +5,15 @@ import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.container.intf.IBusinessServiceManager;
 import org.hummer.core.container.intf.IHummerContainer;
 import org.hummer.core.util.Log4jUtils;
+import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;
+import org.springframework.context.ApplicationContext;
 
 public class HummerContainer implements IHummerContainer {
     private static final Logger log = Log4jUtils.getLogger(HummerContainer.class);
     private static IHummerContainer instance = new HummerContainer();
+    private ApplicationContext ctx = null;
+
     IBusinessServiceManager serviceManager;
     CPConfigManager configManager;
     //Default DS is druid
@@ -51,6 +55,20 @@ public class HummerContainer implements IHummerContainer {
             this.dsType = db_conn_pool_type;
         }
         //read ds config
+    }
+
+    @Override
+    public void bondWithSpringContext(ApplicationContext ctx) {
+        this.ctx = ctx;
+    }
+
+    @Override
+    public Object getBeanFromSpring(String beanName) {
+        if (StringUtil.isEmpty(beanName) || this.ctx == null) {
+            return null;
+        } else {
+            return this.ctx.getBean(beanName);
+        }
     }
 
     public IBusinessServiceManager getServiceManager() {
