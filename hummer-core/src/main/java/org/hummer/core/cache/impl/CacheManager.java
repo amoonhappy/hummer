@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,10 +47,16 @@ public class CacheManager {
     }
 
     @SuppressWarnings("all")
-    public static void registerRedisKeyForIds(Class modelClass, List<String> ids, Object redisKey) {
+    public static void registerRedisKeyForIds(Class modelClass, Set<String> ids, Object redisKey) {
         //String[] idsArray = ids.split(",");
         for (String id : ids) {
-            registerRedisKeyForId(modelClass, id, redisKey);
+            String modelIdKey = getModelIdKey(modelClass, id);
+            Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+            if (redisKeys == null) {
+                redisKeys = new HashSet<>();
+            }
+            redisKeys.add(redisKey);
+            classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
         }
     }
 
