@@ -88,7 +88,7 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
 
                 String generatedKeyCacheKey = CacheManager.getGeneratedKeyCacheKey(args, targetClassName, methodName, cacheName, cacheKeyDef);
                 if (!StringUtil.isEmpty(generatedKeyCacheKey)) {
-                    annotationGeneratedKey = String.valueOf(CacheManager.getGenRedisKeyFromCache(generatedKeyCacheKey));
+                    annotationGeneratedKey = CacheManager.getGenRedisKeyFromCache(generatedKeyCacheKey);
                     if (annotationGeneratedKey == null) {
                         ExpressionParser parser = new SpelExpressionParser();
                         PrioritizedParameterNameDiscoverer parameterNameDiscoverer = new PrioritizedParameterNameDiscoverer();
