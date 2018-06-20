@@ -13,7 +13,7 @@
     <packaging>war</packaging>
     <!-- dependency version control-->
     <properties>
-        <springVersion>5.0.6.RELEASE</springVersion>
+        <springVersion>5.0.7.RELEASE</springVersion>
         <springRedisVersion>2.0.8.RELEASE</springRedisVersion>
         <jedisVersion>2.9.0</jedisVersion>
         <jstlVersion>1.2</jstlVersion>
@@ -24,10 +24,10 @@
         <mybatisVersion>3.4.6</mybatisVersion>
         <aopVersion>1.0</aopVersion>
         <cglibVersion>2.1_3</cglibVersion>
+        <druidVersion>1.1.3</druidVersion>
         <slf4jVersion>1.7.21</slf4jVersion>
         <logbackVersion>1.1.7</logbackVersion>
         <hikariVersion>3.1.0</hikariVersion>
-        <druidVersion>1.1.3</druidVersion>
         <fasterxmlVersion>2.9.4</fasterxmlVersion>
         <fastJsonVersion>1.2.47</fastJsonVersion>
         <servletVersion>3.1.0</servletVersion>
@@ -180,7 +180,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${servletVersion}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -218,6 +217,11 @@
     <build>
         <plugins>
             <!-- war打包插件, 设定war包名称不带版本号 -->
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.11.v20180605</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
