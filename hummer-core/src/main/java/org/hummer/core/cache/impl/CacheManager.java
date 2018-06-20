@@ -17,7 +17,7 @@ public class CacheManager {
     private static int expirationPeriod = 60 * 60;
     private static ConcurrentHashMap<String, Set<Object>> classMethodParaCacheKeyMapping = new ConcurrentHashMap();
     // key = class name +
-    private static ConcurrentHashMap<String, Object> springELgenRedisKeyCacheKey = new ConcurrentHashMap();
+    private static ConcurrentHashMap<String, String> springELgenRedisKeyCacheKey = new ConcurrentHashMap();
 
 
     public static boolean isExpirationEnabled() {
@@ -39,12 +39,16 @@ public class CacheManager {
     public CacheManager() {
     }
 
-    public static Object getGenRedisKeyFromCache(String key) {
+    public static String getGenRedisKeyFromCache(String key) {
         if (key == null) return null;
-        return springELgenRedisKeyCacheKey.get(key);
+        if (springELgenRedisKeyCacheKey.containsKey(key)) {
+            return springELgenRedisKeyCacheKey.get(key);
+        } else {
+            return null;
+        }
     }
 
-    public static void setGenRedisKeyFromCache(String key, Object redisKey) {
+    public static void setGenRedisKeyFromCache(String key, String redisKey) {
         if (key != null && redisKey != null) {
             springELgenRedisKeyCacheKey.put(key, redisKey);
         } else {
