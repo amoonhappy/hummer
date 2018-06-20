@@ -8,8 +8,9 @@ import org.slf4j.Logger;
 
 import java.util.Collection;
 import java.util.Map;
-
-import static java.util.stream.Collectors.joining;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("all")
 public class CacheStoreThread {
@@ -37,14 +38,17 @@ public class CacheStoreThread {
                         String id = ((IModel) returnValue).getId();
                         CacheManager.registerRedisKeyForId(returnValue.getClass(), id, redisKey);
                     } else if (returnValue instanceof Collection) {
-                        String idstr = (String) ((Collection<IModel>) returnValue).stream().map(IModel::getId).collect(joining(","));
+//                        String idstr = (String) ((Collection<IModel>) returnValue).stream().map(IModel::getId).collect(joining(","));
+//                        Class modelClass = ((Collection<IModel>) returnValue).iterator().next().getClass();
+//                        CacheManager.registerRedisKeyForIds(modelClass, idstr, redisKey);
+                        // Group employees by department
+                        Set<String> ids = ((Collection<IModel>) returnValue).stream().map(IModel::getId).collect(Collectors.toCollection(TreeSet::new));
                         Class modelClass = ((Collection<IModel>) returnValue).iterator().next().getClass();
-                        CacheManager.registerRedisKeyForIds(modelClass, idstr, redisKey);
+                        CacheManager.registerRedisKeyForIds(modelClass, ids, redisKey);
                     } else if (returnValue instanceof Map) {
-                        Collection<String> ids = ((Map) returnValue).keySet();
-                        String idstr = ids.stream().collect(joining(","));
+                        Set<String> ids = ((Map) returnValue).keySet();
                         Class modelClass = ((Map) returnValue).values().iterator().next().getClass();
-                        CacheManager.registerRedisKeyForIds(modelClass, idstr, redisKey);
+                        CacheManager.registerRedisKeyForIds(modelClass, ids, redisKey);
                     }
                 }
             }
