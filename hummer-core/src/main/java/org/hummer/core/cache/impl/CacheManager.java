@@ -1,8 +1,10 @@
 package org.hummer.core.cache.impl;
 
+import org.hummer.core.util.Assert;
 import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +16,9 @@ public class CacheManager {
     private static boolean expirationEnabled = false;
     private static int expirationPeriod = 60 * 60;
     private static ConcurrentHashMap<String, Set<Object>> classMethodParaCacheKeyMapping = new ConcurrentHashMap();
+    // key = class name +
+    private static ConcurrentHashMap<String, Object> springELgenRedisKeyCacheKey = new ConcurrentHashMap();
+
 
     public static boolean isExpirationEnabled() {
         return expirationEnabled;
@@ -32,6 +37,19 @@ public class CacheManager {
     }
 
     public CacheManager() {
+    }
+
+    public static Object getGenRedisKeyFromCache(String key) {
+        if (key == null) return null;
+        return springELgenRedisKeyCacheKey.get(key);
+    }
+
+    public static void setGenRedisKeyFromCache(String key, Object redisKey) {
+        if (key != null && redisKey != null) {
+            springELgenRedisKeyCacheKey.put(key, redisKey);
+        } else {
+            //do nothing
+        }
     }
 
     @SuppressWarnings("all")
@@ -98,8 +116,10 @@ public class CacheManager {
             redisKeys = new HashSet<>();
         }
         log.debug("Redis Cache Key removed with {}, RedisCacheKey is {}", modelIdKey, removeRedisKeys);
-        redisKeys.removeAll(removeRedisKeys);
-        classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+        if (removeRedisKeys != null) {
+            redisKeys.removeAll(removeRedisKeys);
+            classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+        }
     }
 
     public static void registerRedisKeyForId(Class modelClass, String id, Collection<Object> addRedisKeys) {
@@ -111,5 +131,16 @@ public class CacheManager {
         redisKeys.addAll(addRedisKeys);
         log.debug("Redis Cache Key linked with {}, RedisCacheKeys is {}", modelIdKey, redisKeys);
         classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+    }
+
+    public static String getGeneratedKeyCacheKey(Object[] args, String targetClassName, String methodName, String cacheName, String cacheKeyDef) {
+        Assert.notNull(targetClassName, "target Class Name should not be empty");
+        Assert.notNull(methodName, "Method should not be empty");
+        Assert.notNull(cacheName, "CacheName should not be empty");
+        Assert.notNull(cacheKeyDef, "CacheKeyDef should not be empty");
+        Assert.notNull(args, "Arguments should not be empty");
+        String argstr = Arrays.deepToString(args);
+
+        return targetClassName + methodName + cacheName + cacheKeyDef + argstr;
     }
 }

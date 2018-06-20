@@ -5,6 +5,7 @@ import org.hummer.core.aop.intf.KeyGenerator;
 import org.hummer.core.aop.intf.SimpleKeyGenerator;
 import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.cache.impl.CacheEvaluationContext;
+import org.hummer.core.cache.impl.CacheManager;
 import org.hummer.core.cache.impl.CacheStoreThread;
 import org.hummer.core.cache.impl.RedisDaoImpl;
 import org.hummer.core.cache.intf.ICacheable;
@@ -43,13 +44,8 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         Object[] args = methodInvocation.getArguments();
 
         if (cacheable) {
-//            Object o = HummerContainer.getInstance().getServiceManager().getService("redisPoolConfig");
-//            Object o1 = HummerContainer.getInstance().getServiceManager().getService("jedisConnFactory");
-//            Object o2 = HummerContainer.getInstance().getServiceManager().getService("redisTemplate");
-//            redisService = (RedisDaoImpl) HummerContainer.getInstance().getServiceManager().getService("redisTool");
             redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
             Object targetObject = methodInvocation.getThis();
-
             String cacheName = null;
             String annotationGeneratedKey = null;
             //get cache annotation
@@ -89,15 +85,24 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
 
         if (useKey) {
             try {
-                ExpressionParser parser = new SpelExpressionParser();
-                PrioritizedParameterNameDiscoverer parameterNameDiscoverer = new PrioritizedParameterNameDiscoverer();
-                CacheEvaluationContext cacheEvaluationContext = new CacheEvaluationContext(targetObject, method, args, parameterNameDiscoverer);
-                Expression expression = parser.parseExpression(cacheKeyDef);
-                annotationGeneratedKey = expression.getValue(cacheEvaluationContext, String.class);
-                log.debug("Defined Key in EL:{}", cacheKeyDef);
-                log.debug("Generated Key:{}", annotationGeneratedKey);
-                if (!StringUtil.isEmpty(annotationGeneratedKey)) {
-                    customizedCacheKey = true;
+
+                String generatedKeyCacheKey = CacheManager.getGeneratedKeyCacheKey(args, targetClassName, methodName, cacheName, cacheKeyDef);
+                if (!StringUtil.isEmpty(generatedKeyCacheKey)) {
+                    annotationGeneratedKey = String.valueOf(CacheManager.getGenRedisKeyFromCache(generatedKeyCacheKey));
+                    if (annotationGeneratedKey == null) {
+                        ExpressionParser parser = new SpelExpressionParser();
+                        PrioritizedParameterNameDiscoverer parameterNameDiscoverer = new PrioritizedParameterNameDiscoverer();
+                        CacheEvaluationContext cacheEvaluationContext = new CacheEvaluationContext(targetObject, method, args, parameterNameDiscoverer);
+                        Expression expression = parser.parseExpression(cacheKeyDef);
+                        annotationGeneratedKey = expression.getValue(cacheEvaluationContext, String.class);
+                        CacheManager.setGenRedisKeyFromCache(generatedKeyCacheKey, annotationGeneratedKey);
+                    }
+                    if (!StringUtil.isEmpty(annotationGeneratedKey)) {
+                        customizedCacheKey = true;
+                    }
+                } else {
+                    log.error("Wrong CacheKey Definition Found:[{}] for [{}].[{}]", cacheKeyDef, targetClassName, methodName);
+                    customizedCacheKey = false;
                 }
             } catch (Exception e) {
                 log.error("Wrong CacheKey Definition Found:[{}] for [{}].[{}]", cacheKeyDef, targetClassName, methodName, e);
@@ -117,6 +122,11 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
             redisKey = keyGenerator.generate(null, method, args);
         }
         return redisKey;
+    }
+
+    private String getGeneratedKeyCacheKey(Object[] args, String targetClassName, String methodName, String cacheName, String cacheKeyDef) {
+        return new StringBuilder().append(targetClassName).
+                append(methodName).append(cacheName).append(cacheKeyDef).append(args).toString();
     }
 
     private boolean isCacheable(Class targetClass) {

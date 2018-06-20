@@ -13,6 +13,7 @@ public class HummerInitListener extends ContextLoaderListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         super.contextInitialized(event);
+        super.loadParentContext(event.getServletContext());
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         ctx.getBean("redisTemplate");
         IHummerContainer hummerContainer = HummerContainer.getInstance();
