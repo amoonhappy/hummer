@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
 @SuppressWarnings("all")
 public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
     private static final Logger log = Log4jUtils.getLogger(CacheInterceptor.class);
-    RedisDaoImpl redisService;
+    private static final RedisDaoImpl redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -44,7 +44,6 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         Object[] args = methodInvocation.getArguments();
 
         if (cacheable) {
-            redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
             Object targetObject = methodInvocation.getThis();
             String cacheName = null;
             String annotationGeneratedKey = null;
@@ -56,17 +55,17 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
 
             //如果Redis中没有，执行方法
             if (returnValue == null) {
-                log.debug("no redis cache found for [{}].[{}]!", targetClassName, methodName);
+                //log.debug("no redis cache found for [{}].[{}]!", targetClassName, methodName);
                 returnValue = methodInvocation.proceed();
-                log.debug("store data to redis for [{}].[{}]", targetClassName, methodName);
             } else {
-                log.debug("get data from redis for [{}].[{}]", targetClassName, methodName);
+                //log.debug("get data from redis for [{}].[{}]", targetClassName, methodName);
             }
             //将结果存入Redis//异步执行
             CacheStoreThread cacheStoreThread = new CacheStoreThread();
             cacheStoreThread.storeResultToRedis(returnValue, redisKey, cacheKey);
+            //log.debug("stored data to redis for [{}].[{}]", targetClassName, methodName);
         } else {
-            log.info("[{}].[{}] is not defined as Cacheable, execute method to get result directly", targetClassName, methodName);
+            //log.info("[{}].[{}] is not defined as Cacheable, execute method to get result directly", targetClassName, methodName);
             returnValue = methodInvocation.proceed();
         }
         return returnValue;
@@ -85,7 +84,6 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
 
         if (useKey) {
             try {
-
                 String generatedKeyCacheKey = CacheManager.getGeneratedKeyCacheKey(args, targetClassName, methodName, cacheName, cacheKeyDef);
                 if (!StringUtil.isEmpty(generatedKeyCacheKey)) {
                     annotationGeneratedKey = CacheManager.getGenRedisKeyFromCache(generatedKeyCacheKey);
@@ -95,7 +93,7 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
                         CacheEvaluationContext cacheEvaluationContext = new CacheEvaluationContext(targetObject, method, args, parameterNameDiscoverer);
                         Expression expression = parser.parseExpression(cacheKeyDef);
                         annotationGeneratedKey = expression.getValue(cacheEvaluationContext, String.class);
-                        CacheManager.setGenRedisKeyFromCache(generatedKeyCacheKey, annotationGeneratedKey);
+                        CacheManager.setGenRedisKey2Cache(generatedKeyCacheKey, annotationGeneratedKey);
                     }
                     if (!StringUtil.isEmpty(annotationGeneratedKey)) {
                         customizedCacheKey = true;

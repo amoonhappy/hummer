@@ -91,7 +91,6 @@ public abstract class Perl5DynamicMethodInterceptor extends DynamicChainMethodIn
             return this.matcher.matches(pattern, this.patterns[patternIndex]);
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
-
         }
     }
 
@@ -109,7 +108,11 @@ public abstract class Perl5DynamicMethodInterceptor extends DynamicChainMethodIn
      * <code>String</code>.
      */
     protected boolean matchesExclusion(String pattern, int patternIndex) {
-        return this.matcher.matches(pattern, this.compiledExclusionPatterns[patternIndex]);
+        try {
+            return this.matcher.matches(pattern, this.compiledExclusionPatterns[patternIndex]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
     }
 
 }

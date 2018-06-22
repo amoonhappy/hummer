@@ -20,13 +20,13 @@ import java.util.Set;
 @SuppressWarnings("all")
 public class CacheEvictorThread {
     private final static Logger log = Log4jUtils.getLogger(CacheEvictorThread.class);
-    RedisDaoImpl redisService;
+    private static final RedisDaoImpl redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
 
     public void evictCaches(Object targetObject, Object[] args, Method method) {
 
         new Thread("CacheEvictorThread") {
             public void run() {
-                redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
+
                 log.debug("entering a new thread:{} on {}", Thread.currentThread().getName(), Thread.currentThread().toString());
                 //获取方法上定义的所有声明，包括CacheEvict和CacheModelEvict两种
                 //先通过CacheEvict祛除Cache
@@ -73,7 +73,7 @@ public class CacheEvictorThread {
             String redisKey;
             uniAnnoGenRedisKey = expression.getValue(cacheEvaluationContext, String.class);
             redisKey = uniCacheName + ":" + uniAnnoGenRedisKey;
-            log.debug("Deleting from Redis for Key: {}", redisKey);
+            //log.debug("Deleting from Redis for Key: {}", redisKey);
             redisDao.RedisDel(redisKey);
         }
     }
@@ -89,9 +89,9 @@ public class CacheEvictorThread {
         Expression evictExpression = evictParser.parseExpression(evictCacheKeyDef);
         evictAnnoGenRedisKey = evictExpression.getValue(evictCacheEvaluationContext, String.class);
         Set<Object> linkedRedisKeys = (Set<Object>) CacheManager.getRedisKeysById(evictModelClass, evictAnnoGenRedisKey);
-        log.debug("Deleting from Redis for Key: {}", linkedRedisKeys);
+        //log.debug("Deleting from Redis for Key: {}", linkedRedisKeys);
         redisDao.RedisDel(linkedRedisKeys);
-        log.debug("Deleting from CacheManager for Key: {}", linkedRedisKeys);
+        //log.debug("Deleting from CacheManager for Key: {}", linkedRedisKeys);
         CacheManager.unRegisterRedisKeyForId(evictModelClass, evictAnnoGenRedisKey, linkedRedisKeys);
     }
 }

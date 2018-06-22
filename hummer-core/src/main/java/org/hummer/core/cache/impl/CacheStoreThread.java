@@ -15,12 +15,11 @@ import java.util.stream.Collectors;
 @SuppressWarnings("all")
 public class CacheStoreThread {
     private final static Logger log = Log4jUtils.getLogger(CacheStoreThread.class);
-    RedisDaoImpl redisService;
+    private static final RedisDaoImpl redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
 
     public void storeResultToRedis(Object returnValue, Object redisKey, CacheKey cacheKey) {
         new Thread("CacheStoreThread") {
             public void run() {
-                redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
                 log.debug("entering a new thread:{} on {}", Thread.currentThread().getName(), Thread.currentThread().toString());
                 boolean evictOnAll = cacheKey.evictOnAll();
                 //将结果集放入Redis缓存, 如果返回值为空，也继续存入redis，避免访问数据库

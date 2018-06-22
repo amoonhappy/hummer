@@ -1,26 +1,23 @@
 package org.hummer.core.cache.impl;
 
+import org.apache.commons.collections.FastHashMap;
 import org.hummer.core.util.Assert;
 import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class CacheManager {
     private static final Logger log = Log4jUtils.getLogger(CacheManager.class);
     private static boolean expirationEnabled = false;
     private static int expirationPeriod = 60 * 60;
-    private static ConcurrentHashMap<String, Set<Object>> classMethodParaCacheKeyMapping = new ConcurrentHashMap();
+    private static Map<String, Set<Object>> classMethodParaCacheKeyMapping = new FastHashMap();
     // key = class name +
-    private static ConcurrentHashMap<String, String> springELgenRedisKeyCacheKey = new ConcurrentHashMap();
+    private static Map<String, String> springELgenRedisKeyCacheKey = new FastHashMap();
 
 
-    public static boolean isExpirationEnabled() {
+    static boolean isExpirationEnabled() {
         return expirationEnabled;
     }
 
@@ -28,7 +25,7 @@ public class CacheManager {
         expirationEnabled = input;
     }
 
-    public static int getExpirationPeriod() {
+    static int getExpirationPeriod() {
         return expirationPeriod;
     }
 
@@ -40,6 +37,7 @@ public class CacheManager {
     }
 
     public static String getGenRedisKeyFromCache(String key) {
+
         if (key == null) return null;
         if (springELgenRedisKeyCacheKey.containsKey(key)) {
             return springELgenRedisKeyCacheKey.get(key);
@@ -48,7 +46,7 @@ public class CacheManager {
         }
     }
 
-    public static void setGenRedisKeyFromCache(String key, String redisKey) {
+    public static void setGenRedisKey2Cache(String key, String redisKey) {
         if (key != null && redisKey != null) {
             springELgenRedisKeyCacheKey.put(key, redisKey);
         } else {
@@ -63,7 +61,7 @@ public class CacheManager {
         if (redisKeys == null) {
             redisKeys = new HashSet<>();
         }
-        log.debug("Redis Cache Key linked with {}, RedisCacheKey is {}", modelIdKey, redisKey);
+        //log.debug("Redis Cache Key linked with {}, RedisCacheKey is {}", modelIdKey, redisKey);
         redisKeys.add(redisKey);
         classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
     }
@@ -93,7 +91,7 @@ public class CacheManager {
     public static Collection getRedisKeysById(Class modelClass, String id) {
         String modelIdKey = getModelIdKey(modelClass, id);
         Collection redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
-        log.debug("Redis Cache Keys Found By {}, size is {}", modelIdKey, redisKeys);
+        //log.debug("Redis Cache Keys Found By {}, size is {}", modelIdKey, redisKeys);
         return redisKeys;
     }
 
@@ -108,7 +106,7 @@ public class CacheManager {
         if (redisKeys == null) {
             redisKeys = new HashSet<>();
         }
-        log.debug("Redis Cache Key removed with {}, RedisCacheKey is {}", modelIdKey, redisKey);
+        //log.debug("Redis Cache Key removed with {}, RedisCacheKey is {}", modelIdKey, redisKey);
         redisKeys.remove(redisKey);
         classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
     }
@@ -119,7 +117,7 @@ public class CacheManager {
         if (redisKeys == null) {
             redisKeys = new HashSet<>();
         }
-        log.debug("Redis Cache Key removed with {}, RedisCacheKey is {}", modelIdKey, removeRedisKeys);
+        //log.debug("Redis Cache Key removed with {}, RedisCacheKey is {}", modelIdKey, removeRedisKeys);
         if (removeRedisKeys != null) {
             redisKeys.removeAll(removeRedisKeys);
             classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
