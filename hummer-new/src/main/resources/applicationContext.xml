@@ -20,7 +20,7 @@
         <!--<context:annotation-config/>-->
         <!--<context:component-scan base-package="org.hummer"/>-->
         <context:property-placeholder location="classpath:app.properties"/>
-        <context:component-scan base-package="org.hummer"/>
+        <!--<context:component-scan base-package="org.hummer"/>-->
         <context:annotation-config/>
         <!-- Redis配置 -->
         <!-- jedis pool配置 -->

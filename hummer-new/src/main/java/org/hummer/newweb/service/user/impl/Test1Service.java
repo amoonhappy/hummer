@@ -26,12 +26,4 @@ public class Test1Service extends BasicTestService implements ITest1Service {
     public void saveUser(IUser user) {
         testDAO.insert(user);
     }
-
-    public ITestDAO getTestDAO() {
-        return testDAO;
-    }
-
-    public void setTestDAO(ITestDAO testDAO) {
-        this.testDAO = testDAO;
-    }
 }

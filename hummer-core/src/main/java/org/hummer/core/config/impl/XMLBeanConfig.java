@@ -23,6 +23,8 @@ public class XMLBeanConfig extends XMLConfig implements IXMLBeanConfig {
 
     private Map<String, String> propertiesValue = new HashMap<>();
 
+    private Map<String, String> springBeanIds = new HashMap<>();
+
     public String getBeanId() {
         return this.beanId;
     }
@@ -68,9 +70,28 @@ public class XMLBeanConfig extends XMLConfig implements IXMLBeanConfig {
 
     public Map<String, String> getProp2RefBeanIdMapping() {
         Map<String, String> ret = this.refBeanIds;
-        if (this.overwriteConfig != null && overwriteConfig.getProp2RefBeanIdMapping() != null
-                && overwriteConfig.getProp2RefBeanIdMapping().size() > 0) {
-            ret.putAll(overwriteConfig.getProp2RefBeanIdMapping());
+        if (this.overwriteConfig != null) {
+            Map<String, String> prop2RefBeanMap = overwriteConfig.getProp2RefBeanIdMapping();
+            if (prop2RefBeanMap != null && prop2RefBeanMap.size() > 0) {
+                ret.putAll(prop2RefBeanMap);
+            }
+        }
+        return ret;
+    }
+
+    public void regSpringBeanId(String key, String springBeanId) {
+        if (!StringUtil.isEmpty(springBeanId) && !StringUtil.isEmpty(key)) {
+            getProp2SpringBeanIdMapping().put(key, springBeanId);
+        }
+    }
+
+    public Map<String, String> getProp2SpringBeanIdMapping() {
+        Map<String, String> ret = this.springBeanIds;
+        if (this.overwriteConfig != null) {
+            Map<String, String> prop2SpringBeanMap = overwriteConfig.getProp2SpringBeanIdMapping();
+            if (prop2SpringBeanMap != null && prop2SpringBeanMap.size() > 0) {
+                ret.putAll(prop2SpringBeanMap);
+            }
         }
         return ret;
     }

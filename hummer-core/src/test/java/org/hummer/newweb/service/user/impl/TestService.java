@@ -1,5 +1,6 @@
 package org.hummer.newweb.service.user.impl;
 
+import org.hummer.core.beans.annotation.AutoLinked;
 import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.cache.intf.ICacheable;
 import org.hummer.core.service.impl.BasicTestService;
@@ -12,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class TestService extends BasicTestService implements ITestService, ICacheable {
-
+    @AutoLinked
     private ITestDAO testDAO;
 
     @Override
@@ -47,6 +48,8 @@ public class TestService extends BasicTestService implements ITestService, ICach
     @Override
     @CacheKey(cacheName = "user", key = "#p0")
     public IUser getUserById(Integer id) {
+
+        System.out.println("adsfasdf");
         return testDAO.getUserById(id);
     }
 

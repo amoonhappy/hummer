@@ -66,6 +66,8 @@ public class XMLBeanConfigParser implements IXMLConfigParser {
             ret.regRefBeanId(propertyName, value);
         } else if ("String".equals(type)) {
             ret.regPropertiesValue(propertyName, value);
+        } else if ("springBean".equals(type)) {
+            ret.regSpringBeanId(propertyName, value);
         }
         return ret;
     }

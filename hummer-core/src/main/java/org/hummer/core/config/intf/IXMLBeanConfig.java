@@ -5,27 +5,32 @@ import java.util.Map;
 public interface IXMLBeanConfig extends IXMLConfiguration {
     // public List<String> getEnabledBeanIds();
 
-    public String getBeanId();
+    String getBeanId();
 
-    public void setBeanId(String beanId);
+    void setBeanId(String beanId);
 
-    public Class getBeanClass();
+    Class getBeanClass();
 
-    public void setBeanClass(Class implClass);
+    void setBeanClass(Class implClass);
 
-    public Map<String, String> getProp2RefBeanIdMapping();
+    Map<String, String> getProp2RefBeanIdMapping();
 
-    public boolean isSingleton();
+    Map<String, String> getProp2SpringBeanIdMapping();
 
-    public String getSingleton();
+    boolean isSingleton();
 
-    public void setSingleton(String flag);
+    String getSingleton();
 
-    public void regRefBeanId(String key, String refBeanId);
+    void setSingleton(String flag);
 
-    public Map<String, String> getXMLProperteisValueMapping();
+    void regRefBeanId(String key, String refBeanId);
 
-    public void regPropertiesValue(String propertiesName, String value);
+    void regSpringBeanId(String key, String springBeanId);
+
+
+    Map<String, String> getXMLProperteisValueMapping();
+
+    void regPropertiesValue(String propertiesName, String value);
 
     // public void regEnabledBeanIds(String propertyName,String value);
 }

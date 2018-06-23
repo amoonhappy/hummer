@@ -41,7 +41,6 @@ public class XMLConfigFactory {
         } else if (coreConfig == null && localConfig != null) {
             return localConfig;
         } else {
-
             assert coreConfig != null;
             Set<String> coreKeySet = coreConfig.keySet();
             Set<String> localKeySet = localConfig.keySet();

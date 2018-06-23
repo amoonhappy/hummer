@@ -3,6 +3,7 @@ package org.hummer.newweb.service.user.impl;
 import org.hummer.core.cache.annotation.CacheEvict;
 import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.cache.annotation.CacheModelEvict;
+import org.hummer.core.cache.impl.RedisDaoImpl;
 import org.hummer.core.cache.intf.ICacheable;
 import org.hummer.core.model.intf.ISingleLongPKModel;
 import org.hummer.core.service.impl.BasicTestService;
@@ -20,7 +21,10 @@ import java.util.List;
 
 public class TestService extends BasicTestService implements ITestService, ICacheable {
     private static Logger log = Log4jUtils.getLogger(TestService.class);
+    //init by Hummer
     private ITestDAO testDAO;
+    //init by Spring
+    private RedisDaoImpl redisService;
 
     @Override
     @CacheKey(cacheName = "userList", key = "'test'", evictOnAll = true)
@@ -68,28 +72,23 @@ public class TestService extends BasicTestService implements ITestService, ICach
     @Override
     @CacheKey(cacheName = "userCacheById", key = "#p0")
     public IUser getUserById(Integer id) {
+        System.out.println(redisService);
         return testDAO.getUserById(id);
     }
 
     @Override
     @CacheKey(cacheName = "userCacheById", key = "#p0.id")
     public IUser getUserById(IUser user) {
+        System.out.println(redisService);
         return testDAO.getUserById(Integer.valueOf(user.getId()));
     }
 
     @Override
     @CacheKey(cacheName = "userList", key = "#p0.firstName.concat(#p0.role)")
     public List<IUser> getUserByFirstNameAndStatus(IUser user) {
+        System.out.println(redisService);
         String firstName = user.getFirstName();
         String role = user.getRole();
         return testDAO.getActiveUserByName(firstName, role);
-    }
-
-    public ITestDAO getTestDAO() {
-        return testDAO;
-    }
-
-    public void setTestDAO(ITestDAO testDAO) {
-        this.testDAO = testDAO;
     }
 }
