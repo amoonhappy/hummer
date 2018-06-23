@@ -1,7 +1,7 @@
 package org.hummer.core.util;
 
-import com.google.common.base.Optional;
-import org.apache.commons.lang3.ArrayUtils;
+//import com.google.common.base.Optional;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.*;
@@ -759,50 +759,50 @@ public class ReflectionUtil {
         return null;
     }
 
-    public static <T> T newInstance(final Class<T> clazz) {
-        Constructor<?>[] constructors = getAllConstructorsOfClass(clazz, true);
-        // impossible ?
-        if (ArrayUtils.isEmpty(constructors)) {
-            return null;
-        }
-
-        Optional<? extends Constructor<?>> optionalConstructor = getDefaultConstructor(constructors);
-        if (!optionalConstructor.isPresent()) {
-            throw new RuntimeException("No default non parameter constructor found for class " + clazz.getName());
-        }
-
-        try {
-            T instance = (T) optionalConstructor.get().newInstance();
-            return instance;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-
-    public static Constructor<?>[] getAllConstructorsOfClass(final Class<?> clazz, boolean accessible) {
-        if (clazz == null) {
-            return null;
-        }
-
-        Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-        if (ArrayUtils.isNotEmpty(constructors)) {
-            AccessibleObject.setAccessible(constructors, accessible);
-        }
-        return constructors;
-    }
-
-    private static Optional<? extends Constructor<?>> getDefaultConstructor(Constructor<?>[] constructors) {
-        if (ArrayUtils.isEmpty(constructors)) {
-            return Optional.absent();
-        }
-
-        for (Constructor<?> constructor : constructors) {
-            if (ArrayUtils.isEmpty(constructor.getParameterTypes())) {
-                return Optional.of(constructor);
-            }
-        }
-        return Optional.absent();
-    }
+//    public static <T> T newInstance(final Class<T> clazz) {
+//        Constructor<?>[] constructors = getAllConstructorsOfClass(clazz, true);
+//        // impossible ?
+//        if (ArrayUtils.isEmpty(constructors)) {
+//            return null;
+//        }
+//
+//        Optional<? extends Constructor<?>> optionalConstructor = getDefaultConstructor(constructors);
+//        if (!optionalConstructor.isPresent()) {
+//            throw new RuntimeException("No default non parameter constructor found for class " + clazz.getName());
+//        }
+//
+//        try {
+//            T instance = (T) optionalConstructor.get().newInstance();
+//            return instance;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//    }
+//
+//    public static Constructor<?>[] getAllConstructorsOfClass(final Class<?> clazz, boolean accessible) {
+//        if (clazz == null) {
+//            return null;
+//        }
+//
+//        Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+//        if (ArrayUtils.isNotEmpty(constructors)) {
+//            AccessibleObject.setAccessible(constructors, accessible);
+//        }
+//        return constructors;
+//    }
+//
+//    private static Optional<? extends Constructor<?>> getDefaultConstructor(Constructor<?>[] constructors) {
+//        if (ArrayUtils.isEmpty(constructors)) {
+//            return Optional.absent();
+//        }
+//
+//        for (Constructor<?> constructor : constructors) {
+//            if (ArrayUtils.isEmpty(constructor.getParameterTypes())) {
+//                return Optional.of(constructor);
+//            }
+//        }
+//        return Optional.absent();
+//    }
 }

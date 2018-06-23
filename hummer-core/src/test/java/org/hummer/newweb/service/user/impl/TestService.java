@@ -1,6 +1,7 @@
 package org.hummer.newweb.service.user.impl;
 
-import org.hummer.core.beans.annotation.AutoLinked;
+//import org.hummer.core.beans.annotation.AutoLinked;
+
 import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.cache.intf.ICacheable;
 import org.hummer.core.service.impl.BasicTestService;
@@ -13,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class TestService extends BasicTestService implements ITestService, ICacheable {
-    @AutoLinked
+    //    @AutoLinked
     private ITestDAO testDAO;
 
     @Override
