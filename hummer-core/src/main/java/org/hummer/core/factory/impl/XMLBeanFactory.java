@@ -180,9 +180,6 @@ public class XMLBeanFactory implements IBeanFactory {
                 if (refBeanIds != null) {
                     for (Iterator<String> it = refBeanIds.keySet().iterator(); it.hasNext(); ) {
                         String propertiesName = it.next();
-                        if (propertiesName.equals("testDAO")) {
-                            log.debug("test DAO");
-                        }
                         Object cachedPropertiesValue = singletonBeanCache.get(refBeanIds.get(propertiesName));
                         IXMLConfiguration cachedPropertiesConfigValue =
                                 singletonBeanConfigCache.get(refBeanIds.get(propertiesName));
@@ -208,7 +205,7 @@ public class XMLBeanFactory implements IBeanFactory {
     }
 
     /**
-     * Dont' need setter method to resolve the IOC of defined beans
+     * Don't need setter method to resolve the IOC of defined beans
      *
      * @param obj
      * @param propertiesName

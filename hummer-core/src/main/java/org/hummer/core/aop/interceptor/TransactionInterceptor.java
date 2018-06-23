@@ -1,7 +1,8 @@
-package org.hummer.core.aop.impl;
+package org.hummer.core.aop.interceptor;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.ibatis.session.SqlSession;
+import org.hummer.core.aop.impl.Perl5DynamicMethodInterceptor;
 import org.hummer.core.transaction.Transaction;
 import org.hummer.core.transaction.TransactionManager;
 import org.hummer.core.util.Log4jUtils;

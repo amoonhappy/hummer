@@ -42,7 +42,7 @@
         <appender-ref ref="STDOUT" />
     </logger>
     -->
-    <!--<logger name="org.hummer.core.aop.impl.PerformanceTraceInterceptor" additivity="false">-->
+    <!--<logger name="org.hummer.core.aop.interceptor.PerformanceTraceInterceptor" additivity="false">-->
     <!--<level value="INFO"/>-->
     <!--<appender-ref ref="FILE"/>-->
     <!--</logger>-->

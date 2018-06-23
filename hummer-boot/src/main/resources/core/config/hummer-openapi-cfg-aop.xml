@@ -7,7 +7,7 @@
                     value="performanceLog,transactionInterceptor,cacheInterceptor,cacheEvictInterceptor"/>
     </bean>
     <!-- Interceptors definition -->
-    <bean id="transactionInterceptor" class="org.hummer.core.aop.impl.TransactionInterceptor"
+    <bean id="transactionInterceptor" class="org.hummer.core.aop.interceptor.TransactionInterceptor"
           singleton="true">
         <properties name="xmlPattern" type="String"
                     value="
@@ -22,7 +22,7 @@
         <properties name="xmlExcludePattern" type="String"
                     value="^get,^set,^toString"/>
     </bean>
-    <bean id="performanceLog" class="org.hummer.core.aop.impl.PerformanceTraceInterceptor"
+    <bean id="performanceLog" class="org.hummer.core.aop.interceptor.PerformanceTraceInterceptor"
           singleton="true">
         <properties name="xmlPattern" type="String"
                     value="
@@ -35,7 +35,7 @@
 			"/>
         <properties name="xmlExcludePattern" type="String" value="^set,^toString"/>
     </bean>
-    <bean id="cacheInterceptor" class="org.hummer.core.aop.impl.CacheInterceptor"
+    <bean id="cacheInterceptor" class="org.hummer.core.aop.interceptor.CacheInterceptor"
           singleton="true">
         <properties name="xmlPattern" type="String"
                     value="
@@ -46,7 +46,7 @@
 			"/>
         <properties name="xmlExcludePattern" type="String" value="^set,^toString"/>
     </bean>
-    <bean id="cacheEvictInterceptor" class="org.hummer.core.aop.impl.CacheEvictInterceptor"
+    <bean id="cacheEvictInterceptor" class="org.hummer.core.aop.interceptor.CacheEvictInterceptor"
           singleton="true">
         <properties name="xmlPattern" type="String"
                     value="

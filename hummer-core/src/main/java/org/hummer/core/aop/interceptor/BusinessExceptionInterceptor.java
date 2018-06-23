@@ -1,4 +1,4 @@
-package org.hummer.core.aop.impl;
+package org.hummer.core.aop.interceptor;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.hummer.core.constants.ExceptionConstant;

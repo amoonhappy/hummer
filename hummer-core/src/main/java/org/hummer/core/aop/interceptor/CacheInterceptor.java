@@ -1,13 +1,10 @@
-package org.hummer.core.aop.impl;
+package org.hummer.core.aop.interceptor;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.hummer.core.aop.impl.Perl5DynamicMethodInterceptor;
 import org.hummer.core.aop.intf.KeyGenerator;
-import org.hummer.core.aop.intf.SimpleKeyGenerator;
 import org.hummer.core.cache.annotation.CacheKey;
-import org.hummer.core.cache.impl.CacheEvaluationContext;
-import org.hummer.core.cache.impl.CacheManager;
-import org.hummer.core.cache.impl.CacheStoreThread;
-import org.hummer.core.cache.impl.RedisDaoImpl;
+import org.hummer.core.cache.impl.*;
 import org.hummer.core.cache.intf.ICacheable;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.util.Log4jUtils;

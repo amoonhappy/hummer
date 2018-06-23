@@ -8,6 +8,7 @@
           class="org.hummer.newweb.service.user.impl.TestService"
           singleton="true" transType="required">
         <properties name="testDAO" type="refBean" value="testDAO"/>
+        <properties name="redisService" type="springBean" value="redisService"/>
     </bean>
     <bean id="test1Service"
           class="org.hummer.newweb.service.user.impl.Test1Service"

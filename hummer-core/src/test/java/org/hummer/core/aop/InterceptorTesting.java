@@ -1,6 +1,6 @@
 package org.hummer.core.aop;
 
-import org.hummer.core.aop.impl.ProxyFactory;
+import org.hummer.core.aop.interceptor.ProxyFactory;
 
 /**
  * iFOP Spacee for Developer Party

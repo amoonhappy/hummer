@@ -1,4 +1,4 @@
-package org.hummer.core.aop.intf;
+package org.hummer.core.cache.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hummer.core.util.Assert;

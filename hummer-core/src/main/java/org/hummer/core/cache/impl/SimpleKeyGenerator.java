@@ -1,4 +1,6 @@
-package org.hummer.core.aop.intf;
+package org.hummer.core.cache.impl;
+
+import org.hummer.core.aop.intf.KeyGenerator;
 
 import java.lang.reflect.Method;
 

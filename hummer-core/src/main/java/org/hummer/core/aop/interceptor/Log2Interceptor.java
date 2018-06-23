@@ -1,6 +1,7 @@
-package org.hummer.core.aop.impl;
+package org.hummer.core.aop.interceptor;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.hummer.core.aop.impl.Perl5DynamicMethodInterceptor;
 import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
 

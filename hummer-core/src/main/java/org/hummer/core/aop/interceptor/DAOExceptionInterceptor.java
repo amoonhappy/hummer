@@ -11,7 +11,7 @@
   @author <a href="mailto:jeff_myth@yahoo.com.cn">Jeff Zhou</a> Date: 2005-12-6
  * @version 1.0
  */
-package org.hummer.core.aop.impl;
+package org.hummer.core.aop.interceptor;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.hummer.core.constants.ExceptionConstant;
