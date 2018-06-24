@@ -15,6 +15,7 @@ public @interface Transactional {
 
     boolean readOnly() default false;
 
+    //TODO: below attribute is not implemented yet
     Class[] rollbackFor() default {};
 
     String[] rollbackForClassName() default {};

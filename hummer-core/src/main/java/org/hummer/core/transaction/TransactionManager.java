@@ -5,33 +5,30 @@ import org.hummer.core.transaction.annotation.Propagation;
 import org.hummer.core.transaction.annotation.Transactional;
 import org.hummer.core.transaction.exceptions.IllegalTransactionStateException;
 import org.hummer.core.transaction.exceptions.NoTransactionException;
+import org.hummer.core.transaction.exceptions.TransactionSystemException;
+import org.hummer.core.util.Log4jUtils;
+import org.slf4j.Logger;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 public abstract class TransactionManager {
     private static final ThreadLocal<Class> transactionExist = new ThreadLocal<>();
+    private static final Logger log = Log4jUtils.getLogger(TransactionManager.class);
 
-    public static Transaction RegisterTransaction(Class clazz, Method method) {
-        Transaction transaction = new Transaction();
-        Annotation[] annotations = method.getAnnotations();
-        Propagation propagation = Propagation.REQUIRED;
-        if (annotations != null && annotations.length > 0) {
-            for (Annotation ann : annotations) {
-                if (ann != null && ann instanceof Transactional) {
-                    Transactional transactional = (Transactional) ann;
-                    propagation = transactional.propagation();
-                    Isolation isolation = transactional.isolation();
-                    boolean readOnly = transactional.readOnly();
-                    int timeout = transactional.timeout();
-                    transaction.setIsolationlevel(isolation);
-                    transaction.setReadonly(readOnly);
-                    transaction.setTimeout(timeout);
-                    transaction.setPropagation(propagation);
-                    break;
-                }
-            }
-        }
+
+    public static Transaction RegisterTransaction(Class clazz, Method method) throws NoTransactionException, IllegalTransactionStateException, TransactionSystemException {
+        Transactional transactional = method.getAnnotation(Transactional.class);
+        if (transactional != null) {
+            Transaction transaction = new Transaction();
+
+            Propagation propagation = transactional.propagation();
+            Isolation isolation = transactional.isolation();
+            boolean readOnly = transactional.readOnly();
+            int timeout = transactional.timeout();
+            transaction.setIsolationlevel(isolation);
+            transaction.setReadonly(readOnly);
+            transaction.setTimeout(timeout);
+            transaction.setPropagation(propagation);
         /*-------------------------------------------------------------
         |                      环境已经存在事务
         |
@@ -54,65 +51,70 @@ public abstract class TransactionManager {
         | PROPAGATION_NEVER        ：排除事务（不处理）
         | PROPAGATION_MANDATORY    ：强制要求事务（异常）
         ===============================================================*/
-        boolean existTransation = transactionExist.get() != null;
+            boolean existTransation = transactionExist.get() != null;
 
-        switch (propagation) {
-            case REQUIRED:
-                if (existTransation) {
-                    //Do nothing
-                } else {
-                    //Start new transaction
-                    transactionExist.set(clazz);
-                }
-                break;
-            case SUPPORTS:
-                if (existTransation) {
-                    //Do nothing
-                } else {
-                    //Do nothing
-                }
-                break;
-            case MANDATORY:
-                if (existTransation) {
-                    //Do nothing
-                } else {
-                    //Throw exception
-                    throw new NoTransactionException("Transaction defined as MANDATORY, but no transaction is registered previously");
-                }
-                break;
-            case REQUIRES_NEW:
-                if (existTransation) {
-                    //replace existing transaction
-                    transactionExist.set(clazz);
-                } else {
-                    //Start new transaction
-                    transactionExist.set(clazz);
-                }
-                break;
-            case NOT_SUPPORTED:
-                if (existTransation) {
-                    //clear existing transaction
-                    transactionExist.set(null);
-                } else {
-                    //Do nothing
-                }
-                break;
-            case NEVER:
-                if (existTransation) {
-                    throw new IllegalTransactionStateException("Transaction defined as NEVER, but transaction is registered previously");
-                } else {
-                    //Do nothing
-                }
-                break;
-            case NESTED:
-                if (transactionExist.get() != null) {
-                    //Do nothing
-                } else {
-                    transactionExist.set(clazz);
-                }
-                break;
+            switch (propagation) {
+                case REQUIRED:
+                    if (existTransation) {
+                        //Do nothing
+                    } else {
+                        //Start new transaction
+                        transactionExist.set(clazz);
+                    }
+                    break;
+                case SUPPORTS:
+                    if (existTransation) {
+                        //Do nothing
+                    } else {
+                        //Do nothing
+                    }
+                    break;
+                case MANDATORY:
+                    if (existTransation) {
+                        //Do nothing
+                    } else {
+                        //Throw exception
+                        throw new NoTransactionException("Transaction defined as MANDATORY, but no transaction is registered previously");
+                    }
+                    break;
+                case REQUIRES_NEW:
+                    if (existTransation) {
+                        //replace existing transaction
+                        transactionExist.set(clazz);
+                    } else {
+                        //Start new transaction
+                        transactionExist.set(clazz);
+                    }
+                    break;
+                case NOT_SUPPORTED:
+                    if (existTransation) {
+                        //clear existing transaction
+                        transactionExist.set(null);
+                    } else {
+                        //Do nothing
+                    }
+                    break;
+                case NEVER:
+                    if (existTransation) {
+                        log.error("Transaction Annotation is not properly configured!");
+                        throw new IllegalTransactionStateException("Transaction defined as NEVER, but transaction is registered previously");
+                    } else {
+                        //Do nothing
+                    }
+                    break;
+                case NESTED:
+                    if (transactionExist.get() != null) {
+                        //Do nothing
+                    } else {
+                        transactionExist.set(clazz);
+                    }
+                    break;
+            }
+            return transaction;
+        } else {
+            log.error("Transaction Annotation is not properly configured!");
+            throw new TransactionSystemException("Transaction Annotation is not properly configured!");
         }
-        return transaction;
     }
 
 

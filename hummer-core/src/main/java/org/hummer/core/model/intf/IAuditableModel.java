@@ -56,19 +56,10 @@ public interface IAuditableModel extends IModel {
  * <p>
  * Class Description
  * </p>
- * <p>
- * </p>
- * <p>
- * </p>
- * <p>
  * Change History
  * </p>
  * <p>
  * Author Date Description
- * </p>
- * <p>
- * </p>
- * <p>
  * </p>
  *
  * @author <a href="mailto:jeff_myth@yahoo.com.cn">Jeff Zhou</a>
