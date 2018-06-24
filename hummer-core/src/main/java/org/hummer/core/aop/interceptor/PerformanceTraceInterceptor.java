@@ -36,7 +36,7 @@ public class PerformanceTraceInterceptor extends Perl5DynamicMethodInterceptor {
             returnValue = methodInvocation.proceed();
         } finally {
             stopWatch.stop();
-            log.info(stopWatch.shortSummary());
+            log.debug(stopWatch.shortSummary());
         }
 
         return returnValue;
