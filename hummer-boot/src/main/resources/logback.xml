@@ -71,7 +71,7 @@
     <!--<appender-ref ref="STDOUT"/>-->
     <!--</logger>-->
     <!-- 相当于logger元素，只是name值已经确定为root了 -->
-    <!--<root level="INFO">-->
-    <!--<appender-ref ref="STDOUT"/>-->
-    <!--</root>-->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
 </configuration>
