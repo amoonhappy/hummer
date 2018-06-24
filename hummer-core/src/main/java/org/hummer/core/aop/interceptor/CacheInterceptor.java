@@ -65,10 +65,7 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
                 //将结果存入Redis//异步执行
                 CacheStoreThread cacheStoreThread = new CacheStoreThread();
                 cacheStoreThread.storeResultToRedis(returnValue, redisKey, cacheKey);
-            } else {
-                //log.debug("get data from redis for [{}].[{}]", targetClassName, methodName);
             }
-            //log.debug("stored data to redis for [{}].[{}]", targetClassName, methodName);
         } else {
             //log.info("[{}].[{}] is not defined as Cacheable, execute method to get result directly", targetClassName, methodName);
             returnValue = methodInvocation.proceed();
@@ -85,9 +82,11 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         String annotationGeneratedKey = null;
 
         boolean useKey = (!StringUtil.isEmpty(cacheKeyDef)) && (!StringUtil.isEmpty(cacheName));
-        boolean customizedCacheKey = false;
+        Object redisKey = null;
 
         if (useKey) {
+            boolean customizedCacheKey = false;
+
             try {
                 //String generatedKeyCacheKey = CacheManager.getGeneratedKeyCacheKey(args, targetClassName, methodName, cacheName, cacheKeyDef);
                 //if (!StringUtil.isEmpty(generatedKeyCacheKey)) {
@@ -106,30 +105,27 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
                 //    log.error("Wrong CacheKey Definition Found:[{}] for [{}].[{}]", cacheKeyDef, targetClassName, methodName);
                 //    customizedCacheKey = false;
                 //}
+
+                //use SpEL generated key
+                if (customizedCacheKey) {
+                    redisKey = cacheName + ":" + annotationGeneratedKey;
+                } else {//User default key generator
+                    KeyGenerator keyGenerator = new SimpleKeyGenerator();
+                    redisKey = keyGenerator.generate(null, method, args);
+                }
             } catch (Exception e) {
                 log.error("Wrong CacheKey Definition Found:[{}] for [{}].[{}]", cacheKeyDef, targetClassName, methodName, e);
-                customizedCacheKey = false;
             }
         } else {
             log.error("Wrong CacheKey Definition Found:[{}] for [{}].[{}]", cacheKeyDef, targetClassName, methodName);
-            customizedCacheKey = false;
-        }
-
-        Object redisKey;
-        //use SpEL generated key
-        if (customizedCacheKey) {
-            redisKey = cacheName + ":" + annotationGeneratedKey;
-        } else {//User default key generator
-            KeyGenerator keyGenerator = new SimpleKeyGenerator();
-            redisKey = keyGenerator.generate(null, method, args);
         }
         return redisKey;
     }
 
-    private String getGeneratedKeyCacheKey(Object[] args, String targetClassName, String methodName, String cacheName, String cacheKeyDef) {
-        return new StringBuilder().append(targetClassName).
-                append(methodName).append(cacheName).append(cacheKeyDef).append(args).toString();
-    }
+//    private String getGeneratedKeyCacheKey(Object[] args, String targetClassName, String methodName, String cacheName, String cacheKeyDef) {
+//        return new StringBuilder().append(targetClassName).
+//                append(methodName).append(cacheName).append(cacheKeyDef).append(args).toString();
+//    }
 
     private boolean isCacheable(Class targetClass) {
         boolean ret = false;
