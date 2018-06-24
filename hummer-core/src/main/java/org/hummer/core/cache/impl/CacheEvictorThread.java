@@ -4,7 +4,7 @@ import org.hummer.core.cache.annotation.CacheEvict;
 import org.hummer.core.cache.annotation.CacheEvicts;
 import org.hummer.core.cache.annotation.CacheModelEvict;
 import org.hummer.core.cache.annotation.CacheModelEvicts;
-import org.hummer.core.cache.intf.RedisDo;
+import org.hummer.core.cache.intf.MemoryCacheService;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
@@ -20,7 +20,7 @@ import java.util.Set;
 @SuppressWarnings("all")
 public class CacheEvictorThread {
     private final static Logger log = Log4jUtils.getLogger(CacheEvictorThread.class);
-    private static final RedisDaoImpl redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
+    private static final RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
 
     public void evictCaches(Object targetObject, Object[] args, Method method) {
 
@@ -59,7 +59,7 @@ public class CacheEvictorThread {
         }.start();
     }
 
-    private void evictRedisCacheByAnnoKeys(Object targetObject, Object[] args, Method method, RedisDo
+    private void evictRedisCacheByAnnoKeys(Object targetObject, Object[] args, Method method, MemoryCacheService
             redisDao, CacheEvict cacheEvict) {
         String uniKeyDef = cacheEvict.key();
         String uniCacheName = cacheEvict.cacheName();
@@ -74,11 +74,11 @@ public class CacheEvictorThread {
             uniAnnoGenRedisKey = expression.getValue(cacheEvaluationContext, String.class);
             redisKey = uniCacheName + ":" + uniAnnoGenRedisKey;
             //log.debug("Deleting from Redis for Key: {}", redisKey);
-            redisDao.RedisDel(redisKey);
+            redisDao.delete(redisKey);
         }
     }
 
-    private void evictRedisCacheByModelIds(Object targetObject, Object[] args, Method method, RedisDo
+    private void evictRedisCacheByModelIds(Object targetObject, Object[] args, Method method, MemoryCacheService
             redisDao, CacheModelEvict cacheEvict) {
         String evictCacheKeyDef = cacheEvict.key();
         Class evictModelClass = cacheEvict.modelClass();
@@ -90,7 +90,7 @@ public class CacheEvictorThread {
         evictAnnoGenRedisKey = evictExpression.getValue(evictCacheEvaluationContext, String.class);
         Set<Object> linkedRedisKeys = (Set<Object>) CacheManager.getRedisKeysById(evictModelClass, evictAnnoGenRedisKey);
         //log.debug("Deleting from Redis for Key: {}", linkedRedisKeys);
-        redisDao.RedisDel(linkedRedisKeys);
+        redisDao.delete(linkedRedisKeys);
         //log.debug("Deleting from CacheManager for Key: {}", linkedRedisKeys);
         CacheManager.unRegisterRedisKeyForId(evictModelClass, evictAnnoGenRedisKey, linkedRedisKeys);
     }

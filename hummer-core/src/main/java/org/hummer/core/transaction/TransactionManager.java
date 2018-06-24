@@ -31,7 +31,6 @@ public abstract class TransactionManager {
                     break;
                 }
             }
-
         }
         /*-------------------------------------------------------------
         |                      环境已经存在事务

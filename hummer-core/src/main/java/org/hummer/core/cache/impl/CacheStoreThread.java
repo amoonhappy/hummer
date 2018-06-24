@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("all")
 public class CacheStoreThread {
     private final static Logger log = Log4jUtils.getLogger(CacheStoreThread.class);
-    private static final RedisDaoImpl redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
+    private static final RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
 
     public void storeResultToRedis(Object returnValue, Object redisKey, CacheKey cacheKey) {
         new Thread("CacheStoreThread") {
@@ -24,23 +24,19 @@ public class CacheStoreThread {
                 boolean evictOnAll = cacheKey.evictOnAll();
                 //将结果集放入Redis缓存, 如果返回值为空，也继续存入redis，避免访问数据库
                 if (CacheManager.isExpirationEnabled()) {
-                    redisService.RedisSetex(redisKey, CacheManager.getExpirationPeriod(), returnValue);
+                    redisService.setWithExp(redisKey, CacheManager.getExpirationPeriod(), returnValue);
                 } else {
-                    redisService.RedisSet(redisKey, returnValue);
+                    redisService.set(redisKey, returnValue);
                 }
 
                 //如果不通过Model.Id祛除Cache，并且返回值不为空
                 if (!evictOnAll && returnValue != null) {
                     //store the rediskey and ids mapping
                     if (returnValue instanceof IModel) {
-                        //redisDao.RedisSet(redisKey + ".ids", ((IModel) returnValue).getId());
                         String id = ((IModel) returnValue).getId();
                         CacheManager.registerRedisKeyForId(returnValue.getClass(), id, redisKey);
                     } else if (returnValue instanceof Collection) {
-//                        String idstr = (String) ((Collection<IModel>) returnValue).stream().map(IModel::getId).collect(joining(","));
-//                        Class modelClass = ((Collection<IModel>) returnValue).iterator().next().getClass();
-//                        CacheManager.registerRedisKeyForIds(modelClass, idstr, redisKey);
-                        // Group employees by department
+                        // 使用jdk1.8中的新Collector实现从Collection中获取对象.方法的值返回一个集合
                         Set<String> ids = ((Collection<IModel>) returnValue).stream().map(IModel::getId).collect(Collectors.toCollection(TreeSet::new));
                         Class modelClass = ((Collection<IModel>) returnValue).iterator().next().getClass();
                         CacheManager.registerRedisKeyForIds(modelClass, ids, redisKey);

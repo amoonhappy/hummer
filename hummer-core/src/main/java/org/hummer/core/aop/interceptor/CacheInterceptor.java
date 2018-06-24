@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 @SuppressWarnings("all")
 public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
     private static final Logger log = Log4jUtils.getLogger(CacheInterceptor.class);
-    private static final RedisDaoImpl redisService = (RedisDaoImpl) HummerContainer.getInstance().getBeanFromSpring("redisService");
+    private static final RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -48,7 +48,7 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
             CacheKey cacheKey = method.getAnnotation(CacheKey.class);
             //优先查询Redis
             Object redisKey = genRedisKey(targetObject, method, args);
-            returnValue = redisService.RedisGet(redisKey);
+            returnValue = redisService.get(redisKey);
 
             //如果Redis中没有，执行方法
             if (returnValue == null) {
