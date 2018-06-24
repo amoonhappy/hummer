@@ -40,15 +40,12 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         Object returnValue = null;
         Class targetClass = methodInvocation.getThis().getClass();
         String targetClassName = targetClass.getName();
-        Method method = methodInvocation.getMethod();
-        String methodName = method.getName();
         boolean cacheable = isCacheable(targetClass);
-        //if false use Simple Key Generate the Cache Key
-        //if true, use @CacheKey to Generate the Cache Key
-
-        Object[] args = methodInvocation.getArguments();
 
         if (cacheable) {
+            Object[] args = methodInvocation.getArguments();
+            Method method = methodInvocation.getMethod();
+            String methodName = method.getName();
             Object targetObject = methodInvocation.getThis();
             String cacheName = null;
             String annotationGeneratedKey = null;
@@ -74,6 +71,14 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         return returnValue;
     }
 
+    /**
+     * Generate the redis key by the input parameters and the cachekey annotations
+     *
+     * @param targetObject
+     * @param method
+     * @param args
+     * @return
+     */
     private Object genRedisKey(Object targetObject, Method method, Object[] args) {
         CacheKey cacheKey = method.getAnnotation(CacheKey.class);
         String targetClassName = targetObject.getClass().getSimpleName();
@@ -122,11 +127,12 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         return redisKey;
     }
 
-//    private String getGeneratedKeyCacheKey(Object[] args, String targetClassName, String methodName, String cacheName, String cacheKeyDef) {
-//        return new StringBuilder().append(targetClassName).
-//                append(methodName).append(cacheName).append(cacheKeyDef).append(args).toString();
-//    }
-
+    /**
+     * Check whether a class if defined as cacheable by implement the ICacheable interface
+     *
+     * @param targetClass
+     * @return
+     */
     private boolean isCacheable(Class targetClass) {
         boolean ret = false;
         Class[] interfaces = targetClass.getInterfaces();
