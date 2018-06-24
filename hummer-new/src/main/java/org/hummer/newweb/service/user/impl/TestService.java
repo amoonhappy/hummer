@@ -3,7 +3,7 @@ package org.hummer.newweb.service.user.impl;
 import org.hummer.core.cache.annotation.CacheEvict;
 import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.cache.annotation.CacheModelEvict;
-import org.hummer.core.cache.impl.RedisDaoImpl;
+import org.hummer.core.cache.impl.RedisService;
 import org.hummer.core.cache.intf.ICacheable;
 import org.hummer.core.model.intf.ISingleLongPKModel;
 import org.hummer.core.service.impl.BasicTestService;
@@ -24,7 +24,7 @@ public class TestService extends BasicTestService implements ITestService, ICach
     //init by Hummer
     ITestDAO testDAO;
     //init by Spring
-    RedisDaoImpl redisService;
+    RedisService redisService;
 
     @Override
     @CacheKey(cacheName = "userList", key = "'test'", evictOnAll = true)
