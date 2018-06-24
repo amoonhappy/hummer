@@ -14,7 +14,7 @@
     <!-- dependency version control-->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springVersion>5.0.6.RELEASE</springVersion>
+        <springVersion>5.0.7.RELEASE</springVersion>
         <springRedisVersion>2.0.8.RELEASE</springRedisVersion>
         <jedisVersion>2.9.0</jedisVersion>
         <jstlVersion>1.2</jstlVersion>
