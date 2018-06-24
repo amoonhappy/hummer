@@ -42,7 +42,7 @@ public class PerformanceTraceInterceptor extends Perl5DynamicMethodInterceptor {
         return returnValue;
     }
 
-    protected String createInvocationTraceName(MethodInvocation invocation) {
+    private String createInvocationTraceName(MethodInvocation invocation) {
         StringBuilder sb = new StringBuilder();
         Method method = invocation.getMethod();
         //Class<?> clazz = method.getDeclaringClass();
