@@ -18,9 +18,12 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 @SuppressWarnings("all")
+//@Resource
 public class CacheEvictorThread {
     private final static Logger log = Log4jUtils.getLogger(CacheEvictorThread.class);
     private static final RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
+//    @Autowired
+//    RedisService redisService;
 
     public void evictCaches(Object targetObject, Object[] args, Method method) {
 

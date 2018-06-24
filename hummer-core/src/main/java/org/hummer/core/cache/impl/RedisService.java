@@ -1,9 +1,7 @@
 package org.hummer.core.cache.impl;
 
 import org.hummer.core.cache.intf.MemoryCacheService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
@@ -12,10 +10,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * this bean is registered in Spring
  */
-@Service
 public class RedisService implements MemoryCacheService {
 
-    @Autowired
     private RedisTemplate redisTemplate;
 
     /**
@@ -130,5 +126,13 @@ public class RedisService implements MemoryCacheService {
      */
     public void rename(Object key, Object newkey) {
         redisTemplate.rename(key, newkey);
+    }
+
+    public RedisTemplate getRedisTemplate() {
+        return redisTemplate;
+    }
+
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 }

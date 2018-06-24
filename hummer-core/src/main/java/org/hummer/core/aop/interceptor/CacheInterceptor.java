@@ -25,7 +25,9 @@ import java.lang.reflect.Method;
 @SuppressWarnings("all")
 public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
     private static final Logger log = Log4jUtils.getLogger(CacheInterceptor.class);
-    private static final RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
+    RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
+//    @Autowired
+//    RedisService redisService;
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {

@@ -13,9 +13,12 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("all")
+//@Resource
 public class CacheStoreThread {
     private final static Logger log = Log4jUtils.getLogger(CacheStoreThread.class);
     private static final RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
+//    @Autowired
+//    RedisService redisService;
 
     public void storeResultToRedis(Object returnValue, Object redisKey, CacheKey cacheKey) {
         new Thread("CacheStoreThread") {

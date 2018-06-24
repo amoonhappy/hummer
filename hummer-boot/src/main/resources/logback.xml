@@ -27,7 +27,7 @@
         <!-- 配置滚动的策略 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志名称的格式 -->
-            <fileNamePattern>${LOG_HOME}/log/performance.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/performance.log.%d{yyyy-MM-dd}</fileNamePattern>
             <!-- 保存的最长时间：天数 -->
             <MaxHistory>1</MaxHistory>
         </rollingPolicy>
@@ -44,7 +44,7 @@
     -->
     <!--<logger name="org.hummer.core.aop.interceptor.PerformanceTraceInterceptor" additivity="false">-->
     <!--<level value="INFO"/>-->
-    <!--<appender-ref ref="FILE"/>-->
+    <!--<appender-ref ref="PerfFile"/>-->
     <!--</logger>-->
     <!--<logger name="org.hummer" additivity="false">-->
     <!--<level value="ERROR"/>-->
@@ -71,7 +71,7 @@
     <!--<appender-ref ref="STDOUT"/>-->
     <!--</logger>-->
     <!-- 相当于logger元素，只是name值已经确定为root了 -->
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-    </root>
+    <!--<root level="INFO">-->
+    <!--<appender-ref ref="STDOUT"/>-->
+    <!--</root>-->
 </configuration>

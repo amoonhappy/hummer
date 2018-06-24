@@ -92,10 +92,10 @@
         <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
               p:connectionFactory-ref="jedisConnFactory"/>
 
-        <!--<bean id="redisService" class="org.hummer.core.cache.impl.RedisService">-->
-        <!--<property name="redisTemplate">-->
-        <!--<ref bean="redisTemplate"/>-->
-        <!--</property>-->
-        <!--</bean>-->
+        <bean id="redisService" class="org.hummer.core.cache.impl.RedisService">
+            <property name="redisTemplate">
+                <ref bean="redisTemplate"/>
+            </property>
+        </bean>
     </beans>
 </beans>
