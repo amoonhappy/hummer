@@ -37,7 +37,7 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-        Object returnValue;
+        Object returnValue = null;
         Class targetClass = methodInvocation.getThis().getClass();
         String targetClassName = targetClass.getName();
         Method method = methodInvocation.getMethod();
@@ -56,8 +56,9 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
             CacheKey cacheKey = method.getAnnotation(CacheKey.class);
             //优先查询Redis
             Object redisKey = genRedisKey(targetObject, method, args);
-            returnValue = redisService.get(redisKey);
-
+            if (redisKey != null) {
+                returnValue = redisService.get(redisKey);
+            }
             //如果Redis中没有，执行方法
             if (returnValue == null) {
                 //log.debug("no redis cache found for [{}].[{}]!", targetClassName, methodName);
@@ -86,7 +87,6 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
 
         if (useKey) {
             boolean customizedCacheKey = false;
-
             try {
                 //String generatedKeyCacheKey = CacheManager.getGeneratedKeyCacheKey(args, targetClassName, methodName, cacheName, cacheKeyDef);
                 //if (!StringUtil.isEmpty(generatedKeyCacheKey)) {
