@@ -24,18 +24,18 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
 
     private static Logger log = Log4jUtils.getLogger(TransactionInterceptor.class);
 
-    public TransactionInterceptor() {
+    TransactionInterceptor() {
     }
 
-    public Object invoke(MethodInvocation methodInvocation) {
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Class targetClass = methodInvocation.getThis().getClass();
         String simpleName = targetClass.getSimpleName();
         Method method = methodInvocation.getMethod();
         String methodName = method.getName();
         Object result = null;
         SqlSession sqlSession = null;
-        Transaction transaction = null;
-        /**
+        Transaction transaction;
+        /*
          * register a new transaction
          */
         try {
@@ -52,7 +52,7 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
             log.error("Transaction System Error, Pls check Transaction Annotation and Config for [{}.{}]", simpleName, methodName, e);
             throw e;
         }
-
+        //if the transaction is defined, start a transaction via getSession
         if (transaction != null) {
             try {
                 log.debug("Starting transaction before [{}.{}]", simpleName, methodName);
@@ -79,14 +79,15 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
                 if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
                     //do nothing
                 } else {
+                    assert sqlSession != null;
                     sqlSession.rollback();
                     log.debug("Rolled back transaction after [{}.{}]", simpleName, methodName);
                 }
             } finally {
+                // close session if it's not in a nested transaction
                 if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
                     //do nothing
                 } else {
-
                     // must use this method to clean threadLocal
                     if (transaction.needNewTransaction()) {
                         log.debug("Closing New SqlSession [{}.{}]", simpleName, methodName);
@@ -96,15 +97,14 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
                         log.debug("Closing SqlSession [{}.{}]", simpleName, methodName);
                         MybatisUtil.closeSession();
                         log.debug("Closed SqlSession after [{}.{}]", simpleName, methodName);
-//                }
                     }
-                    TransactionManager.clearupAfterCompletion(targetClass);
+                    TransactionManager.cleanupsAfterCompletion();
                 }
-
-                return result;
             }
         } else {
-            return result;
+            //if no transaction defined, proceed the method directly
+            result = methodInvocation.proceed();
         }
+        return result;
     }
 }

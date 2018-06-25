@@ -51,11 +51,11 @@ public abstract class TransactionManager {
         | PROPAGATION_NEVER        ：排除事务（不处理）
         | PROPAGATION_MANDATORY    ：强制要求事务（异常）
         ===============================================================*/
-            boolean existTransation = transactionExist.get() != null;
+            boolean existTransaction = transactionExist.get() != null;
 
             switch (propagation) {
                 case REQUIRED:
-                    if (existTransation) {
+                    if (existTransaction) {
                         //Do nothing
                     } else {
                         //Start new transaction
@@ -63,22 +63,23 @@ public abstract class TransactionManager {
                     }
                     break;
                 case SUPPORTS:
-                    if (existTransation) {
+                    if (existTransaction) {
                         //Do nothing
                     } else {
                         //Do nothing
                     }
                     break;
                 case MANDATORY:
-                    if (existTransation) {
+                    if (existTransaction) {
                         //Do nothing
                     } else {
                         //Throw exception
+                        log.error("Transaction defined as MANDATORY, but no transaction is registered previously");
                         throw new NoTransactionException("Transaction defined as MANDATORY, but no transaction is registered previously");
                     }
                     break;
                 case REQUIRES_NEW:
-                    if (existTransation) {
+                    if (existTransaction) {
                         //replace existing transaction
                         transactionExist.set(clazz);
                     } else {
@@ -87,7 +88,7 @@ public abstract class TransactionManager {
                     }
                     break;
                 case NOT_SUPPORTED:
-                    if (existTransation) {
+                    if (existTransaction) {
                         //clear existing transaction
                         transactionExist.set(null);
                     } else {
@@ -95,8 +96,8 @@ public abstract class TransactionManager {
                     }
                     break;
                 case NEVER:
-                    if (existTransation) {
-                        log.error("Transaction Annotation is not properly configured!");
+                    if (existTransaction) {
+                        log.error("Transaction defined as NEVER, but transaction is registered previously");
                         throw new IllegalTransactionStateException("Transaction defined as NEVER, but transaction is registered previously");
                     } else {
                         //Do nothing
@@ -131,7 +132,7 @@ public abstract class TransactionManager {
         return false;
     }
 
-    public static void clearupAfterCompletion(Class targetClass) {
+    public static void cleanupsAfterCompletion() {
         transactionExist.set(null);
     }
 
