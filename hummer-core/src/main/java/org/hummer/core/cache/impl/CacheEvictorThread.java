@@ -8,6 +8,7 @@ import org.hummer.core.cache.intf.MemoryCacheService;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
+import org.hummer.core.util.ThreadPool;
 import org.slf4j.Logger;
 import org.springframework.core.PrioritizedParameterNameDiscoverer;
 import org.springframework.expression.Expression;
@@ -25,11 +26,10 @@ public class CacheEvictorThread {
 //    @Autowired
 //    RedisService redisService;
 
-    public void evictCaches(Object targetObject, Object[] args, Method method) {
-
-        new Thread("CacheEvictorThread") {
+    public static void evictCaches(Object targetObject, Object[] args, Method method) {
+        ThreadPool.COMMON_POOL.execute(new Runnable() {
+            @Override
             public void run() {
-
                 log.debug("entering a new thread:{} on {}", Thread.currentThread().getName(), Thread.currentThread().toString());
                 //获取方法上定义的所有声明，包括CacheEvict和CacheModelEvict两种
                 //先通过CacheEvict祛除Cache
@@ -59,10 +59,10 @@ public class CacheEvictorThread {
                     }
                 }
             }
-        }.start();
+        });
     }
 
-    private void evictRedisCacheByAnnoKeys(Object targetObject, Object[] args, Method method, MemoryCacheService
+    private static void evictRedisCacheByAnnoKeys(Object targetObject, Object[] args, Method method, MemoryCacheService
             redisDao, CacheEvict cacheEvict) {
         String uniKeyDef = cacheEvict.key();
         String uniCacheName = cacheEvict.cacheName();
@@ -81,7 +81,7 @@ public class CacheEvictorThread {
         }
     }
 
-    private void evictRedisCacheByModelIds(Object targetObject, Object[] args, Method method, MemoryCacheService
+    private static void evictRedisCacheByModelIds(Object targetObject, Object[] args, Method method, MemoryCacheService
             redisDao, CacheModelEvict cacheEvict) {
         String evictCacheKeyDef = cacheEvict.key();
         Class evictModelClass = cacheEvict.modelClass();

@@ -61,8 +61,8 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
                 //log.debug("no redis cache found for [{}].[{}]!", targetClassName, methodName);
                 returnValue = methodInvocation.proceed();
                 //将结果存入Redis//异步执行
-                CacheStoreThread cacheStoreThread = new CacheStoreThread();
-                cacheStoreThread.storeResultToRedis(returnValue, redisKey, cacheKey);
+                //CacheStoreThread cacheStoreThread = new CacheStoreThread();
+                CacheStoreThread.storeResultToRedis(returnValue, redisKey, cacheKey);
             }
         } else {
             //log.info("[{}].[{}] is not defined as Cacheable, execute method to get result directly", targetClassName, methodName);

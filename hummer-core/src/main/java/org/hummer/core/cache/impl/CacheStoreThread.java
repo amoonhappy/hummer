@@ -4,6 +4,7 @@ import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.model.intf.IModel;
 import org.hummer.core.util.Log4jUtils;
+import org.hummer.core.util.ThreadPool;
 import org.slf4j.Logger;
 
 import java.util.Collection;
@@ -20,11 +21,9 @@ public class CacheStoreThread {
     private static final boolean epirationEnabled = CacheManager.isExpirationEnabled();
     private static final int epirationPeriod = CacheManager.getExpirationPeriod();
 
-    //    @Autowired
-//    RedisService redisService;
-
-    public void storeResultToRedis(Object returnValue, Object redisKey, CacheKey cacheKey) {
-        new Thread("CacheStoreThread") {
+    public static void storeResultToRedis(Object returnValue, Object redisKey, CacheKey cacheKey) {
+        ThreadPool.COMMON_POOL.execute(new Runnable() {
+            @Override
             public void run() {
                 if (redisKey != null && cacheKey != null) {
                     log.debug("entering a new thread:{} on {}", Thread.currentThread().getName(), Thread.currentThread().toString());
@@ -55,6 +54,6 @@ public class CacheStoreThread {
                     }
                 }
             }
-        }.start();
+        });
     }
 }
