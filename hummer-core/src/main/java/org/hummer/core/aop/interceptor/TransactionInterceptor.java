@@ -88,7 +88,6 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
                 if (TransactionManager.existTransactionOrNot(targetClass, methodInvocation.getMethod())) {
                     //do nothing
                 } else {
-                    // must use this method to clean threadLocal
                     if (transaction.needNewTransaction()) {
                         log.debug("Closing New SqlSession [{}.{}]", simpleName, methodName);
                         MybatisUtil.closeNewSession();
@@ -98,6 +97,7 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
                         MybatisUtil.closeSession();
                         log.debug("Closed SqlSession after [{}.{}]", simpleName, methodName);
                     }
+                    // must use this method to cleanup threadLocal
                     TransactionManager.cleanupsAfterCompletion();
                 }
             }
