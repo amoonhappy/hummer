@@ -17,6 +17,7 @@ import org.hummer.core.util.ReflectionUtil;
 import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -234,7 +235,10 @@ public class XMLBeanFactory implements IBeanFactory {
                 log.error(interfaceErrorMsg);
                 throw new RuntimeException(interfaceErrorMsg);
             }
-            target = clazz.newInstance();
+
+            // get the default contractor for a bean class, if don't exist or is not accessible, throw NoSuchMethodException
+            Constructor a = clazz.getConstructor();
+            target = a.newInstance();
             // if the object is already an interceptor, return;
             if (target instanceof Interceptor) {
                 ret[0] = target;
@@ -252,10 +256,10 @@ public class XMLBeanFactory implements IBeanFactory {
             eh.setCallbacks(callbacks);
             ret[0] = target;
             ret[1] = eh.create();
-        } catch (InstantiationException | IllegalAccessException e) {
-            log.error("error when initial the proxy of instance: " + simpleName, e);
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            log.error("error when initial the proxy of instance: {}, pls check the default constructor!", simpleName, e);
         } catch (Throwable e) {
-            log.error("error when enhance the class of instance via CGLIB: " + simpleName, e);
+            log.error("error when enhance the class of instance via CGLIB: {}", simpleName, e);
             throw new RuntimeException("could not create the proxy for class :" + simpleName);
         }
         return ret;

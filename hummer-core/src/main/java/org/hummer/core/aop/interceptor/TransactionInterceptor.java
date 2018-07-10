@@ -24,9 +24,6 @@ public class TransactionInterceptor extends Perl5DynamicMethodInterceptor {
 
     private static Logger log = Log4jUtils.getLogger(TransactionInterceptor.class);
 
-    TransactionInterceptor() {
-    }
-
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Class targetClass = methodInvocation.getThis().getClass();
         String simpleName = targetClass.getSimpleName();

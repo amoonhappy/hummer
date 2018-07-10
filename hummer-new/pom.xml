@@ -39,8 +39,19 @@
         <junitVersion>4.12</junitVersion>
         <hummerVersion>1.0-SNAPSHOT</hummerVersion>
         <oroVersion>2.0.8</oroVersion>
+        <swaggerVersion>2.4.0</swaggerVersion>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swaggerVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swaggerVersion}</version>
+        </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>

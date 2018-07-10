@@ -1,23 +1,24 @@
 package org.hummer.openapi;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.hummer.core.config.impl.SupportedAppInfos;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.container.intf.IBusinessServiceManager;
 import org.hummer.core.container.intf.IHummerContainer;
 import org.hummer.core.util.ObjectUtil;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @RequestMapping("/rest/hummer")
 @RestController
+@Api(tags = "Hummer Framework容器类")
 @SuppressWarnings("all")
 public class AdminController {
     /*
@@ -31,6 +32,7 @@ public class AdminController {
 
             return mv;
         }*/
+    @ApiOperation(value = "测试", notes = "测试Hummer正常启动", httpMethod = "GET")
     @RequestMapping(value = "/test", method = {RequestMethod.GET})
     public Map<String, String> testHummer() {
         Map<String, String> ret = new HashMap<>();
@@ -41,6 +43,7 @@ public class AdminController {
         return ret;
     }
 
+    @ApiOperation(value = "服务器信息", notes = "提供Hummer服务器IP，端口，名称等信息", httpMethod = "GET")
     @RequestMapping(value = "/serverInfo", method = {RequestMethod.GET})
     public Map<String, String> serverInfo(ServletRequest request) {
         Map<String, String> ret = new HashMap<>();
@@ -50,6 +53,7 @@ public class AdminController {
         return ret;
     }
 
+    @ApiOperation(value = "Hummer状态", notes = "返回Hummer状态信息", httpMethod = "GET")
     @RequestMapping(value = "/status", method = {RequestMethod.GET})
     public Map<String, String> getHummerStatus() {
         IHummerContainer iHummerContainer = HummerContainer.getInstance();
@@ -74,6 +78,7 @@ public class AdminController {
         return ret;
     }
 
+    @ApiOperation(value = "Hummer容器重新初始化", notes = "Hummer容器重新初始化", httpMethod = "GET")
     @RequestMapping(value = "/reInit", method = {RequestMethod.GET})
     public Map<String, String> reInitHummerContainer() {
         Map<String, String> ret = new HashMap<>();
@@ -83,23 +88,6 @@ public class AdminController {
         ret = checkHummerStatus(newHummerContainer, ret);
         return ret;
     }
-
-    @RequestMapping(value = "/user/{userId}", method = {RequestMethod.GET})
-    public List getUserById(@PathVariable("userId") String userId) {
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-
-        return null;
-    }
-
-    @RequestMapping(value = "/user/{userId}", method = {RequestMethod.DELETE})
-    public Object getUser(@PathVariable("userId") String userId) {
-//        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-//        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-//        ITestService testService = (ITestService) bsv.getService("testService");
-        return "successful for userId delete" + userId;
-    }
-
     // for example: init the data of selector in a form
     /*
     @ModelAttribute(value = "statusList")

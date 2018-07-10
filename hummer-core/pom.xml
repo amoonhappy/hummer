@@ -40,8 +40,19 @@
         <oroVersion>2.0.8</oroVersion>
         <apacheCommonsCodecVersion>1.11</apacheCommonsCodecVersion>
         <googleFindBugsVersion>2.0.3</googleFindBugsVersion>
+        <swaggerVersion>2.4.0</swaggerVersion>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swaggerVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swaggerVersion}</version>
+        </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
