@@ -21,9 +21,9 @@ import java.util.List;
 
 public class TestService extends BasicTestService implements ITestService, ICacheable {
     private static Logger log = Log4jUtils.getLogger(TestService.class);
-    //init by Hummer
+    //init by Hummer，Hummer容器注入的容器對象
     ITestDAO testDAO;
-    //init by Spring
+    //init by Spring，Hummer容器通過Spring注入的Spring對象
     RedisService redisService;
 
     @Override

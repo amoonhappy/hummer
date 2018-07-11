@@ -1,8 +1,7 @@
 package org.hummer.newweb.controller;
 
+import io.swagger.annotations.Api;
 import org.hummer.core.container.impl.HummerContainer;
-import org.hummer.core.container.intf.IBusinessServiceManager;
-import org.hummer.core.container.intf.IHummerContainer;
 import org.hummer.newweb.model.impl.User;
 import org.hummer.newweb.model.intf.IUser;
 import org.hummer.newweb.service.user.intf.ITestService;
@@ -16,7 +15,10 @@ import java.util.List;
 
 @RequestMapping("/rest/v1")
 @RestController
+@Api(tags = "Test Controller例子類")
 public class TestController {
+    //因為使用的SpringMVC，所以Controller的IOC沒法實現，只能手動初始化
+    ITestService testService = (ITestService) HummerContainer.getInstance().getServiceManager().getService("testService");
     /*
         @RequestMapping(value = "info/{userNum}", method = {RequestMethod.GET, RequestMethod.POST})
         public Object test1(@RequestParam(value = "loginName", required = true) String loginName,
@@ -31,9 +33,6 @@ public class TestController {
 
     @RequestMapping(value = "/user/{firstName}/{role}", method = {RequestMethod.GET})
     public List selectActiveUsersByName(@PathVariable("firstName") String firstName, @PathVariable("role") String role) {
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-        ITestService testService = (ITestService) bsv.getService("testService");
         IUser user = new User();
         user.setFirstName(firstName);
         user.setRole(role);
@@ -42,17 +41,11 @@ public class TestController {
 
     @RequestMapping(value = "/user/all", method = {RequestMethod.GET})
     public List selectAllUser() {
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-        ITestService testService = (ITestService) bsv.getService("testService");
         return (List) testService.getAllUsers();
     }
 
     @RequestMapping(value = "/user/{userId}", method = {RequestMethod.GET})
     public List<org.hummer.newweb.model.intf.IUser> getUserById(@PathVariable("userId") String userId) {
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-        ITestService testService = (ITestService) bsv.getService("testService");
         List<org.hummer.newweb.model.intf.IUser> ret = new ArrayList<>();
         ret.add(testService.getUserById(Integer.valueOf(userId)));
         return ret;
@@ -60,27 +53,18 @@ public class TestController {
 
     @RequestMapping(value = "/user/{userId}", method = {RequestMethod.DELETE})
     public Object deleteUserById(@PathVariable("userId") String userId) {
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-        ITestService testService = (ITestService) bsv.getService("testService");
         testService.deleteUser(userId);
         return "successful for userId delete" + userId;
     }
 
     @RequestMapping(value = "/user", method = {RequestMethod.POST})
     public Object insertUser(User user) {
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-        ITestService testService = (ITestService) bsv.getService("testService");
         testService.insertUser(user);
         return user;
     }
 
     @RequestMapping(value = "/user", method = {RequestMethod.PUT})
     public Object updateUserById(User user) {
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager bsv = iHummerContainer.getServiceManager();
-        ITestService testService = (ITestService) bsv.getService("testService");
         testService.updateUser(user);
         return user;
     }

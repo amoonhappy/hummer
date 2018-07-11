@@ -20,7 +20,7 @@
         <!--<context:annotation-config/>-->
         <!--<context:component-scan base-package="org.hummer"/>-->
         <context:property-placeholder location="classpath:app.properties"/>
-        <context:component-scan base-package="org.hummer"/>
+        <!--<context:component-scan base-package="org.hummer"/>-->
         <context:annotation-config/>
         <!-- Redis配置 -->
         <!-- jedis pool配置 -->
@@ -91,7 +91,7 @@
         <!-- redis template definition -->
         <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
               p:connectionFactory-ref="jedisConnFactory"/>
-
+        <!--在RedisService中使用@Service和@AutoWired注解就不用配置-->
         <bean id="redisService" class="org.hummer.core.cache.impl.RedisService">
             <property name="redisTemplate">
                 <ref bean="redisTemplate"/>
