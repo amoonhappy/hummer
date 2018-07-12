@@ -44,9 +44,9 @@ public class AdminController {
     @RequestMapping(value = "/serverInfo", method = {RequestMethod.GET})
     public Map<String, String> serverInfo(ServletRequest request) {
         Map<String, String> ret = new HashMap<>();
-        ret.put("Server Name", request.getLocalName());
-        ret.put("Server IP", request.getLocalAddr());
-        ret.put("Server Port", String.valueOf(request.getLocalPort()));
+        ret.put("Server Name", request.getServerName());
+        ret.put("Server IP", request.getRemoteAddr());
+        ret.put("Server Port", String.valueOf(request.getServerPort()));
         return ret;
     }
 
