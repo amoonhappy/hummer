@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableWebMvc
-@ComponentScan(basePackages = {"org.hummer.openapi", "org.hummer.newweb.controller"})
+@ComponentScan(basePackages = {"org.hummer"})
 public class SwaggerConfig {
     @Bean
     public Docket buildDocket() {
