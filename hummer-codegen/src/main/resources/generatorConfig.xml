@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <properties resource="mysql.properties"/>
+    <properties resource="app.properties"/>
 
     <context id="sqlserverTables" targetRuntime="MyBatis3">
         <!-- 生成的pojo，将implements Serializable-->
@@ -35,7 +35,7 @@
         -->
         <!--<javaModelGenerator targetPackage="com.joey.mybaties.test.pojo" targetProject="MAVEN">-->
         <javaModelGenerator targetPackage="org.hummer.newweb.model.impl"
-                            targetProject="/Users/jeff/IdeaProjects/hummer/hummer-codegen/src/main/java">
+                            targetProject="gen">
             <property name="enableSubPackages" value="true"/>
             <!-- 从数据库返回的值被清理前后的空格  -->
             <property name="trimStrings" value="true"/>
@@ -43,13 +43,13 @@
 
         <!--对应的mapper.xml文件  -->
         <sqlMapGenerator targetPackage="mappers"
-                         targetProject="/Users/jeff/IdeaProjects/hummer/hummer-codegen/src/main/resources">
+                         targetProject="gen">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!-- 对应的Mapper接口类文件 -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="org.hummer.newweb.model.impl"
-                             targetProject="/Users/jeff/IdeaProjects/hummer/hummer-codegen/src/main/java">
+                             targetProject="gen">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 

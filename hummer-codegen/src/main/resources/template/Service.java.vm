@@ -1,0 +1,37 @@
+package
+
+import java.util.List;
+
+${package}.service;
+    ${package}.dto.${className}Dto;
+    ${package}.model.${className};
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+public interface ${className}Service {
+
+    ${className} queryObject(String id);
+
+    List<${className}> queryList(${className}Dto queryDto);
+
+    List<${className}> queryForPage(${className}Dto queryDto);
+
+    void save(${className} ${classname}, String operatorId);
+
+    void update(${className} ${classname}, String operatorId);
+
+    void delete(String id, String operatorId);
+
+    void deleteBatch(String[] ids, String operatorId);
+
+    void enableBatch(String[] ids, String operatorId);
+
+    void disableBatch(String[] ids, String operatorId);
+
+    Boolean checkProperty(${className}Dto queryDto);
+}

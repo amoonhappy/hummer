@@ -1,0 +1,309 @@
+$(function () {
+    $("#jqGrid").jqGrid({
+        url: '../${pathName}/list',
+        datatype: "json",
+        colModel: [
+            #foreach($column in $columns)
+                #if($column.columnName != $pk.columnName && ${column.attrname} != 'createId' && ${column.attrname} !=
+                    'updateId' && ${column.attrname} != 'updateTime' && ${column.attrname} != 'deleteFlag')
+                    {
+                        label: '${column.comments}',
+                        name: '${column.attrname}',
+                        #if($column.dataType =='date' || $column.dataType =='datetime')
+                            formatter: "date",
+                        #end
+                        width: 80
+                    }#if($velocityCount != $columns.size()),#end
+                #end
+            #end
+        ],
+        viewrecords: true,
+        height: 385,
+        rowNum: 10,
+        rowList: [10, 30, 50],
+        rownumbers: true,
+        rownumWidth: 25,
+        autowidth: true,
+        multiselect: true,
+        pager: "#jqGridPager",
+        jsonReader: {
+            root: "page.list",
+            page: "page.currPage",
+            total: "page.totalPage",
+            records: "page.totalCount"
+        },
+        prmNames: {
+            page: "page",
+            rows: "limit",
+            order: "order"
+        },
+        gridComplete: function () {
+            // 隐藏grid底部滚动条
+            $("#jqGrid").closest(".ui-jqgrid-bdiv").css({
+                "overflow-x": "hidden"
+            });
+        }
+    });
+});
+
+var vm = new Vue(
+    {
+        el: '#rrapp',
+        data: function () {
+            return {
+                showList: true,
+                title: null,
+            ${classname}:
+            {
+                accessToken: '',
+                #foreach($column in $columns)
+                    #if(${column.attrname} != 'createId' && ${column.attrname} != 'createTime' && ${column.attrname} !=
+                        'updateId' && ${column.attrname} != 'updateTime' && ${column.attrname} != 'deleteFlag')
+                        ${column.attrname}: ''#if($velocityCount != $columns.size()),#end
+                    #end
+                #end
+            }
+        ,
+            queryObj: {
+                accessToken: '',
+            }
+        ,
+            basicStatusList: [],
+            #foreach($column in $columns)
+                #if(${column.attrname} != 'createId' && ${column.attrname} != 'createTime' && ${column.attrname} !=
+                    'updateId' && ${column.attrname} != 'updateTime' && ${column.attrname} != 'deleteFlag')
+                    #if($column.dataType =='date' || $column.dataType =='datetime')
+                                ${column.attrname}Picker:
+                        {
+                            disabledDate: function (time) {
+                                return time.getTime() < Date.now() - 8.64e7;
+                            }
+                        }
+                    ,
+                    #end
+                #end
+            #end
+            rules: {
+                #foreach($column in $columns)
+                    #if($column.columnName != $pk.columnName && ${column.attrname} !=
+                        'createId' && ${column.attrname} != 'createTime' && ${column.attrname} !=
+                        'updateId' && ${column.attrname} != 'updateTime' && ${column.attrname} !=
+                        'deleteFlag' && $column.nullAble =='NO')
+                        ${column.attrname}: [{
+                        #if($column.dataType =='date' || $column.dataType =='datetime')
+                            type: 'date',
+                            message: '请选择${column.comments}',
+                        #else
+                            message: '请输入${column.comments}',
+                        #end
+                        required: true,
+                        trigger: 'change'
+                    }]#if($velocityCount != $columns.size()),#end
+                    #end
+                #end
+            }
+        }
+        },
+        created: function () {
+            var _this = this;
+            $.ajax({
+                type: "POST",
+                url: "../basic_status",
+                async: false,
+                success: function (r) {
+                    if (r.code == 0) {
+                        _this.basicStatusList = r.list;
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
+        },
+        methods: {
+            query: function () {
+                vm.reload();
+            },
+            add: function () {
+                var _this = this;
+                this.showList = false;
+                this.title = "新增";
+                #foreach($column in $columns)
+                    #if(${column.attrname} != 'createId' && ${column.attrname} != 'createTime' && ${column.attrname} !=
+                        'updateId' && ${column.attrname} != 'updateTime' && ${column.attrname} != 'deleteFlag')
+                        #if($column.dataType =='date' || $column.dataType =='datetime')
+                            this
+                        .${classname}.${column.attrname} = '';
+                        #end
+                    #end
+                #end
+            },
+            update: function (event) {
+                var id = getSelectedRow();
+                if (id == null) {
+                    return;
+                }
+                vm.showList = false;
+                vm.title = "修改";
+                vm.getInfo(id);
+            },
+            saveOrUpdate: function (event) {
+                var _this = this;
+                this.\$refs['ruleForm']\.
+                validate(function (valid) {
+                    if (valid) {
+                        var url = _this
+                    .${classname}.
+                        id == null || _this
+                    .${classname}.
+                        id == '' ? '../${pathName}/save' : '../${pathName}/update';
+                        $\.
+                        ajax({
+                            type: "POST",
+                            url: url,
+                            data: JSON.stringify(_this.${classname}),
+                            success: function (r) {
+                                if (r.code === 0) {
+                                    alert('操作成功', function (index) {
+                                        vm.reload();
+                                    });
+                                } else {
+                                    alert(r.msg);
+                                }
+                                #if($column.dataType =='date' || $column.dataType =='datetime')
+                                    _this
+                                .${classname}.${column.attrname} = new Date(_this
+                                .${classname}.${column.attrname})
+                                    ;
+                                #end
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            del: function (event) {
+                var ids = getSelectedRows();
+                if (ids == null) {
+                    return;
+                }
+                confirm('确定要删除选中的记录？', function () {
+                    $\.
+                    ajax({
+                        type: "POST",
+                        url: "../${pathName}/delete",
+                        data: JSON.stringify(ids),
+                        success: function (r) {
+                            if (r.code == 0) {
+                                alert('操作成功', function (index) {
+                                    $("#jqGrid").trigger("reloadGrid");
+                                });
+                            } else {
+                                alert(r.msg);
+                            }
+                        }
+                    });
+                });
+            },
+            enable: function (event) {
+                var ids = getSelectedRows();
+                if (ids == null) {
+                    return;
+                }
+                confirm('确定要启用选中的记录？', function () {
+                    $\.
+                    ajax({
+                        type: "POST",
+                        url: "../${pathName}/enable",
+                        data: JSON.stringify(ids),
+                        success: function (r) {
+                            if (r.code == 0) {
+                                alert('操作成功', function (index) {
+                                    $("#jqGrid").trigger("reloadGrid");
+                                });
+                            } else {
+                                alert(r.msg);
+                            }
+                        }
+                    });
+                });
+            },
+            disable: function (event) {
+                var ids = getSelectedRows();
+                if (ids == null) {
+                    return;
+                }
+                confirm('确定要禁用选中的记录？', function () {
+                    $\.
+                    ajax({
+                        type: "POST",
+                        url: "../${pathName}/disable",
+                        data: JSON.stringify(ids),
+                        success: function (r) {
+                            if (r.code == 0) {
+                                alert('操作成功', function (index) {
+                                    $("#jqGrid").trigger("reloadGrid");
+                                });
+                            } else {
+                                alert(r.msg);
+                            }
+                        }
+                    });
+                });
+            },
+            getInfo: function (id) {
+                var _this = this;
+                $\.
+                get(
+                    "../${pathName}/info/" + id,
+                    function (r) {
+                        _this.${classname} = r.info;
+                        #foreach($column in $columns)
+                            #if(${column.attrname} != 'createId' && ${column.attrname} !=
+                                'createTime' && ${column.attrname} != 'updateId' && ${column.attrname} !=
+                                'updateTime' && ${column.attrname} != 'deleteFlag')
+                                #if($column.dataType =='date' || $column.dataType =='datetime')
+                                    _this
+                                .${classname}.${column.attrname} = new Date(r.info.${column.attrname});
+                                #end
+                            #end
+                        #end
+                    });
+            },
+            reload: function (event) {
+                vm.showList = true;
+                var page = $("#jqGrid").jqGrid('getGridParam', 'page');
+                $("#jqGrid").jqGrid('setGridParam', {postData: this.queryObj, page: page}).trigger("reloadGrid");
+                this.\$refs['ruleForm'].resetFields();
+                this
+            .${classname}.
+                id = '';
+            }
+        }
+    });
+
+Date.prototype.format = function (format) {
+    // eg:format="yyyy-MM-dd hh:mm:ss";
+    if (!format) {
+        format = "yyyy-MM-dd hh:mm:ss";
+    }
+    var o = {
+        "M+": this.getMonth() + 1, // month
+        "d+": this.getDate(), // day
+        "H+": this.getHours(), // hour
+        "h+": this.getHours(), // hour
+        "m+": this.getMinutes(), // minute
+        "s+": this.getSeconds(), // second
+        "q+": Math.floor((this.getMonth() + 3) / 3), // quarter
+        "S": this.getMilliseconds()
+    };
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+        }
+    }
+    return format;
+};

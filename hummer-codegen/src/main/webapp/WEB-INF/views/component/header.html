@@ -1,0 +1,36 @@
+<header class="main-header" data-global="${rc.contextPath}" data-userdata="$!{user.id}"
+        data-mainLoginId="$!{mainLogoId.confValue}" data-mainLogoShow="$!{mainLogoShow.confValue}">
+
+    <nav class="navbar navbar-static-top" role="navigation">
+        <div class="logo-box">
+            <a href="javascript:void(0)" class="clearfix">
+                #if($!{mainLogoShow.confValue}=='true')
+                <img width="160" height="48" #if($!{mainLogoId.confValue}!='' )
+                     src="${rc.contextPath}/api/v4/attachment/id/$!{mainLogoId.confValue}"
+                     #elseif($!{mainLogoId.confValue}) src="${rc.contextPath}/static/images/loginLogo.png" #else #end
+                     alt="logo" class="logo-default"/>
+                #end
+                <span class="logo-text">移动管理平台</span>
+            </a>
+        </div>
+        <div class="navbar-custom-menu clearfix">
+            <div class="sys-icon">
+                <img src="${rc.contextPath}/static/images/page-top-sys-icon.png" alt="">
+                <div class="modify-box">
+                    <ul class="list">
+                        <li class="item" @click="openModifyPwd">修改密码</li>
+                        <li class="item"><a class="" href="${rc.contextPath}/logout">退出登录</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="avatar-box clearfix">
+                <img class="avatar" src="${rc.contextPath}/static/images/avatar.jpg" alt="">
+                <div class="user-info">
+                    <span class="username">$!{user.loginName}</span><br>
+                    <span class="usertype">$!{user.realname}</span>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</header>

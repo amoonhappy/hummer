@@ -1,0 +1,74 @@
+﻿<script src="${rc.contextPath}/static/public/jquery/jquery.min.js"></script>
+<script src="${rc.contextPath}/static/public/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="${rc.contextPath}/static/public/vue/vue.min.js"></script>
+<script src="${rc.contextPath}/static/public/vue/vue-resource.js"></script>
+<script src="${rc.contextPath}/static/public/app/app.js"></script>
+<script src="${rc.contextPath}/static/public/elementui/index.js" type="text/javascript"></script>
+<script src="${rc.contextPath}/static/public/layer/layer.js"></script>
+<script type="text/javascript">
+    $.ajaxSetup({
+        cache: false
+    });
+
+    $(document).ajaxSend(function (e, x, s) {
+        if (!s.unmask) {
+            //s['layer'] = layer.msg('加载中', {icon: 16, shade: [0.5, '#393D49']});
+            s['layer'] = layer.load();
+        }
+    });
+
+    $(document).ajaxComplete(function (e, x, s) {
+        if (x.responseText) {
+            if (x.responseText.indexOf('"status":-1') != -1) {
+                var j = JSON.parse(x.responseText);
+                vm.$message({
+                    type: 'error',
+                    message: j.msg
+                })
+                setTimeout(function () {
+                    location.href = '${rc.contextPath}/login.html';
+                }, 1000)
+
+            }
+        }
+
+        if (s['layer'] && !s.unmask) {
+            layer.close(s['layer']);
+        }
+
+        if (!s.preventGlobalExceptionHandler && x.status == 200 && x.responseJSON && x.responseJSON.status && x.responseJSON.status != 200 && !x.responseJSON.success) {
+            var statusCode = x.responseJSON.status;
+            if (statusCode == 401) {
+                layer.alert(x.responseJSON.message, function (index) {
+                    window.location.href = '${rc.contextPath}/login.html';
+                });
+            } else if (statusCode == 403) {
+                layer.alert('没有权限!', {shift: 6});
+            } else {
+                layer.alert(x.responseJSON.error || '服务器异常!', {shift: 6});
+            }
+        }
+
+
+    });
+
+    $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
+        if (settings.preventGlobalExceptionHandler) {
+            return;
+        }
+        if (403 == jqxhr.status) {
+            layer.alert("对不起，你没有权限！", {shift: 6});
+        } else if (404 == jqxhr.status) {
+            layer.alert("找不到资源", {shift: 6});
+        } else if (400 == jqxhr.status) {
+            layer.alert("bad request", {shift: 6});
+        } else if (401 == jqxhr.status || -1 == jqxhr.status) {
+            window.location.href = '${rc.contextPath}/login.html';
+        } else if (500 == jqxhr.status) {
+            layer.alert($.parseJSON(jqxhr.responseText).error, {shift: 6});
+        }
+    });
+
+    var commonJavaPath = '${rc.contextPath}';
+</script>
+<script src="${rc.contextPath}/static/js/common.js"></script>

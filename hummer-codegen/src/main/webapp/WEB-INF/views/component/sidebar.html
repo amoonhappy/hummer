@@ -1,0 +1,26 @@
+<aside class="main-sidebar">
+    <div class="fold">
+        <i class="iconfont icon-arrow-double-left toggle" data-toggle="offcanvas"></i>
+    </div>
+    <section class="sidebar">
+
+        <ul class="sidebar-menu">
+
+            <li class="" v-for="item in menuList">
+                <a href="">
+                    <i class="iconfont icon-home"></i>
+                    <span class="first-title">{{item.name}}</span>
+                    <i v-if="item.list.length>0" class="iconfont icon-arrow-right"></i>
+                </a>
+                <ul v-if="item.list.length>0" class="treeview-menu">
+                    <li v-for="item1 in item.list">
+                        <a :href="'${rc.contextPath}'+item1.url">
+                            <i class="iconfont icon-home"></i>{{item1.name}}</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </section>
+
+</aside>

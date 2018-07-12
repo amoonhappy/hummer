@@ -1,0 +1,143 @@
+#set($title="主页")
+#set($active="/index.html")
+#set($sub_active="/index.html")
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="${rc.contextPath}/static/images/favicon.ico" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    $contain.get('/component/title.html')
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    #parse("component/link.html")
+    <!-- 各页面单独样式 -->
+    <link rel="stylesheet" href="${rc.contextPath}/static/css/index.css">
+
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper" id="app" v-cloak>
+    <!-- ======================头部========================= -->
+    $contain.get('/component/header.html')
+    <!-- ======================边栏====================== -->
+    $contain.get("/home/sidebar.html").put('active',$!{active}).put('sub_active',$!{sub_active})
+    <!-- =====================主体========================== -->
+    <div class="content-wrapper">
+        <div class="index-panel">
+            <el-row class="panel-box">
+                <el-col :span="8" class="box-item">
+                    <a href="${rc.contextPath}/employee/employee.html" id="user" class="link-block">
+                        <div class="content-wrap second clearfix">
+                            <div class="img-box">
+                                <i class="iconfont icon-yonghu"></i>
+                                <!-- <image class="img" src="${rc.contextPath}/static/images/user.png"> -->
+                            </div>
+                            <div class="desc">
+                                <div class="num">{{empCount}}</div>
+                                <div class="text">用户</div>
+                            </div>
+                        </div>
+                    </a>
+                </el-col>
+                <el-col :span="8" class="box-item">
+                    <a href="${rc.contextPath}/device_info/device_info.html?type=iphone" id="deviceInfo1"
+                       class="link-block">
+                        <div class="content-wrap second clearfix">
+                            <div class="img-box">
+                                <i class="iconfont icon-apple"></i>
+                                <!-- <image class="img" src="${rc.contextPath}/static/images/apple.png"> -->
+                            </div>
+
+                            <div class="desc">
+                                <div class="num">{{iosCount}}</div>
+                                <div class="text">ios设备</div>
+                            </div>
+                        </div>
+                    </a>
+
+
+                </el-col>
+                <el-col :span="8" class="box-item">
+                    <a href="${rc.contextPath}/device_info/device_info.html?type=android" id="deviceInfo2"
+                       class="link-block">
+                        <div class="content-wrap second third clearfix">
+                            <div class="img-box">
+                                <i class="iconfont icon-android"></i>
+                                <!-- <image class="img" src="${rc.contextPath}/static/images/android.png"> -->
+                            </div>
+                            <div class="desc">
+                                <div class="num">{{andCount}}</div>
+                                <div class="text">Android设备</div>
+                            </div>
+                        </div>
+                    </a>
+
+
+                </el-col>
+                <el-col :span="8" class="box-item">
+                    <a href="${rc.contextPath}/application_info/application_info.html" id="appInfo" class="link-block">
+                        <div class="content-wrap second fourth clearfix">
+                            <div class="img-box">
+                                <i class="iconfont icon-yingyong"></i>
+                                <!-- <image class="img" src="${rc.contextPath}/static/images/app.png"> -->
+                            </div>
+                            <div class="desc">
+                                <div class="num">{{appCount}}</div>
+                                <div class="text">应用</div>
+                            </div>
+                        </div>
+                    </a>
+
+
+                </el-col>
+                <el-col :span="8" class="box-item">
+                    <a href="${rc.contextPath}/light_function/light_function.html" id="lightApp" class="link-block">
+                        <div class="content-wrap second five clearfix">
+                            <div class="img-box">
+                                <i class="iconfont icon-qingyingyong"></i>
+                                <!-- <image class="img" src="${rc.contextPath}/static/images/light-app.png"> -->
+                            </div>
+                            <div class="desc">
+                                <div class="num">{{functionCount}}</div>
+                                <div class="text">轻应用</div>
+                            </div>
+                        </div>
+                    </a>
+
+                </el-col>
+                <el-col :span="8" class="box-item">
+                    <a href="${rc.contextPath}/third_application/third_application.html" id="thirdApp"
+                       class="link-block">
+                        <div class="content-wrap second six clearfix">
+                            <div class="img-box">
+                                <i class="iconfont icon-disanfangyingyong"></i>
+                                <!-- <image class="img" src="${rc.contextPath}/static/images/app2.png"> -->
+                            </div>
+                            <div class="desc">
+                                <div class="num">{{bsAppCount}}</div>
+                                <div class="text">第三方应用</div>
+                            </div>
+                        </div>
+                    </a>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- =====================底部========================== -->
+    $contain.get("/component/footer.html")
+
+
+</div>
+<!-- ./wrapper -->
+
+#parse("component/script.html")
+<!-- inject:js -->
+
+<script src="${rc.contextPath}/static/js/index.js"></script>
+</body>
+
+</html>

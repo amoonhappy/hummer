@@ -1,0 +1,30 @@
+<aside class="main-sidebar" data-menu='${menus}'>
+    <div class="fold">
+        <i class="toggle-btn iconfont icon-arrow-double-left toggle" data-toggle="offcanvas"></i>
+    </div>
+    <section class="sidebar">
+        <ul class="sidebar-menu">
+            #foreach($item in ${menuList})
+            <li #if($!{active}==$!{item.url}&&$!{item.url}!='/index.html') class="active"
+                #elseif($!{active}==$!{item.url}&&$!{item.url}=='/index.html') class="active home-link" #else #end>
+                <a href="${rc.contextPath}$!{item.url}" class="first-link">
+                    <i class="iconfont $!{item.icon}"></i>
+                    <span class="first-title">$!{item.name}</span>
+                    <i class="iconfont icon-arrow-right"></i>
+                </a>
+                #if($!{item.url}!='/index.html')
+                <ul class="treeview-menu">
+                    #foreach($item1 in ${item.list})
+                    <li #if($!{sub_active}==$!{item1.url}) class="active second-list" #end>
+                        <a href="${rc.contextPath}$!{item1.url}">
+                            <i class="iconfont $!{item1.icon}"></i>$!{item1.name}
+                        </a>
+                    </li>
+                    #end
+                </ul>
+                #end
+            </li>
+            #end
+        </ul>
+    </section>
+</aside>

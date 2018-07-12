@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${comments}</title>
+    #set($header='#parse("sys/header.html")')
+    #set($save='#if($shiro.hasPermission("'+${pathName}+':save"))')
+    #set($update='#if($shiro.hasPermission("'+${pathName}+':update"))')
+    #set($delete='#if($shiro.hasPermission("'+${pathName}+':delete"))')
+    #set($enable='#if($shiro.hasPermission("'+${pathName}+':enable"))')
+    #set($disable='#if($shiro.hasPermission("'+${pathName}+':disable"))')
+    #set($end='#end')
+    $header
+    <style>
+
+        .widthselect {
+            width: 194px;
+        }
+    </style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            $save
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            $end
+            $update
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+            $end
+            $delete
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+            $end
+            $enable
+            <a class="btn btn-primary" @click="enable"><i class="glyphicon glyphicon-ok-sign"></i>&nbsp;启用</a>
+            $end
+            $disable
+            <a class="btn btn-primary" @click="disable"><i class="glyphicon glyphicon-minus-sign"></i>&nbsp;禁用</a>
+            $end
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <el-form :model="${classname}" :rules="rules" ref="ruleForm" style="padding-top:20px; padding-right:30px;"
+                 label-width="160px">
+            <input type="hidden" id="accessToken" name="accessToken" value=""/>
+
+            #set($i=0)
+            #foreach($column in $columns)
+                #if($column.columnName != $pk.columnName && ${column.attrname} != 'createId' && ${column.attrname} !=
+                    'createTime' && ${column.attrname} != 'updateId' && ${column.attrname} !=
+                    'updateTime' && ${column.attrname} != 'deleteFlag')
+                    #if($column.dataType =='datetime' || $column.dataType =='date')
+                        #if($velocityCount % 2==0)
+                        <el-row>
+                        #end
+                        <el-col :span="12">
+                            <el-form-item label="${column.comments}" prop="${column.attrname}">
+                                <el-date-picker id="certificateTime" class="widthinput"
+                                                v-model="${classname}.${column.attrname}" format="yyyy-MM-dd"
+                                                type="date" placeholder="${column.comments}">
+                                </el-date-picker>
+                            </el-form-item>
+                        </el-col>
+                        #if($velocityCount % 2!= 0)
+                        </el-row>
+                        #end
+                    #elseif($column.dataType =='varchar')
+                        #if($velocityCount % 2==0)
+                        <el-row>
+                        #end
+                        <el-col :span="12">
+                            <el-form-item label="${column.comments}" prop="${column.attrname}">
+                                <el-input v-model="${classname}.${column.attrname}" class="widthinput"
+                                          placeholder="${column.comments}" :maxlength="${column.maxLength}"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        #if($velocityCount % 2!= 0)
+                        </el-row>
+                        #end
+                    #else
+                        #if($velocityCount % 2==0)
+                        <el-row>
+                        #end
+                        <el-col :span="12">
+                            <el-form-item label="${column.comments}" prop="${column.attrname}">
+                                <el-input v-model="${classname}.${column.attrname}" class="widthinput"
+                                          placeholder="${column.comments}" :maxlength="${column.maxLength}"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        #if($velocityCount % 2!= 0)
+                        </el-row>
+                        #end
+                    #end
+                #end
+                #if($velocityCount % 2!= 0 && $velocityCount == $columns.size())
+                    </el-row>
+                #end
+            #end
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/> &nbsp;&nbsp;
+                <input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </el-form>
+    </div>
+</div>
+<script src="${rc.contextPath}/js/${pathName}/${pathName}.js?_${date.systemTime}"></script>
+</body>
+</html>

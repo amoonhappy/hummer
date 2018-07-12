@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+    <!-- <bean id="propertyConfigurer" class="com.coracle.mxm.common.EncryptablePropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:app.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}" />
+        <property name="maxTotal" value="${redis.maxTotal}" />
+        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+    </bean>
+
+    <bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:usePool="true"
+          p:hostName="${redis.host}"
+          p:port="${redis.port}"
+          p:timeout="${redis.timeout}"
+          p:password="${redis.password}"
+          p:poolConfig-ref="redisPoolConfig" />
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connectionFactory-ref="jedisConnFactory"/>
+
+    <bean id="redisUtils" class="com.coracle.mxm.common.util.RedisUtils">
+        <property name="redisTemplate">
+            <ref bean="redisTemplate" />
+        </property>
+    </bean> -->
+    <import resource="classpath:spring-mvc.xml"/>
+    <import resource="classpath:applicationContext.xml"/>
+</beans>

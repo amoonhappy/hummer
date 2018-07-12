@@ -1,0 +1,193 @@
+package
+
+import com.coracle.mxm.common.constant.Constants;
+import com.coracle.mxm.common.example.ParseExample;
+import com.coracle.mxm.common.exception.AppException;
+import com.coracle.mxm.common.util.PageUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
+
+${package}.service.impl;
+    ${package}.dto.${className}Dto;
+    ${package}.mapper.${className}Mapper;
+    ${package}.model.${className};
+    ${package}.model.${className}Example;
+    ${package}.service.${className}Service;
+
+@Service("${classname}Service")
+public class ${className}ServiceImpl implements ${className}Service {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(${className}ServiceImpl.class);
+
+    @Autowired
+    private ${className}Mapper ${classname}Mapper;
+
+    @Override
+    public ${className} queryObject(String id) {
+        if (StringUtils.isBlank(id)) {
+            LOGGER.error("查询操作参数不能为空。");
+            throw new AppException("查询操作参数不能为空。");
+        }
+        return ${classname}Mapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<${className}> queryList(${className}Dto queryDto) {
+        if (queryDto == null) {
+            queryDto = new ${className}Dto();
+        }
+            ${className}Example example = new ${className}Example();
+            ${className}Example.Criteria criteria = example.createCriteria();
+        criteria.andDeleteFlagEqualTo(Constants.DELFLG_NORMAL);
+        example.setOrderByClause(ParseExample.getOrderByClause(queryDto, "${className}"));
+        ParseExample.parseExample(queryDto, criteria);
+        return ${classname}Mapper.selectByExample(example);
+    }
+
+    @Override
+    public List<${className}> queryForPage(${className}Dto queryDto) {
+        if (queryDto == null || queryDto.getPage() <= 0 || queryDto.getLimit() <= 0) {
+            LOGGER.error("查询操作参数不能为空。");
+            throw new AppException("查询操作参数不能为空。");
+        }
+        PageUtils.page(queryDto);
+            ${className}Example example = new ${className}Example();
+            ${className}Example.Criteria criteria = example.createCriteria();
+        criteria.andDeleteFlagEqualTo(Constants.DELFLG_NORMAL);
+        example.setOrderByClause(ParseExample.getOrderByClause(queryDto, "${className}"));
+        ParseExample.parseExample(queryDto, criteria);
+        return ${classname}Mapper.selectByExample(example);
+    }
+
+    @Override
+    public void save(${className} insertRecord, String operatorId) {
+        if (insertRecord == null || StringUtils.isBlank(operatorId)) {
+            LOGGER.error("新增操作参数不能为空。");
+            throw new AppException("新增操作参数不能为空。");
+        }
+
+        /*${className}Dto checkDto = new ${className}Dto();
+        checkDto.setCaseName(insertRecord.getCaseName());
+        boolean checkFlag = this.checkProperty(checkDto);
+        if (checkFlag) {
+            throw new AppException("名称属性值已经存在。");
+        }*/
+
+        Long timeLong = System.currentTimeMillis();
+        insertRecord.setId(Constants.getUUID());
+        insertRecord.setCreateId(operatorId);
+        insertRecord.setCreateTime(timeLong);
+        insertRecord.setUpdateId(operatorId);
+        insertRecord.setUpdateTime(timeLong);
+        insertRecord.setDeleteFlag(Constants.DELFLG_NORMAL);
+            ${classname}Mapper.insertSelective(insertRecord);
+    }
+
+    @Override
+    public void update(${className} updateRecord, String operatorId) {
+        if (updateRecord == null || StringUtils.isBlank(updateRecord.getId()) || StringUtils.isBlank(operatorId)) {
+            LOGGER.error("修改操作参数不能为空。");
+            throw new AppException("修改操作参数不能为空。");
+        }
+
+        /*${className}Dto checkDto = new ${className}Dto();
+        checkDto.setId(updateRecord.getId());
+        checkDto.setCaseName(updateRecord.getCaseName());
+        boolean checkFlag = this.checkProperty(checkDto);
+        if (checkFlag) {
+            throw new AppException("名称属性值已经存在。");
+        }*/
+
+        Long timeLong = System.currentTimeMillis();
+        updateRecord.setCreateId(null);
+        updateRecord.setCreateTime(null);
+        updateRecord.setUpdateId(operatorId);
+        updateRecord.setUpdateTime(timeLong);
+        updateRecord.setDeleteFlag(null);
+            ${classname}Mapper.updateByPrimaryKeySelective(updateRecord);
+    }
+
+    @Override
+    public void delete(String id, String operatorId) {
+        if (StringUtils.isBlank(id) || StringUtils.isBlank(operatorId)) {
+            LOGGER.error("删除操作参数不能为空。");
+            throw new AppException("删除操作参数不能为空。");
+        }
+        ${className} record = new ${className}();
+        record.setId(id);
+        record.setUpdateId(operatorId);
+        record.setUpdateTime(System.currentTimeMillis());
+        record.setDeleteFlag(Constants.DELFLG_DELETED);
+            ${classname}Mapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public void deleteBatch(String[] ids, String operatorId) {
+        if (ids == null || ids.length < 1 || StringUtils.isBlank(operatorId)) {
+            LOGGER.error("删除操作参数不能为空。");
+            throw new AppException("删除操作参数不能为空。");
+        }
+        List list = Arrays.asList(ids);
+        ${className} record = new ${className}();
+        record.setUpdateId(operatorId);
+        record.setUpdateTime(System.currentTimeMillis());
+        record.setDeleteFlag(Constants.DELFLG_DELETED);
+
+            ${className}Example example = new ${className}Example();
+        example.createCriteria().andIdIn(list);
+            ${classname}Mapper.updateByExampleSelective(record, example);
+    }
+
+    @Override
+    public void enableBatch(String[] ids, String operatorId) {
+        if (ids == null || ids.length < 1 || StringUtils.isBlank(operatorId)) {
+            LOGGER.error("启用操作参数不能为空。");
+            throw new AppException("启用操作参数不能为空。");
+        }
+        List list = Arrays.asList(ids);
+        ${className} record = new ${className}();
+        record.setUpdateId(operatorId);
+        record.setUpdateTime(System.currentTimeMillis());
+        record.setDeleteFlag(Constants.DELFLG_DELETED);
+
+            ${className}Example example = new ${className}Example();
+        example.createCriteria().andIdIn(list);
+            ${classname}Mapper.updateByExampleSelective(record, example);
+    }
+
+    @Override
+    public void disableBatch(String[] ids, String operatorId) {
+        if (ids == null || ids.length < 1 || StringUtils.isBlank(operatorId)) {
+            LOGGER.error("禁用操作参数不能为空。");
+            throw new AppException("禁用操作参数不能为空。");
+        }
+        List list = Arrays.asList(ids);
+        ${className} record = new ${className}();
+        record.setUpdateId(operatorId);
+        record.setUpdateTime(System.currentTimeMillis());
+        record.setDeleteFlag(Constants.DELFLG_DELETED);
+
+            ${className}Example example = new ${className}Example();
+        example.createCriteria().andIdIn(list);
+            ${classname}Mapper.updateByExampleSelective(record, example);
+    }
+
+    @Override
+    public Boolean checkProperty(${className}Dto queryDto) {
+        if (queryDto == null) {
+            LOGGER.error("属性验证操作参数不能为空。");
+            throw new AppException("属性验证操作参数不能为空。");
+        }
+            ${className}Example example = new ${className}Example();
+            ${className}Example.Criteria criteria = example.createCriteria();
+        criteria.andDeleteFlagEqualTo(Constants.DELFLG_NORMAL);
+        ParseExample.parseCheckExample(queryDto, criteria);
+        return ${classname}Mapper.countByExample(example) > 0;
+    }
+}
