@@ -45,6 +45,23 @@ public abstract class BasicMybatisDAO implements IBasicTestDAO {
         return MybatisUtil.getSession().update(getModelName() + SQL_ID_UPDATE, iModel);
     }
 
+    @Override
+    public void deleteModel(ISingleStringPKModel iModel) {
+        MybatisUtil.getSession().delete(getModelName() + SQL_ID_DELETE, iModel);
+    }
+
+    @Override
+    public IModel getModel(ISingleLongPKModel iModel) {
+        IModel ret;
+        ret = MybatisUtil.getSession().selectOne(getModelName() + SQL_ID_GET, iModel.getId());
+        return ret;
+    }
+
+    @Override
+    public int updateModel(ISingleLongPKModel iModel) {
+        return MybatisUtil.getSession().update(getModelName() + SQL_ID_UPDATE, iModel.getId());
+    }
+
     //TODO: pagination search
     public List getAllModels() {
         return MybatisUtil.getSession().selectList(getModelName() + SQL_ID_SELECTALL);

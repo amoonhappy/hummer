@@ -11,9 +11,15 @@ public interface IBasicTestDAO {
 
     void deleteModel(ISingleLongPKModel iModel);
 
+    void deleteModel(ISingleStringPKModel iModel);
+
     IModel getModel(ISingleStringPKModel iModel);
 
+    IModel getModel(ISingleLongPKModel iModel);
+
     int updateModel(ISingleStringPKModel iModel);
+
+    int updateModel(ISingleLongPKModel iModel);
 
     List getAllModels();
 
