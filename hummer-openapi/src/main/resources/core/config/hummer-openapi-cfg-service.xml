@@ -1,5 +1,0 @@
-<component name="hummer-openapi" type="bsv">
-    <bean id="testService"
-          class="org.hummer.openapi.service.TestService" singleton="true">
-    </bean>
-</component>

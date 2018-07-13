@@ -9,6 +9,9 @@ a lightweighted java framework based on Spring MVC + Hummer + Mybatis with below
 4. Mybatis integrated + configurable DataSource (Default, Druid and Hikari) support via simple configuration
 5. Method Level Cache (based on Redis) implemented, by ICacheable interface and CacheEvict(s) Annotation
 6. Spring MVC integrated
+7. Swagger2 Integrated
+8. Add Velocity Support for Spring V5.0.x
 
 ####Code Generation Module
 1. Mybatis Generator integrated
+2. Customized Code Generator added, for Controller/Services/Model etc, easy to extend 

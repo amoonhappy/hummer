@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <url>http://maven.apache.org</url>
     <artifactId>hummer-boot</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <!-- dependency version control-->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,17 +41,42 @@
         <oroVersion>2.0.8</oroVersion>
         <jettyVersion>8.2.0.v20160908</jettyVersion>
         <apacheHttpClientVersion>4.3.3</apacheHttpClientVersion>
+        <embedTomcatVersion>8.5.5</embedTomcatVersion>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <!--Embed Tomcat 8 Support-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${embedTomcatVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-el</artifactId>
+            <version>${embedTomcatVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${embedTomcatVersion}</version>
+        </dependency>
         <dependency>
             <groupId>hummer</groupId>
             <artifactId>hummer-new</artifactId>
             <version>${hummerVersion}</version>
+            <type>war</type>
         </dependency>
         <dependency>
             <groupId>hummer</groupId>
             <artifactId>hummer-core</artifactId>
             <version>${hummerVersion}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
         </dependency>
         <dependency>
             <groupId>oro</groupId>
@@ -236,38 +261,38 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib</classpathPrefix>
-                            <mainClass>org.hummer.boot.HummerBootServer</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/${project.groupId}/lib
-                            </outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-jar-plugin</artifactId>-->
+            <!--<configuration>-->
+            <!--<archive>-->
+            <!--<manifest>-->
+            <!--<addClasspath>true</addClasspath>-->
+            <!--<classpathPrefix>lib</classpathPrefix>-->
+            <!--<mainClass>org.hummer.boot.HummerBootJettyServer</mainClass>-->
+            <!--</manifest>-->
+            <!--</archive>-->
+            <!--</configuration>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-dependency-plugin</artifactId>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>copy</id>-->
+            <!--<phase>package</phase>-->
+            <!--<goals>-->
+            <!--<goal>copy-dependencies</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<outputDirectory>-->
+            <!--${project.build.directory}/${project.groupId}/lib-->
+            <!--</outputDirectory>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
-        <finalName>${project.groupId}/hummer-boot-demo</finalName>
+        <!--<finalName>${project.groupId}/hummer-boot-demo</finalName>-->
     </build>
 </project>

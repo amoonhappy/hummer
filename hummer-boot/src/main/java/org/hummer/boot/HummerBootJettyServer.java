@@ -1,11 +1,11 @@
 package org.hummer.boot;
 
-import org.eclipse.jetty.jsp.JettyJspServlet;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.thread.QueuedThreadPool;
-import org.eclipse.jetty.webapp.WebAppContext;
+//import org.eclipse.jetty.jsp.JettyJspServlet;
+//import org.eclipse.jetty.server.Server;
+//import org.eclipse.jetty.server.ServerConnector;
+//import org.eclipse.jetty.servlet.ServletHolder;
+//import org.eclipse.jetty.util.thread.QueuedThreadPool;
+//import org.eclipse.jetty.webapp.WebAppContext;
 import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.container.intf.IHummerContainer;
@@ -13,8 +13,8 @@ import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;
 
-public class HummerBootServer {
-    private static final Logger log = Log4jUtils.getLogger(HummerBootServer.class);
+public class HummerBootJettyServer {
+    private static final Logger log = Log4jUtils.getLogger(HummerBootJettyServer.class);
     private static final String HUMMER_BOOT_SERVER_PORT = "hummer.boot.server.port";
     private static final String HUMMER_BOOT_SERVER_HOME = "hummer.boot.server.home";
     private static final String HUMMER_BOOT_SERVER_WEBAPP = "hummer.boot.server.webapp";
@@ -33,7 +33,8 @@ public class HummerBootServer {
 
 //    private static final String WEBROOT_INDEX = "./hummer-boot/src/main/webapp";
 
-    private static Server createServerIn() {
+    //private static Server createServerIn() {
+    private static Object createServerIn() {
         IHummerContainer container = HummerContainer.getInstance();
 
         IConfiguration config = container.getConfigManager().getArchConfig();
@@ -96,56 +97,57 @@ public class HummerBootServer {
 //        }
 
         // 创建Server
-        Server server = new Server();
-        // 添加ThreadPool
-        QueuedThreadPool queuedThreadPool = new QueuedThreadPool();
-        queuedThreadPool.setName("queuedTreadPool");
-        queuedThreadPool.setMinThreads(Integer.parseInt(configMinThread));
-        queuedThreadPool.setMaxThreads(Integer.parseInt(configMaxThread));
-        server.addBean(queuedThreadPool);
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(port);
-        connector.setSoLingerTime(Integer.parseInt(configMaxIdleTime));
-        server.addConnector(connector);
-
-        WebAppContext webContext = new WebAppContext(webrootIndex, configContextRoot);
-
-        // JSP support
-        enableJSPSupport(webContext);
-
-//        webContext.setTempDirectory(tempDir);
-//        webContext.setAttribute("javax.servlet.context.tempdir", tempDir);
-
-        // Load web.xml
-        webContext.setDescriptor(descriptor);
-
-        //webContext.setDescriptor("./src/main/webapp/WEB-INF/web.xml");
-        webContext.setResourceBase(webrootIndex);
-        webContext.setClassLoader(Thread.currentThread().getContextClassLoader());
-
-        server.setHandler(webContext);
-        log.info(server.dump());
-        return server;
+//        Server server = new Server();
+//        // 添加ThreadPool
+//        QueuedThreadPool queuedThreadPool = new QueuedThreadPool();
+//        queuedThreadPool.setName("queuedTreadPool");
+//        queuedThreadPool.setMinThreads(Integer.parseInt(configMinThread));
+//        queuedThreadPool.setMaxThreads(Integer.parseInt(configMaxThread));
+//        server.addBean(queuedThreadPool);
+//        ServerConnector connector = new ServerConnector(server);
+//        connector.setPort(port);
+//        connector.setSoLingerTime(Integer.parseInt(configMaxIdleTime));
+//        server.addConnector(connector);
+//
+//        WebAppContext webContext = new WebAppContext(webrootIndex, configContextRoot);
+//
+//        // JSP support
+//        enableJSPSupport(webContext);
+//
+////        webContext.setTempDirectory(tempDir);
+////        webContext.setAttribute("javax.servlet.context.tempdir", tempDir);
+//
+//        // Load web.xml
+//        webContext.setDescriptor(descriptor);
+//
+//        //webContext.setDescriptor("./src/main/webapp/WEB-INF/web.xml");
+//        webContext.setResourceBase(webrootIndex);
+//        webContext.setClassLoader(Thread.currentThread().getContextClassLoader());
+//
+//        server.setHandler(webContext);
+//        log.info(server.dump());
+//        return server;
+        return null;
     }
 
-    private static void enableJSPSupport(WebAppContext webContext) {
-        // Create / Register JSP Servlet (must be named "jsp" per spec)
-        ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);
-        holderJsp.setInitOrder(0);
-        holderJsp.setInitParameter("logVerbosityLevel", "DEBUG");
-        holderJsp.setInitParameter("fork", "false");
-        holderJsp.setInitParameter("xpoweredBy", "false");
-        holderJsp.setInitParameter("compilerTargetVM", "1.8");
-        holderJsp.setInitParameter("compilerSourceVM", "1.8");
-        holderJsp.setInitParameter("keepgenerated", "true");
-        webContext.addServlet(holderJsp, "*.jsp");
-    }
-
-    public static void main(String[] args) throws Exception {
-        log.info("Starting Embedded Hummer Jetty Server.....");
-        Server server = createServerIn();
-        server.stop();
-        server.start();
-        server.join();
-    }
+//    private static void enableJSPSupport(WebAppContext webContext) {
+//        // Create / Register JSP Servlet (must be named "jsp" per spec)
+//        ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);
+//        holderJsp.setInitOrder(0);
+//        holderJsp.setInitParameter("logVerbosityLevel", "DEBUG");
+//        holderJsp.setInitParameter("fork", "false");
+//        holderJsp.setInitParameter("xpoweredBy", "false");
+//        holderJsp.setInitParameter("compilerTargetVM", "1.8");
+//        holderJsp.setInitParameter("compilerSourceVM", "1.8");
+//        holderJsp.setInitParameter("keepgenerated", "true");
+//        webContext.addServlet(holderJsp, "*.jsp");
+//    }
+//
+//    public static void main(String[] args) throws Exception {
+//        log.info("Starting Embedded Hummer Jetty Server.....");
+//        Server server = createServerIn();
+//        server.stop();
+//        server.start();
+//        server.join();
+//    }
 }

@@ -13,8 +13,8 @@
         <module>hummer-core</module>
         <module>hummer-codegen</module>
         <module>hummer-new</module>
-        <module>hummer-openapi</module>
         <module>hummer-boot</module>
+        <module>hummer-imobile</module>
     </modules>
     <build>
         <plugins>
