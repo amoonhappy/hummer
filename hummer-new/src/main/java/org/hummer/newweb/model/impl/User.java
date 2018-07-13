@@ -6,69 +6,40 @@ import org.hummer.newweb.model.intf.IUser;
 
 import java.util.Date;
 
-/**
- * @hibernate.class table="users"
- */
 public class User implements IUser {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 6422172386239411218L;
-    /**
-     * @hibernate.id generator-class="assigned" type="java.lang.String"
-     * column="id"
-     */
-    private String id;
-    /**
-     * @hibernate.property column="firstName" length="60"
-     */
+
+    private Long id;
+
     private String firstName;
-    /**
-     * @hibernate.property column="lastName" length="60"
-     */
+
     private String lastName;
-    /**
-     * @hibernate.property column="role" length="20"
-     */
+
     private String role;
-    /**
-     * @hibernate.property column="email" length="60"
-     */
+
     private String email;
-    /**
-     * @hibernate.property column="crtdate" length="10"
-     */
+
     private Date crtDate;
-    /**
-     * @hibernate.property column="crtuserid" length="32"
-     */
+
     private String crtUserId;
-    /**
-     * @hibernate.property column="mdfdate" length="10"
-     */
+
     private Date mdfDate;
-    /**
-     * @hibernate.property column="mdfuserid" length="32"
-     */
+
     private String mdfUserId;
-    /**
-     * @hibernate.property column="deleteyn" length="1"
-     */
+
     private String deletedYn;
-    /**
-     * @hibernate.property column="status" length="1"
-     */
+
     private String status;
 
     public User() {
     }
 
-    public User(String id) {
+    public User(Long id) {
         this.id = id;
     }
 
-    public User(String id, String firstName, String lastName, String role, String email, Date crtDate,
+    public User(Long id, String firstName, String lastName, String role, String email, Date crtDate,
                 String crtUserId, Date mdfDate, String mdfUserId, String deletedYn, String status) {
         this.id = id;
         this.firstName = firstName;
@@ -83,21 +54,14 @@ public class User implements IUser {
         this.status = status;
     }
 
-    /**
-     * * @hibernate.id generator-class="assigned" type="java.lang.String"
-     * column="id"
-     */
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * * @hibernate.property column="firstName" length="60"
-     */
     public String getFirstName() {
         return this.firstName;
     }
@@ -106,9 +70,6 @@ public class User implements IUser {
         this.firstName = firstName;
     }
 
-    /**
-     * * @hibernate.property column="lastName" length="60"
-     */
     public String getLastName() {
         return this.lastName;
     }
@@ -117,9 +78,6 @@ public class User implements IUser {
         this.lastName = lastName;
     }
 
-    /**
-     * * @hibernate.property column="role" length="20"
-     */
     public String getRole() {
         return this.role;
     }
@@ -128,9 +86,6 @@ public class User implements IUser {
         this.role = role;
     }
 
-    /**
-     * * @hibernate.property column="email" length="60"
-     */
     public String getEmail() {
         return this.email;
     }
@@ -139,10 +94,6 @@ public class User implements IUser {
         this.email = email;
     }
 
-
-    /**
-     * * @hibernate.property column="crtdate" length="10"
-     */
     public Date getCrtDate() {
         return this.crtDate;
     }
@@ -151,9 +102,6 @@ public class User implements IUser {
         this.crtDate = crtDate;
     }
 
-    /**
-     * * @hibernate.property column="crtuserid" length="32"
-     */
     public String getCrtUserId() {
         return this.crtUserId;
     }
@@ -162,9 +110,6 @@ public class User implements IUser {
         this.crtUserId = crtUserId;
     }
 
-    /**
-     * * @hibernate.property column="mdfdate" length="10"
-     */
     public Date getMdfDate() {
         return this.mdfDate;
     }
@@ -173,9 +118,6 @@ public class User implements IUser {
         this.mdfDate = mdfDate;
     }
 
-    /**
-     * * @hibernate.property column="mdfuserid" length="32"
-     */
     public String getMdfUserId() {
         return this.mdfUserId;
     }
@@ -184,9 +126,6 @@ public class User implements IUser {
         this.mdfUserId = mdfUserId;
     }
 
-    /**
-     * * @hibernate.property column="deleteyn" length="1"
-     */
     public String getDeletedYn() {
         return this.deletedYn;
     }
@@ -195,9 +134,6 @@ public class User implements IUser {
         this.deletedYn = deletedYn;
     }
 
-    /**
-     * * @hibernate.property column="status" length="10"
-     */
     public String getStatus() {
         return this.status;
     }

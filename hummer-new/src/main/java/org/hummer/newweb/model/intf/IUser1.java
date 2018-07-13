@@ -14,30 +14,20 @@
 package org.hummer.newweb.model.intf;
 
 import org.hummer.core.model.intf.IAuditableModel;
-import org.hummer.core.model.intf.ISingleLongPKModel;
 
 /**
  * @author jeff.zhou
  */
-public interface IUser1 extends ISingleLongPKModel, IAuditableModel {
+public interface IUser1 extends IAuditableModel {
 
-    /**
-     * @hibernate.property column="firstname" length="50"
-     */
     String getFirstName();
 
     void setFirstName(String firstname);
 
-    /**
-     * @hibernate.property column="lastname" length="50"
-     */
     String getLastName();
 
     void setLastName(String lastname);
 
-    /**
-     * @hibernate.property column="status" length="50"
-     */
     String getStatus();
 
     void setStatus(String status);

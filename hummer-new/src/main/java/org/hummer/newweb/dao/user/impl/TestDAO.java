@@ -20,7 +20,7 @@ public class TestDAO extends BasicMybatisDAO implements ITestDAO {
     }
 
     @Override
-    public IUser getUserById(Integer id) {
+    public IUser getUserById(Long id) {
         return (IUser) super.getModel(id);
     }
 

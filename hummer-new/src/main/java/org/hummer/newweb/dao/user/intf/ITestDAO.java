@@ -8,7 +8,7 @@ import java.util.List;
 public interface ITestDAO extends IBasicTestDAO {
     int insert(IUser a);
 
-    IUser getUserById(Integer id);
+    IUser getUserById(Long id);
 
     List<IUser> getActiveUserByName(String firstName, String status);
 }

@@ -5,7 +5,7 @@ import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.cache.annotation.CacheModelEvict;
 import org.hummer.core.cache.impl.RedisService;
 import org.hummer.core.cache.intf.ICacheable;
-import org.hummer.core.model.intf.ISingleLongPKModel;
+import org.hummer.core.model.intf.IModel;
 import org.hummer.core.service.impl.BasicTestService;
 import org.hummer.core.transaction.annotation.Transactional;
 import org.hummer.core.util.Log4jUtils;
@@ -57,7 +57,7 @@ public class TestService extends BasicTestService implements ITestService, ICach
     @CacheEvict(cacheName = "userList", key = "'test'")
     @CacheModelEvict(modelClass = User.class, key = "#p0")
     public void deleteUser(String id) {
-        ISingleLongPKModel singleLongPKModel = new User1();
+        IModel singleLongPKModel = new User1();
         singleLongPKModel.setId(Long.valueOf(id));
         testDAO.deleteModel(singleLongPKModel);
     }
@@ -66,19 +66,19 @@ public class TestService extends BasicTestService implements ITestService, ICach
     @CacheEvict(cacheName = "userList", key = "'test'")
     @CacheModelEvict(modelClass = User.class, key = "#p0.id")
     public void deleteUser(IUser user) {
-        testDAO.deleteModel((ISingleLongPKModel) user);
+        testDAO.deleteModel(user);
     }
 
     @Override
     @CacheKey(cacheName = "userCacheById", key = "#p0")
-    public IUser getUserById(Integer id) {
+    public IUser getUserById(Long id) {
         return testDAO.getUserById(id);
     }
 
     @Override
     @CacheKey(cacheName = "userCacheById", key = "#p0.id")
     public IUser getUserById(IUser user) {
-        return testDAO.getUserById(Integer.valueOf(user.getId()));
+        return testDAO.getUserById(user.getId());
     }
 
     @Override

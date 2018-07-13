@@ -6,59 +6,30 @@ import org.hummer.newweb.model.intf.IUser1;
 
 import java.util.Date;
 
-/**
- * @hibernate.class table="users"
- */
 public class User1 implements IUser1 {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 6422172386239411218L;
-    /**
-     * @hibernate.id generator-class="assigned" type="java.lang.String"
-     * column="id"
-     */
+
     private Long id;
-    /**
-     * @hibernate.property column="firstName" length="60"
-     */
+
     private String firstName;
-    /**
-     * @hibernate.property column="lastName" length="60"
-     */
+
     private String lastName;
-    /**
-     * @hibernate.property column="role" length="20"
-     */
+
     private String role;
-    /**
-     * @hibernate.property column="email" length="60"
-     */
+
     private String email;
-    /**
-     * @hibernate.property column="crtdate" length="10"
-     */
+
     private Date crtDate;
-    /**
-     * @hibernate.property column="crtuserid" length="32"
-     */
+
     private String crtUserId;
-    /**
-     * @hibernate.property column="mdfdate" length="10"
-     */
+
     private Date mdfDate;
-    /**
-     * @hibernate.property column="mdfuserid" length="32"
-     */
+
     private String mdfUserId;
-    /**
-     * @hibernate.property column="deleteyn" length="1"
-     */
+
     private String deletedYn;
-    /**
-     * @hibernate.property column="status" length="1"
-     */
+
     private String status;
 
     public User1() {
@@ -83,20 +54,14 @@ public class User1 implements IUser1 {
         this.status = status;
     }
 
-    @Override
-    public String getId() {
-        return String.valueOf(this.id);
+    public Long getId() {
+        return this.id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
-
-    /**
-     * * @hibernate.property column="firstName" length="60"
-     */
     public String getFirstName() {
         return this.firstName;
     }
@@ -105,9 +70,6 @@ public class User1 implements IUser1 {
         this.firstName = firstName;
     }
 
-    /**
-     * * @hibernate.property column="lastName" length="60"
-     */
     public String getLastName() {
         return this.lastName;
     }
@@ -116,9 +78,6 @@ public class User1 implements IUser1 {
         this.lastName = lastName;
     }
 
-    /**
-     * * @hibernate.property column="role" length="20"
-     */
     public String getRole() {
         return this.role;
     }
@@ -127,9 +86,6 @@ public class User1 implements IUser1 {
         this.role = role;
     }
 
-    /**
-     * * @hibernate.property column="email" length="60"
-     */
     public String getEmail() {
         return this.email;
     }
@@ -138,10 +94,6 @@ public class User1 implements IUser1 {
         this.email = email;
     }
 
-
-    /**
-     * * @hibernate.property column="crtdate" length="10"
-     */
     public Date getCrtDate() {
         return this.crtDate;
     }
@@ -150,9 +102,6 @@ public class User1 implements IUser1 {
         this.crtDate = crtDate;
     }
 
-    /**
-     * * @hibernate.property column="crtuserid" length="32"
-     */
     public String getCrtUserId() {
         return this.crtUserId;
     }
@@ -161,9 +110,6 @@ public class User1 implements IUser1 {
         this.crtUserId = crtUserId;
     }
 
-    /**
-     * * @hibernate.property column="mdfdate" length="10"
-     */
     public Date getMdfDate() {
         return this.mdfDate;
     }
@@ -172,9 +118,6 @@ public class User1 implements IUser1 {
         this.mdfDate = mdfDate;
     }
 
-    /**
-     * * @hibernate.property column="mdfuserid" length="32"
-     */
     public String getMdfUserId() {
         return this.mdfUserId;
     }
@@ -183,9 +126,6 @@ public class User1 implements IUser1 {
         this.mdfUserId = mdfUserId;
     }
 
-    /**
-     * * @hibernate.property column="deleteyn" length="1"
-     */
     public String getDeletedYn() {
         return this.deletedYn;
     }
@@ -194,9 +134,6 @@ public class User1 implements IUser1 {
         this.deletedYn = deletedYn;
     }
 
-    /**
-     * * @hibernate.property column="status" length="10"
-     */
     public String getStatus() {
         return this.status;
     }
@@ -204,4 +141,5 @@ public class User1 implements IUser1 {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }

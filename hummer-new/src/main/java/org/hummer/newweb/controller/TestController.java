@@ -47,7 +47,7 @@ public class TestController {
     @RequestMapping(value = "/user/{userId}", method = {RequestMethod.GET})
     public List<org.hummer.newweb.model.intf.IUser> getUserById(@PathVariable("userId") String userId) {
         List<org.hummer.newweb.model.intf.IUser> ret = new ArrayList<>();
-        ret.add(testService.getUserById(Integer.valueOf(userId)));
+        ret.add(testService.getUserById(Long.valueOf(userId)));
         return ret;
     }
 

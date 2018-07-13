@@ -18,7 +18,7 @@ public interface ITestService {
 
     void deleteUser(IUser user);
 
-    IUser getUserById(Integer id);
+    IUser getUserById(Long id);
 
     IUser getUserById(IUser user);
 
