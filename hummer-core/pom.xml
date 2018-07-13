@@ -41,18 +41,42 @@
         <apacheCommonsCodecVersion>1.11</apacheCommonsCodecVersion>
         <googleFindBugsVersion>2.0.3</googleFindBugsVersion>
         <swaggerVersion>2.4.0</swaggerVersion>
+        <quartzVersion>2.3.0</quartzVersion>
+        <mongoDBVersion>3.8.0-beta1</mongoDBVersion>
+        <velocityVersion>1.7</velocityVersion>
+        <velocityToolVersion>2.0</velocityToolVersion>
+        <mybatisPageHelperVersion>5.1.4</mybatisPageHelperVersion>
+        <mavenDeployPluginVersion>2.8.2</mavenDeployPluginVersion>
+        <compileJdkVersion>1.8</compileJdkVersion>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>${mongoDBVersion}</version>
+        </dependency>
+        <!-- scheduler -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartzVersion}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>c3p0</artifactId>
+                    <groupId>c3p0</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!-- velocity -->
         <dependency>
             <artifactId>velocity</artifactId>
             <groupId>org.apache.velocity</groupId>
-            <version>1.7</version>
+            <version>${velocityVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools</artifactId>
-            <version>2.0</version>
+            <version>${velocityToolVersion}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>dom4j</artifactId>
@@ -170,7 +194,7 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
-            <version>5.1.4</version>
+            <version>${mybatisPageHelperVersion}</version>
         </dependency>
         <!--DB connection pool-->
         <dependency>
@@ -294,14 +318,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${compileJdkVersion}</source>
+                    <target>${compileJdkVersion}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
+                <version>${mavenDeployPluginVersion}</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>

@@ -4,7 +4,7 @@ import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.model.intf.IModel;
 import org.hummer.core.util.Log4jUtils;
-import org.hummer.core.util.ThreadPool;
+import org.hummer.core.util.ThreadPoolUtil;
 import org.slf4j.Logger;
 
 import java.util.Collection;
@@ -22,7 +22,7 @@ public class CacheStoreThread {
     private static final int epirationPeriod = CacheManager.getExpirationPeriod();
 
     public static void storeResultToRedis(Object returnValue, Object redisKey, CacheKey cacheKey) {
-        ThreadPool.COMMON_POOL.execute(new Runnable() {
+        ThreadPoolUtil.COMMON_POOL.execute(new Runnable() {
             @Override
             public void run() {
                 if (redisKey != null && cacheKey != null) {

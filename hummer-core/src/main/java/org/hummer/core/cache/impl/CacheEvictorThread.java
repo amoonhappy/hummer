@@ -8,7 +8,7 @@ import org.hummer.core.cache.intf.MemoryCacheService;
 import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
-import org.hummer.core.util.ThreadPool;
+import org.hummer.core.util.ThreadPoolUtil;
 import org.slf4j.Logger;
 import org.springframework.core.PrioritizedParameterNameDiscoverer;
 import org.springframework.expression.Expression;
@@ -27,7 +27,7 @@ public class CacheEvictorThread {
 //    RedisService redisService;
 
     public static void evictCaches(Object targetObject, Object[] args, Method method) {
-        ThreadPool.COMMON_POOL.execute(new Runnable() {
+        ThreadPoolUtil.COMMON_POOL.execute(new Runnable() {
             @Override
             public void run() {
                 log.debug("entering a new thread:{} on {}", Thread.currentThread().getName(), Thread.currentThread().toString());

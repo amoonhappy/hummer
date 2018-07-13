@@ -37,7 +37,7 @@ public class AdminController {
         IHummerContainer hummerContainer = HummerContainer.getInstance();
         IBusinessServiceManager businessServiceManager = hummerContainer.getServiceManager();
         Object o = businessServiceManager.getService("testService");
-        ret.put("Test Service", o.toString());
+//        ret.put("Test Service", o.toString());
         return ret;
     }
 

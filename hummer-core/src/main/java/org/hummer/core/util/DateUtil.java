@@ -30,9 +30,68 @@ public class DateUtil {
     public static String[] monthAbbr = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
             "Dec"};
     private static SimpleDateFormat dataFormat = new SimpleDateFormat(Constant.DATE_FORMAT_DEFAULT);
+    public static final String SDF = "yyyyMMddHHmmss" ;
+    public static final String SDF_CN = "yyyy-MM-dd HH:mm:ss" ;
+    public static final String SDF_CN_DATE = "yyyy-MM-dd" ;
+    private static final Object lock = new Object();
+
+    private static Map<String, ThreadLocal<SimpleDateFormat>> SDF_MAP = new HashMap<>();
+
+    /**
+     * 返回一个ThreadLocal的SimpleDateFormat,每个线程只会new一次SimpleDateFormat
+     *
+     * @param pattern 时间格式
+     * @return SimpleDateFormat
+     */
+    private static SimpleDateFormat getFormat(final String pattern) {
+        ThreadLocal<SimpleDateFormat> t = SDF_MAP.get(pattern);
+        if (t == null) {
+            synchronized (lock) {
+                t = SDF_MAP.get(pattern);
+                if (t == null) {
+                    t = new ThreadLocal<SimpleDateFormat>() {
+                        @Override
+                        protected SimpleDateFormat initialValue() {
+                            return new SimpleDateFormat(pattern);
+                        }
+                    };
+                    SDF_MAP.put(pattern, t);
+                }
+            }
+        }
+        return t.get();
+    }
+
+    public static String format(Date date, String pattern) {
+        return getFormat(pattern).format(date);
+    }
+
+    public static Date parse(String dateStr, String pattern) {
+        try {
+            return getFormat(pattern).parse(dateStr);
+        } catch (ParseException e) {
+            throw new RuntimeException("时间格式转换错误。" );
+        }
+    }
+
+    /**
+     * Long型时间转换为Date
+     *
+     * @param dateFormat
+     * @param millSec
+     * @return
+     * @Title: formatLongToDate
+     * @Description: TODO
+     * @return: String
+     */
+    public static String formatLongToDate(String dateFormat, Long millSec) {
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        Date date = new Date(millSec);
+        return sdf.format(date);
+    }
 
     public static String formatDate(Long Id, String compart) {
-        String ret = "";
+        String ret = "" ;
 
         if (null != Id) {
             String ds = Id.toString();
@@ -560,7 +619,7 @@ public class DateUtil {
             value = value.trim();
         }
 
-        if (!value.matches("[0-9-/]+")) {
+        if (!value.matches("[0-9-/]+" )) {
             return false;
         }
 
@@ -599,7 +658,7 @@ public class DateUtil {
             value = value.trim();
         }
 
-        if (!value.matches("[0-9-/]+")) {
+        if (!value.matches("[0-9-/]+" )) {
             return false;
         }
 
@@ -632,8 +691,8 @@ public class DateUtil {
     }
 
     public static java.sql.Timestamp getTimestamp(String sDate, String pattern) {
-        if ((pattern == null) || pattern.trim().equals("")) {
-            pattern = "yyyy-MM-dd";
+        if ((pattern == null) || pattern.trim().equals("" )) {
+            pattern = "yyyy-MM-dd" ;
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
