@@ -9,8 +9,8 @@ import java.util.Map;
  *
  * @ClassName: JsonResponse
  * @Description: TODO
- * @author: Jason
- * @date: 2017年12月25日 下午9:57:19
+ * @author: Jeff Zhou
+ * @date: 2018年7月13日 下午9:54:43
  */
 public class JsonResponse extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;

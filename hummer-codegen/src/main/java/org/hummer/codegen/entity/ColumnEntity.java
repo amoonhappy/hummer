@@ -5,8 +5,8 @@ package org.hummer.codegen.entity;
  *
  * @ClassName: ColumnEntity
  * @Description: TODO
- * @author: Jason
- * @date: 2017年12月25日 下午9:55:33
+ * @author: Jeff Zhou
+ * @date: 2018年7月13日 下午9:54:43
  */
 public class ColumnEntity {
     //列名

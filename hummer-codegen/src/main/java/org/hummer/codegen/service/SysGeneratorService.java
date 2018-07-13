@@ -9,8 +9,8 @@ import java.util.Map;
  *
  * @ClassName: SysGeneratorService
  * @Description: TODO
- * @author: Jason
- * @date: 2017年12月25日 下午9:53:03
+ * @author: Jeff Zhou
+ * @date: 2018年7月13日 下午9:54:43
  */
 public interface SysGeneratorService {
 

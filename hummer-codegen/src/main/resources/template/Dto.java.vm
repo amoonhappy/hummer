@@ -1,6 +1,6 @@
 package
 
-import com.coracle.mxm.common.dto.BaseDto;
+import org.hummer.core.dto.BasicDto;
 
 import java.io.Serializable;
 
@@ -15,7 +15,7 @@ ${package}.dto;
  * @email ${email}
  * @date ${datetime}
  */
-public class ${className}Dto extends BaseDto implements Serializable {
+public class ${className}Dto extends BasicDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -12,7 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
-
+/**
+ * 代码生成器服务类
+ *
+ * @ClassName: SysGeneratorServiceImpl
+ * @Description: TODO
+ * @author: Jeff Zhou
+ * @date: 2018年7月13日 下午9:54:43
+ */
 @Service("sysGeneratorService")
 public class SysGeneratorServiceImpl implements SysGeneratorService {
     @Autowired

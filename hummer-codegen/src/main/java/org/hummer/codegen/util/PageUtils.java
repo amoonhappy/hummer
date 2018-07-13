@@ -11,8 +11,8 @@ import java.util.Map;
  *
  * @ClassName:PageUtils
  * @Description: TODO
- * @author: Jason
- * @date: 2017年12月25日 下午9:56:58
+ * @author: Jeff Zhou
+ * @date: 2018年7月13日 下午9:54:43
  */
 public class PageUtils implements Serializable {
     static final int DEFAULT_CURR_PAGE = 1;

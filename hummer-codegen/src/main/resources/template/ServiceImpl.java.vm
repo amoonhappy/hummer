@@ -72,7 +72,7 @@ public class ${className}ServiceImpl implements ${className}Service {
             throw new AppException("新增操作参数不能为空。");
         }
 
-        /*${className}Dto checkDto = new ${className}Dto();
+        /*${className}dto checkDto = new ${className}dto();
         checkDto.setCaseName(insertRecord.getCaseName());
         boolean checkFlag = this.checkProperty(checkDto);
         if (checkFlag) {
@@ -96,7 +96,7 @@ public class ${className}ServiceImpl implements ${className}Service {
             throw new AppException("修改操作参数不能为空。");
         }
 
-        /*${className}Dto checkDto = new ${className}Dto();
+        /*${className}dto checkDto = new ${className}dto();
         checkDto.setId(updateRecord.getId());
         checkDto.setCaseName(updateRecord.getCaseName());
         boolean checkFlag = this.checkProperty(checkDto);

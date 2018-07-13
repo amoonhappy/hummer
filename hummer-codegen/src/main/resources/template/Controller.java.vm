@@ -1,9 +1,8 @@
 package
 
-import com.coracle.mxm.common.controller.AbstractController;
-import com.coracle.mxm.common.util.PageUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hummer.core.jason.JsonResponse;
+import org.hummer.core.pagination.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,22 +22,22 @@ ${package}.controller;
  * @date ${datetime}
  */
 @Controller
-@RequestMapping("${pathName}")
-public class ${className}Controller extends AbstractController {
+@RequestMapping("${pathName}" )
+public class ${className}Controller {
     @Autowired
     private ${className}Service ${classname}Service;
 
-    @RequestMapping("/${pathName}.html")
+    @RequestMapping("/${pathName}.html" )
     public String list() {
-        return "${pathName}/${pathName}.html";
+        return "${pathName}/${pathName}.html" ;
     }
 
     /**
      * 列表
      */
     @ResponseBody
-    @RequestMapping("/list")
-    @RequiresPermissions("${pathName}:list")
+    @RequestMapping("/list" )
+    @RequiresPermissions("${pathName}:list" )
     public JsonResponse list(${className}Dto ${classname}Dto) throws Exception {
         PageUtils pageUtil = new PageUtils(${classname}Service.queryForPage(${classname}Dto));
         return JsonResponse.ok().put("page", pageUtil);
@@ -48,9 +47,9 @@ public class ${className}Controller extends AbstractController {
      * 信息
      */
     @ResponseBody
-    @RequestMapping("/info/{id}")
-    @RequiresPermissions("${pathName}:info")
-    public JsonResponse info(@PathVariable("id") String id) {
+    @RequestMapping("/info/{id}" )
+    @RequiresPermissions("${pathName}:info" )
+    public JsonResponse info(@PathVariable("id" ) String id) {
         ${className} info = ${classname}Service.queryObject(id);
         return JsonResponse.ok().put("info", info);
     }
@@ -59,8 +58,8 @@ public class ${className}Controller extends AbstractController {
      * 保存
      */
     @ResponseBody
-    @RequestMapping("/save")
-    @RequiresPermissions("${pathName}:save")
+    @RequestMapping("/save" )
+    @RequiresPermissions("${pathName}:save" )
     public JsonResponse save(@RequestBody ${className} insertRecord) {
             ${classname}Service.save(insertRecord, getUserId());
         return JsonResponse.ok();
@@ -70,8 +69,8 @@ public class ${className}Controller extends AbstractController {
      * 修改
      */
     @ResponseBody
-    @RequestMapping("/update")
-    @RequiresPermissions("${pathName}:update")
+    @RequestMapping("/update" )
+    @RequiresPermissions("${pathName}:update" )
     public JsonResponse update(@RequestBody ${className} updateRecord) {
             ${classname}Service.update(updateRecord, getUserId());
         return JsonResponse.ok();
@@ -81,8 +80,8 @@ public class ${className}Controller extends AbstractController {
      * 删除
      */
     @ResponseBody
-    @RequestMapping("/delete")
-    @RequiresPermissions("${pathName}:delete")
+    @RequestMapping("/delete" )
+    @RequiresPermissions("${pathName}:delete" )
     public JsonResponse delete(@RequestBody String[] ids) {
             ${classname}Service.deleteBatch(ids, getUserId());
         return JsonResponse.ok();
@@ -92,8 +91,8 @@ public class ${className}Controller extends AbstractController {
      * 启用
      */
     @ResponseBody
-    @RequestMapping("/enable")
-    @RequiresPermissions("${pathName}:enable")
+    @RequestMapping("/enable" )
+    @RequiresPermissions("${pathName}:enable" )
     public JsonResponse enable(@RequestBody String[] ids) {
             ${classname}Service.enableBatch(ids, getUserId());
         return JsonResponse.ok();
@@ -103,8 +102,8 @@ public class ${className}Controller extends AbstractController {
      * 禁用
      */
     @ResponseBody
-    @RequestMapping("/disable")
-    @RequiresPermissions("${pathName}:disable")
+    @RequestMapping("/disable" )
+    @RequiresPermissions("${pathName}:disable" )
     public JsonResponse disable(@RequestBody String[] ids) {
             ${classname}Service.disableBatch(ids, getUserId());
         return JsonResponse.ok();

@@ -29,8 +29,8 @@ import java.util.zip.ZipOutputStream;
  *
  * @ClassName: CodeGenerator
  * @Description: TODO
- * @author: Jason
- * @date: 2017年3月10日 下午5:28:57
+ * @author: Jeff Zhou
+ * @date: 2018年7月13日 下午9:54:43
  */
 public class CodeGenerator {
 
@@ -224,8 +224,8 @@ public class CodeGenerator {
 //            return "js" + File.separator + pathName.toLowerCase() + File.separator + pathName.toLowerCase() + ".js";
 //        }
 
-        if (template.contains("Dto.java.vm")) {
-            return packagePath + "dto" + File.separator + className + "Dto.java";
+        if (template.contains("dto.java.vm")) {
+            return packagePath + "dto" + File.separator + className + "dto.java";
         }
 
         return null;

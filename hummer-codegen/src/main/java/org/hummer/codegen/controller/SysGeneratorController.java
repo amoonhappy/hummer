@@ -23,8 +23,8 @@ import java.util.Map;
  *
  * @ClassName: SysGeneratorController
  * @Description: TODO
- * @author: Jason
- * @date: 2017年12月25日 下午9:54:43
+ * @author: Jeff Zhou
+ * @date: 2018年7月13日 下午9:54:43
  */
 @Controller
 @Api(tags = "Hummer Framework - CodeGeneration类")
@@ -32,14 +32,14 @@ import java.util.Map;
 public class SysGeneratorController {
     private SysGeneratorService sysGeneratorService;
 
-    @Autowired(required = true)
+    @Autowired
     public void setSysGeneratorService(SysGeneratorService sysGeneratorService) {
         this.sysGeneratorService = sysGeneratorService;
     }
 
     @RequestMapping("/list.html")
     public String index() {
-        return "system/generator.html";
+        return "system/generator.html" ;
     }
 
     /**

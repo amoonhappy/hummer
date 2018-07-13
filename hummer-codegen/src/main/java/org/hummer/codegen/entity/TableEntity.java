@@ -7,8 +7,8 @@ import java.util.List;
  *
  * @ClassName: TableEntity
  * @Description: TODO
- * @author: Jason
- * @date: 2017年12月25日 下午9:55:43
+ * @author: Jeff Zhou
+ * @date: 2018年7月13日 下午9:54:43
  */
 public class TableEntity {
     //表的名称
