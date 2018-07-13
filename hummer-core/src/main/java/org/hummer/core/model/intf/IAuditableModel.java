@@ -19,50 +19,20 @@ import java.util.Date;
  * @author jeff.zhou
  */
 public interface IAuditableModel extends IModel {
+    Date getCrtDate();
 
-    /**
-     * @hibernate.property column="crt_date" length="19"
-     */
-    public abstract Date getCrtDate();
+    void setCrtDate(Date crtDate);
 
-    public abstract void setCrtDate(Date crtDate);
+    String getCrtUserId();
 
-    /**
-     * @hibernate.property column="crt_userid" length="32"
-     */
-    public abstract String getCrtUserId();
+    void setCrtUserId(String crtUserid);
 
-    public abstract void setCrtUserId(String crtUserid);
+    Date getMdfDate();
 
-    /**
-     * @hibernate.property column="mdf_date" length="19"
-     */
-    public abstract Date getMdfDate();
+    void setMdfDate(Date mdfDate);
 
-    public abstract void setMdfDate(Date mdfDate);
+    String getMdfUserId();
 
-    /**
-     * @hibernate.property column="mdf_userid" length="32"
-     */
-    public abstract String getMdfUserId();
-
-    public abstract void setMdfUserId(String mdfUserid);
+    void setMdfUserId(String mdfUserid);
 
 }
-/**
- * <p>
- * Open Source Architecture Project -- Hummer
- * </p>
- * <p>
- * Class Description
- * </p>
- * Change History
- * </p>
- * <p>
- * Author Date Description
- * </p>
- *
- * @author <a href="mailto:jeff_myth@yahoo.com.cn">Jeff Zhou</a>
- * Date:2006-4-723:34:22
- * @version 1.0
- */
