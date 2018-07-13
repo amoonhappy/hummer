@@ -39,17 +39,17 @@ public class CacheStoreThread {
                     if (!evictOnAll && returnValue != null) {
                         //store the rediskey and ids mapping
                         if (returnValue instanceof IModel) {
-                            String id = ((IModel) returnValue).getId();
-                            CacheManager.registerRedisKeyForId(returnValue.getClass(), id, redisKey);
+                            Long id = ((IModel) returnValue).getId();
+                            CacheManager.registerRedisKeyForId(returnValue.getClass(), String.valueOf(id), redisKey);
                         } else if (returnValue instanceof Collection) {
                             // 使用jdk1.8中的新Collector实现从Collection中获取对象.方法的值返回一个集合
-                            Set<String> ids = ((Collection<IModel>) returnValue).stream().map(IModel::getId).collect(Collectors.toCollection(TreeSet::new));
+                            Set<Long> ids = ((Collection<IModel>) returnValue).stream().map(IModel::getId).collect(Collectors.toCollection(TreeSet::new));
                             Class modelClass = ((Collection<IModel>) returnValue).iterator().next().getClass();
                             CacheManager.registerRedisKeyForIds(modelClass, ids, redisKey);
                         } else if (returnValue instanceof Map) {
                             Set<String> ids = ((Map) returnValue).keySet();
                             Class modelClass = ((Map) returnValue).values().iterator().next().getClass();
-                            CacheManager.registerRedisKeyForIds(modelClass, ids, redisKey);
+                            CacheManager.registerRedisKeyForIdsOfStr(modelClass, ids, redisKey);
                         }
                     }
                 }

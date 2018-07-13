@@ -67,9 +67,23 @@ public class CacheManager {
     }
 
     @SuppressWarnings("all")
-    public static void registerRedisKeyForIds(Class modelClass, Set<String> ids, Object redisKey) {
+    public static void registerRedisKeyForIdsOfStr(Class modelClass, Set<String> ids, Object redisKey) {
         //String[] idsArray = ids.split(",");
         for (String id : ids) {
+            String modelIdKey = getModelIdKey(modelClass, id);
+            Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+            if (redisKeys == null) {
+                redisKeys = new HashSet<>();
+            }
+            redisKeys.add(redisKey);
+            classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+        }
+    }
+
+    @SuppressWarnings("all")
+    public static void registerRedisKeyForIds(Class modelClass, Set<Long> ids, Object redisKey) {
+        //String[] idsArray = ids.split(",");
+        for (Long id : ids) {
             String modelIdKey = getModelIdKey(modelClass, id);
             Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
             if (redisKeys == null) {
@@ -97,6 +111,10 @@ public class CacheManager {
 
     private static String getModelIdKey(Class modelClass, String id) {
         return modelClass.getName() + "@" + id;
+    }
+
+    private static String getModelIdKey(Class modelClass, Long id) {
+        return getModelIdKey(modelClass, String.valueOf(id));
     }
 
     @SuppressWarnings("all")

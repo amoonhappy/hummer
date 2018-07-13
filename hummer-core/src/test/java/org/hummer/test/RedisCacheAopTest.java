@@ -18,8 +18,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.stream.Collectors.joining;
-
 @SuppressWarnings("unchecked")
 public class RedisCacheAopTest extends TestCase {
     //private static Logger log = Log4jUtils.getLogger(RedisCacheAopTest.class);
@@ -61,14 +59,14 @@ public class RedisCacheAopTest extends TestCase {
 
     public void testCollector() {
         List<IUser> returnValue = new ArrayList<>();
-        returnValue.add(new User("1"));
-        returnValue.add(new User("2"));
-        returnValue.add(new User("3"));
-        returnValue.add(new User("4"));
-        returnValue.add(new User("5"));
+        returnValue.add(new User(Long.valueOf("1")));
+        returnValue.add(new User(Long.valueOf("2")));
+        returnValue.add(new User(Long.valueOf("3")));
+        returnValue.add(new User(Long.valueOf("4")));
+        returnValue.add(new User(Long.valueOf("5")));
 
-        String idstr = (returnValue).stream().map(IUser::getId).collect(joining(","));
-        System.out.println(idstr);
+//        String idstr = (returnValue).stream().map(IUser::getId).collect(joining(","));
+//        System.out.println(idstr);
     }
 
     public void testSpEl() throws NoSuchMethodException {

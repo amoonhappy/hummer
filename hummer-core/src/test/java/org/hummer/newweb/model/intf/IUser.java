@@ -14,12 +14,11 @@
 package org.hummer.newweb.model.intf;
 
 import org.hummer.core.model.intf.IAuditableModel;
-import org.hummer.core.model.intf.ISingleStringPKModel;
 
 /**
  * @author jeff.zhou
  */
-public interface IUser extends ISingleStringPKModel, IAuditableModel {
+public interface IUser extends IAuditableModel {
 
     /**
      * @hibernate.property column="firstname" length="50"

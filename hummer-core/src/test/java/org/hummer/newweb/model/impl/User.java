@@ -19,7 +19,7 @@ public class User implements IUser {
      * @hibernate.id generator-class="assigned" type="java.lang.String"
      * column="id"
      */
-    private String id;
+    private Long id;
     /**
      * @hibernate.property column="firstName" length="60"
      */
@@ -64,11 +64,11 @@ public class User implements IUser {
     public User() {
     }
 
-    public User(String id) {
+    public User(Long id) {
         this.id = id;
     }
 
-    public User(String id, String firstName, String lastName, String role, String email, Date crtDate,
+    public User(Long id, String firstName, String lastName, String role, String email, Date crtDate,
                 String crtUserId, Date mdfDate, String mdfUserId, String deletedYn, String status) {
         this.id = id;
         this.firstName = firstName;
@@ -87,11 +87,11 @@ public class User implements IUser {
      * * @hibernate.id generator-class="assigned" type="java.lang.String"
      * column="id"
      */
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -206,8 +206,4 @@ public class User implements IUser {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return id;
-    }
 }

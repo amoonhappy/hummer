@@ -3,8 +3,6 @@ package org.hummer.core.model;
 import org.apache.commons.lang3.StringUtils;
 import org.hummer.core.model.intf.ICompositePKModel;
 import org.hummer.core.model.intf.IModel;
-import org.hummer.core.model.intf.ISingleLongPKModel;
-import org.hummer.core.model.intf.ISingleStringPKModel;
 import org.hummer.core.util.BlankObjectUtil;
 import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
@@ -222,13 +220,9 @@ public class ModelFactory implements ObjectFactory {
     public String getPrimaryKey(IModel model) {
         String primaryKey;
 
-        if (model instanceof ISingleLongPKModel) {
-            ISingleLongPKModel singleModel = (ISingleLongPKModel) model;
-            assert (singleModel.getId() != null);
-            primaryKey = "&id=" + singleModel.getId().toString();
-        } else if (model instanceof ISingleStringPKModel) {
-            ISingleStringPKModel singleModel = (ISingleStringPKModel) model;
-            primaryKey = "&id=" + singleModel.getId();
+        if (model instanceof IModel) {
+            assert (model.getId() != null);
+            primaryKey = "&id=" + model.getId().toString();
         } else if (model instanceof ICompositePKModel) {
             ICompositePKModel compModel = (ICompositePKModel) model;
             Object compId = compModel.getComp_id();
@@ -259,7 +253,7 @@ public class ModelFactory implements ObjectFactory {
 
             primaryKey = sb.toString();
         } else {
-            assert (true == false) : "the object in collection should be one of three models";
+            assert (false) : "the object in collection should be one of three models";
             primaryKey = "";
         }
 

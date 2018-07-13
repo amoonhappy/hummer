@@ -16,7 +16,7 @@ public interface ITestService {
 
     void deleteUser(String id);
 
-    IUser getUserById(Integer id);
+    IUser getUserById(Long id);
 
     IUser getLatestUser(String status, IUser user, Integer time, List list);
 }

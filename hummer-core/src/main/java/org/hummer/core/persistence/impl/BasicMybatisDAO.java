@@ -2,8 +2,6 @@ package org.hummer.core.persistence.impl;
 
 
 import org.hummer.core.model.intf.IModel;
-import org.hummer.core.model.intf.ISingleLongPKModel;
-import org.hummer.core.model.intf.ISingleStringPKModel;
 import org.hummer.core.persistence.intf.IBasicTestDAO;
 import org.hummer.core.util.MybatisUtil;
 
@@ -25,41 +23,24 @@ public abstract class BasicMybatisDAO implements IBasicTestDAO {
         return MybatisUtil.getSession().insert(getModelName() + SQL_ID_INSERT, iModel);
     }
 
-    public void deleteModel(ISingleLongPKModel iModel) {
+    public void deleteModel(IModel iModel) {
         MybatisUtil.getSession().delete(getModelName() + SQL_ID_DELETE, iModel);
     }
 
-    public IModel getModel(ISingleStringPKModel iModel) {
+    public IModel getModel(IModel iModel) {
         IModel ret;
         ret = MybatisUtil.getSession().selectOne(getModelName() + SQL_ID_GET, iModel.getId());
         return ret;
     }
 
-    public IModel getModel(Integer id) {
+    public IModel getModel(Long id) {
         IModel ret;
         ret = MybatisUtil.getSession().selectOne(getModelName() + SQL_ID_GET, id);
         return ret;
     }
 
-    public int updateModel(ISingleStringPKModel iModel) {
+    public int updateModel(IModel iModel) {
         return MybatisUtil.getSession().update(getModelName() + SQL_ID_UPDATE, iModel);
-    }
-
-    @Override
-    public void deleteModel(ISingleStringPKModel iModel) {
-        MybatisUtil.getSession().delete(getModelName() + SQL_ID_DELETE, iModel);
-    }
-
-    @Override
-    public IModel getModel(ISingleLongPKModel iModel) {
-        IModel ret;
-        ret = MybatisUtil.getSession().selectOne(getModelName() + SQL_ID_GET, iModel.getId());
-        return ret;
-    }
-
-    @Override
-    public int updateModel(ISingleLongPKModel iModel) {
-        return MybatisUtil.getSession().update(getModelName() + SQL_ID_UPDATE, iModel.getId());
     }
 
     //TODO: pagination search

@@ -48,7 +48,7 @@ public class TestService extends BasicTestService implements ITestService, ICach
 
     @Override
     @CacheKey(cacheName = "user", key = "#p0")
-    public IUser getUserById(Integer id) {
+    public IUser getUserById(Long id) {
 
         System.out.println("adsfasdf");
         return testDAO.getUserById(id);
@@ -57,12 +57,12 @@ public class TestService extends BasicTestService implements ITestService, ICach
 
     @CacheKey(cacheName = "user", key = "#p0.concat(#p1.id).concat(#p2)")
     public IUser getLatestUser(String status, IUser user, Integer time) {
-        return testDAO.getUserById(Integer.valueOf("30000"));
+        return testDAO.getUserById(Long.valueOf("30000"));
     }
 
     @CacheKey(cacheName = "user", key = "#p0.id")
     public IUser getUserById(IUser user) {
-        return testDAO.getUserById(Integer.valueOf(user.getId()));
+        return testDAO.getUserById(Long.valueOf(user.getId()));
     }
 
 
