@@ -19,6 +19,8 @@ public class XMLBeanConfig extends XMLConfig implements IXMLBeanConfig {
 
     private String singleton;
 
+    private String autowired;
+
     private Map<String, String> refBeanIds = new HashMap<>();
 
     private Map<String, String> propertiesValue = new HashMap<>();
@@ -41,6 +43,15 @@ public class XMLBeanConfig extends XMLConfig implements IXMLBeanConfig {
         }
 
         return bSingleton;
+    }
+
+    public boolean isAutowired() {
+        boolean b = "true".equalsIgnoreCase(this.getAutowired());
+
+        if (overwriteConfig != null && !StringUtil.isEmpty(overwriteConfig.getAutowired())) {
+            b = overwriteConfig.isAutowired();
+        }
+        return b;
     }
 
     public IConfiguration overwriteBy(IConfiguration localConfig) {
@@ -96,6 +107,10 @@ public class XMLBeanConfig extends XMLConfig implements IXMLBeanConfig {
         return ret;
     }
 
+    public String getAutowired() {
+        return this.autowired;
+    }
+
     public String getSingleton() {
         //String ret = this.singleton;
 //        if (this.overwriteConfig != null && !StringUtil.isEmpty(overwriteConfig.getSingleton())
@@ -103,6 +118,10 @@ public class XMLBeanConfig extends XMLConfig implements IXMLBeanConfig {
 //            ret = overwriteConfig.getSingleton();
 //        }
         return this.singleton;
+    }
+
+    public void setAutowired(String autowired) {
+        this.autowired = autowired;
     }
 
     public void setSingleton(String singletonFlag) {

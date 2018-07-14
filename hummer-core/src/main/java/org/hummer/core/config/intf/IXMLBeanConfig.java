@@ -21,6 +21,12 @@ public interface IXMLBeanConfig extends IXMLConfiguration {
 
     String getSingleton();
 
+    boolean isAutowired();
+
+    String getAutowired();
+
+    void setAutowired(String autowired);
+
     void setSingleton(String flag);
 
     void regRefBeanId(String key, String refBeanId);

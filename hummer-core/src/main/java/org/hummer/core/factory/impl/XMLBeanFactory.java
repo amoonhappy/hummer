@@ -12,6 +12,7 @@ import org.hummer.core.container.impl.HummerContainer;
 import org.hummer.core.exception.BeanException;
 import org.hummer.core.exception.NoBeanDefinationException;
 import org.hummer.core.factory.intf.IBeanFactory;
+import org.hummer.core.ioc.annotation.Autowired;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.ReflectionUtil;
 import org.hummer.core.util.StringUtil;
@@ -37,9 +38,6 @@ public class XMLBeanFactory implements IBeanFactory {
         // use aop xml configuration attribute enabledBeanIds to register
         // interceptors
         initialInterceptors();
-
-        // ic.add((Interceptor) getBean("transactionInterceptor"));
-        // ic.add((Interceptor) getBean("performanceLog"));
     }
 
     private void initialInterceptors() {
@@ -151,7 +149,8 @@ public class XMLBeanFactory implements IBeanFactory {
         if (configuration instanceof IXMLBeanConfig) {
             IXMLBeanConfig beanConfig = (IXMLBeanConfig) configuration;
             Class classImpl = beanConfig.getBeanClass();
-            if (classImpl != null) {
+            boolean isAutowired = beanConfig.isAutowired();
+            if (classImpl != null && !isAutowired) {
                 obj = getProxy(classImpl);
                 target = obj[0];
                 proxy = obj[1];
@@ -198,6 +197,49 @@ public class XMLBeanFactory implements IBeanFactory {
                         return proxy;
                     }
                 }
+                //自动装载Bean
+            } else if (classImpl != null && isAutowired) {
+                obj = getProxy(classImpl);
+                target = obj[0];
+                proxy = obj[1];
+                Field[] fields = target.getClass().getDeclaredFields();
+                if (fields == null || fields.length == 0) {
+                    return proxy;
+                } else {
+                    for (Field field : fields) {
+                        Autowired autowired = field.getAnnotation(Autowired.class);
+                        //if Autowired annotation exist, and
+                        if (autowired != null) {
+                            String beanName = field.getName();
+                            Class beanType = field.getType();
+                            switch (autowired.value()) {
+                                case HUMMER_BEAN:
+
+                                    Object cachedPropertiesValue = singletonBeanCache.get(beanName);
+                                    IXMLConfiguration cachedPropertiesConfig = singletonBeanConfigCache.get(beanName);
+                                    if (cachedPropertiesValue != null) {
+                                        //inject reference bean from cached value
+                                        injectBeanProperties(target, beanName, cachedPropertiesValue);
+                                        //injectBeanProperties(proxy, propertiesName, cachedPropertiesValue);
+                                    } else {
+                                        //inject reference bean from xml config cache
+                                        Object propertieValue = beanConfig2BeanObject(cachedPropertiesConfig);
+                                        injectBeanProperties(target, beanName, propertieValue);
+                                        //injectBeanProperties(proxy, propertiesName, propertieValue);
+                                    }
+                                    continue;
+                                case SPRING_BEAN:
+                                    Object cachedSpringBeanValue = springBeanCache.get(beanName);
+                                    if (cachedSpringBeanValue == null) {
+                                        cachedSpringBeanValue = HummerContainer.getInstance().getBeanFromSpring(beanName);
+                                        this.springBeanCache.put(beanName, cachedSpringBeanValue);
+                                    }
+                                    injectBeanProperties(target, beanName, cachedSpringBeanValue);
+                            }
+                        }
+                    }
+                }
+
             } else {
                 return beanConfig.getXMLProperteisValueMapping();
             }

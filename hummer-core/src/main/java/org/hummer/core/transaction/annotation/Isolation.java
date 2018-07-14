@@ -9,7 +9,7 @@ public enum Isolation {
 
     private final int value;
 
-    private Isolation(int value) {
+    Isolation(int value) {
         this.value = value;
     }
 

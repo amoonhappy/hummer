@@ -44,6 +44,7 @@ public class XMLBeanConfigParser implements IXMLConfigParser {
         ret = parseSingletonValue(e, ret);
         ret = parsePropertiesValue(e, ret);
         ret = parseOtherAttribute(e, ret);
+        ret = parseAutowiredValue(e, ret);
         return ret;
     }
 
@@ -82,7 +83,7 @@ public class XMLBeanConfigParser implements IXMLConfigParser {
         try {
             implClass = ClassLoaderUtil.findClass(className);
         } catch (ClassNotFoundException e1) {
-            log.error("parseBeanClassValue error!", e1);
+            log.error("parseBeanClassValue error! Class:[{}] doesn't exist!", className, e1);
         }
         ret.setBeanClass(implClass);
         return ret;
@@ -105,6 +106,16 @@ public class XMLBeanConfigParser implements IXMLConfigParser {
     private IXMLBeanConfig parseSingletonValue(Element e, IXMLBeanConfig ret) {
         String singleton = parseAttribute(e, "singleton");
         ret.setSingleton(singleton);
+        return ret;
+    }
+
+    /**
+     * @param e   Element
+     * @param ret IXMLBeanConfig
+     */
+    private IXMLBeanConfig parseAutowiredValue(Element e, IXMLBeanConfig ret) {
+        String autowired = parseAttribute(e, "autowired");
+        ret.setAutowired(autowired);
         return ret;
     }
 
