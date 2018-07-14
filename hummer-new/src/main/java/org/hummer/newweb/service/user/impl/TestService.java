@@ -21,6 +21,12 @@ import org.slf4j.Logger;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Service 示例类，在HummerFramework中注册
+ *
+ * @author Jeff Zhou
+ * @date
+ */
 public class TestService extends BasicTestService implements ITestService, ICacheable {
     private static Logger log = Log4jUtils.getLogger(TestService.class);
     //init by Hummer，Hummer容器注入的容器對象
