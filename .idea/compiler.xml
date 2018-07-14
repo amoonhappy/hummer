@@ -9,9 +9,17 @@
         <module name="hummer-boot" />
         <module name="hummer-codegen" />
         <module name="hummer-core" />
+        <module name="hummer-imobile" />
+        <module name="hummer-imobile-common" />
         <module name="hummer-new" />
-        <module name="hummer-openapi" />
+        <module name="hummer-scheduler" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="hummer-imserver_main" target="1.8" />
+      <module name="hummer-imserver_test" target="1.8" />
+      <module name="hummer-openapi" target="1.8" />
+      <module name="hummer-scheduler" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
