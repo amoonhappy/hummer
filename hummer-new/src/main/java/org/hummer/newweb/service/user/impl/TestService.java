@@ -5,6 +5,8 @@ import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.cache.annotation.CacheModelEvict;
 import org.hummer.core.cache.impl.RedisService;
 import org.hummer.core.cache.intf.ICacheable;
+import org.hummer.core.ioc.annotation.Autowired;
+import org.hummer.core.ioc.annotation.BeanType;
 import org.hummer.core.model.intf.IModel;
 import org.hummer.core.service.impl.BasicTestService;
 import org.hummer.core.transaction.annotation.Transactional;
@@ -22,8 +24,10 @@ import java.util.List;
 public class TestService extends BasicTestService implements ITestService, ICacheable {
     private static Logger log = Log4jUtils.getLogger(TestService.class);
     //init by Hummer，Hummer容器注入的容器對象
+    @Autowired(value = BeanType.HUMMER_BEAN)
     ITestDAO testDAO;
     //init by Spring，Hummer容器通過Spring注入的Spring對象
+    @Autowired(value = BeanType.SPRING_BEAN)
     RedisService redisService;
 
     @Override
