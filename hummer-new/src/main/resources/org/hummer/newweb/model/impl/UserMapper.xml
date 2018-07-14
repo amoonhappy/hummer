@@ -3,7 +3,7 @@
 <mapper namespace="org.hummer.newweb.model.impl.UserMapper">
     <!-- 自定义返回结果集 -->
     <resultMap id="userMap" type="org.hummer.newweb.model.impl.User">
-        <id property="id" column="id" javaType="java.lang.String"></id>
+        <id property="id" column="id" javaType="java.lang.Long"></id>
         <result property="firstName" column="firstName" javaType="java.lang.String"></result>
         <result property="lastName" column="lastName" javaType="java.lang.String"></result>
         <result property="role" column="role" javaType="java.lang.String"></result>
@@ -26,7 +26,7 @@
      delete from users where id=#{id}
     </delete>
 
-    <select id="TestDAO_get" parameterType="int" resultMap="userMap">
+    <select id="TestDAO_get" parameterType="long" resultMap="userMap">
      select * from users where id=#{id}
     </select>
 
