@@ -46,10 +46,10 @@
     <!--<level value="INFO"/>-->
     <!--<appender-ref ref="FILE"/>-->
     <!--</logger>-->
-    <!--<logger name="org.hummer" additivity="false">-->
-    <!--<level value="ERROR"/>-->
-    <!--<appender-ref ref="STDOUT"/>-->
-    <!--</logger>-->
+    <logger name="org.hummer" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
     <!--<logger name="org.springframework" additivity="false">-->
     <!--<level value="ERROR"/>-->
     <!--<appender-ref ref="STDOUT"/>-->
