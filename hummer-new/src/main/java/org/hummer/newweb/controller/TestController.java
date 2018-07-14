@@ -29,7 +29,8 @@ public class TestController {
             mv.setViewName("redirect:/user/index.jsp");
 
             return mv;
-        }*/
+        }
+    */
 
     @RequestMapping(value = "/user/{firstName}/{role}", method = {RequestMethod.GET})
     public List selectActiveUsersByName(@PathVariable("firstName") String firstName, @PathVariable("role") String role) {
