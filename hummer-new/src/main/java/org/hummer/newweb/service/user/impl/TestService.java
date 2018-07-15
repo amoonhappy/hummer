@@ -34,8 +34,8 @@ public class TestService extends BasicTestService implements ITestService, ICach
     @Autowired(value = BeanType.HUMMER_BEAN)
     ITestDAO testDAO;
     //init by Spring，Hummer容器通過Spring注入的Spring對象
-//    @Autowired(value = BeanType.SPRING_BEAN)
-//    RedisService redisService;
+    @Autowired(value = BeanType.SPRING_BEAN)
+    RedisService redisService;
     //init by Hummer, Hummer容器注入Mybatis的MapperProxy对象
     @Autowired(value = BeanType.MAPPER_BEAN)
     UserMapper userMapper;
@@ -100,6 +100,7 @@ public class TestService extends BasicTestService implements ITestService, ICach
     public List<IUser> getUserByFirstNameAndStatus(IUser user) {
         String firstName = user.getFirstName();
         String role = user.getRole();
+        //redisService.get("");
 //        userMapper = MybatisUtil.getSession().getMapper(UserMapper.class);
 //        return userMapper.selectActiveUsersByName(firstName, role);
         return userMapper.selectActiveUsersByName(user);
