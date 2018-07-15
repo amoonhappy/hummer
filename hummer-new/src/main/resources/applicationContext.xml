@@ -19,7 +19,7 @@
         <!-- 扩充了注解驱动，可以将请求参数绑定到控制参数-->
         <!--<context:annotation-config/>-->
         <!--<context:component-scan base-package="org.hummer"/>-->
-        <context:property-placeholder location="classpath:app.properties"/>
+        <context:property-placeholder location="classpath:local/config/hummer-cfg-main.properties"/>
         <!--<context:component-scan base-package="org.hummer"/>-->
         <context:annotation-config/>
         <!-- Redis配置 -->
@@ -97,5 +97,7 @@
                 <ref bean="redisTemplate"/>
             </property>
         </bean>
+
+
     </beans>
 </beans>

@@ -14,6 +14,7 @@ import org.hummer.core.exception.NoBeanDefinationException;
 import org.hummer.core.factory.intf.IBeanFactory;
 import org.hummer.core.ioc.annotation.Autowired;
 import org.hummer.core.util.Log4jUtils;
+import org.hummer.core.util.MybatisUtil;
 import org.hummer.core.util.ReflectionUtil;
 import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ public class XMLBeanFactory implements IBeanFactory {
     private static IBeanFactory instance = new XMLBeanFactory();
     private Map<String, Object> singletonBeanCache = new HashMap<>();
     private Map<String, Object> springBeanCache = new HashMap<>();
+    private Map<String, Object> mapperCache = new HashMap<>();
     private LinkedList<Interceptor> ic = new LinkedList<>();
 
     private XMLBeanFactory() {
@@ -150,6 +152,9 @@ public class XMLBeanFactory implements IBeanFactory {
             IXMLBeanConfig beanConfig = (IXMLBeanConfig) configuration;
             Class classImpl = beanConfig.getBeanClass();
             boolean isAutowired = beanConfig.isAutowired();
+            /**
+             * consider don't support xml config for bean initiation
+             */
             if (classImpl != null && !isAutowired) {
                 obj = getProxy(classImpl);
                 target = obj[0];
@@ -198,6 +203,9 @@ public class XMLBeanFactory implements IBeanFactory {
                     }
                 }
                 //自动装载Bean
+                /**
+                 * 考虑只支持Annotation注入Bean
+                 */
             } else if (classImpl != null && isAutowired) {
                 obj = getProxy(classImpl);
                 target = obj[0];
@@ -214,7 +222,6 @@ public class XMLBeanFactory implements IBeanFactory {
                             Class beanType = field.getType();
                             switch (autowired.value()) {
                                 case HUMMER_BEAN:
-
                                     Object cachedPropertiesValue = singletonBeanCache.get(beanName);
                                     IXMLConfiguration cachedPropertiesConfig = singletonBeanConfigCache.get(beanName);
                                     if (cachedPropertiesValue != null) {
@@ -235,6 +242,15 @@ public class XMLBeanFactory implements IBeanFactory {
                                         this.springBeanCache.put(beanName, cachedSpringBeanValue);
                                     }
                                     injectBeanProperties(target, beanName, cachedSpringBeanValue);
+                                    continue;
+                                case MAPPER_BEAN:
+                                    //TODO
+                                    Object cachedMapper = mapperCache.get(beanName);
+                                    if (cachedMapper == null) {
+                                        cachedMapper = MybatisUtil.getSession().getMapper(beanType);
+                                        this.mapperCache.put(beanName, cachedMapper);
+                                    }
+                                    injectBeanProperties(target, beanName, cachedMapper);
                             }
                         }
                     }

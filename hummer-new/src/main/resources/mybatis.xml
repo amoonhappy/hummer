@@ -123,8 +123,8 @@
     <!-- 映射文件，mapper的配置文件 -->
     <mappers>
         <!--直接映射到相应的mapper文件-->
-        <mapper resource="org/hummer/newweb/model/impl/UserMapper.xml"/>
+        <!--<mapper resource="org/hummer/newweb/model/impl/UserMapper.xml"/>-->
         <!--扫描包路径下所有xxMapper.xml文件-->
-        <!--<package name="org.hummer.newweb.model.impl"/>-->
+        <package name="org.hummer.newweb.mapper"/>
     </mappers>
 </configuration>
