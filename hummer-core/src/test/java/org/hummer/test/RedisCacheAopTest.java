@@ -1,22 +1,10 @@
 package org.hummer.test;
 
 import junit.framework.TestCase;
-import org.hummer.core.container.impl.HummerContainer;
-import org.hummer.core.container.intf.IBusinessServiceManager;
-import org.hummer.core.container.intf.IHummerContainer;
-import org.hummer.core.util.Assert;
-import org.hummer.core.util.ReflectionUtil;
-import org.hummer.newweb.model.impl.User;
-import org.hummer.newweb.model.intf.IUser;
-import org.hummer.newweb.service.user.intf.ITestService;
-import org.springframework.core.PrioritizedParameterNameDiscoverer;
+import org.hummer.core.container.HummerContainer;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("unchecked")
 public class RedisCacheAopTest extends TestCase {
@@ -24,12 +12,12 @@ public class RedisCacheAopTest extends TestCase {
 //    private String file = "hummer-cfg-main.properties";
 //    private String file1 = "hummer-web-cfg-aop.xml";
     public void testAddUser() {
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager ibsv = iHummerContainer.getServiceManager();
-        ITestService testService = (ITestService) ibsv.getService("testService");
-        IUser temp = new User();
-        temp.setFirstName("test for redis cache annotation");
-        testService.insertUser(temp);
+//        IHummerContainer iHummerContainer = HummerContainer.getInstance();
+//        IBusinessServiceManager ibsv = iHummerContainer.getServiceManager();
+//        ITestService testService = (ITestService) ibsv.getService("testService");
+//        IUser temp = new User();
+//        temp.setFirstName("test for redis cache annotation");
+//        testService.insertUser(temp);
 //        ITest1Service test1Service = (ITest1Service) ibsv.getService("test1Service");
 //        IUser temp = new User();
 //        temp.setFirstName("test for redis cache annotation");
@@ -42,13 +30,13 @@ public class RedisCacheAopTest extends TestCase {
             /**
              * Redis Cache Interceptor 测试
              */
-            IHummerContainer iHummerContainer = HummerContainer.getInstance();
-            IBusinessServiceManager ibsv = iHummerContainer.getServiceManager();
-            ITestService testService = (ITestService) ibsv.getService("testService");
-
-            List result = (List) testService.getAllUsers();
-            Assert.notNull(result, "Result is Null!");
-            System.out.println("returned size:[" + result.size() + "]");
+//            IHummerContainer iHummerContainer = HummerContainer.getInstance();
+//            IBusinessServiceManager ibsv = iHummerContainer.getServiceManager();
+//            ITestService testService = (ITestService) ibsv.getService("testService");
+//
+////            List result = (List) testService.getAllUsers();
+//            Assert.notNull(result, "Result is Null!");
+//            System.out.println("returned size:[" + result.size() + "]");
 //            for (Object user : result) {
 //                System.out.println(((IUser) user).getFirstName());
 //            }
@@ -58,12 +46,12 @@ public class RedisCacheAopTest extends TestCase {
     }
 
     public void testCollector() {
-        List<IUser> returnValue = new ArrayList<>();
-        returnValue.add(new User(Long.valueOf("1")));
-        returnValue.add(new User(Long.valueOf("2")));
-        returnValue.add(new User(Long.valueOf("3")));
-        returnValue.add(new User(Long.valueOf("4")));
-        returnValue.add(new User(Long.valueOf("5")));
+//        List<IUser> returnValue = new ArrayList<>();
+//        returnValue.add(new User(Long.valueOf("1")));
+//        returnValue.add(new User(Long.valueOf("2")));
+//        returnValue.add(new User(Long.valueOf("3")));
+//        returnValue.add(new User(Long.valueOf("4")));
+//        returnValue.add(new User(Long.valueOf("5")));
 
 //        String idstr = (returnValue).stream().map(IUser::getId).collect(joining(","));
 //        System.out.println(idstr);
@@ -73,30 +61,29 @@ public class RedisCacheAopTest extends TestCase {
 //        Parameter[] params = new Parameter[2];
 //        params[0] = new Parameter();
 //        params[1] = new User();
-        IHummerContainer container = HummerContainer.getInstance();
-        IBusinessServiceManager bsv = container.getServiceManager();
-        ITestService testService = (ITestService) bsv.getService("testService");
+        HummerContainer container = HummerContainer.getInstance();
+//        ITestService testService = (ITestService) bsv.getService("testService");
 
 //        Method method = testService.getClass().getMethod(
 //                "getLatestUser", String.class, IUser.class, Integer.class, List.class);
-        Method method = ReflectionUtil.findMethod(ITestService.class, "getLatestUser", String.class, IUser.class, Integer.class, List.class);
-        Object[] params = new Object[4];
-        params[0] = "test";
-        params[1] = new User();
-        params[2] = new Integer(1000);
-        params[3] = new ArrayList<>();
-        IUser user1 = new User();
-        user1.setFirstName("list param1.first name");
-        IUser user2 = new User();
-        user2.setLastName("list param1.last name");
-        ((List) params[3]).add(user1);
-        ((List) params[3]).add(user2);
-//        params[3] = new String[]{"1", "2", "3"};
-
-        ((IUser) params[1]).setFirstName("Jeff Zhou");
-//        Parameter[] params = method.getParameters();
-
-        PrioritizedParameterNameDiscoverer a = new PrioritizedParameterNameDiscoverer();
+//        Method method = ReflectionUtil.findMethod(ITestService.class, "getLatestUser", String.class, IUser.class, Integer.class, List.class);
+//        Object[] params = new Object[4];
+//        params[0] = "test";
+//        params[1] = new User();
+//        params[2] = new Integer(1000);
+//        params[3] = new ArrayList<>();
+//        IUser user1 = new User();
+//        user1.setFirstName("list param1.first name");
+//        IUser user2 = new User();
+//        user2.setLastName("list param1.last name");
+//        ((List) params[3]).add(user1);
+//        ((List) params[3]).add(user2);
+////        params[3] = new String[]{"1", "2", "3"};
+//
+//        ((IUser) params[1]).setFirstName("Jeff Zhou");
+////        Parameter[] params = method.getParameters();
+//
+//        PrioritizedParameterNameDiscoverer a = new PrioritizedParameterNameDiscoverer();
 
 //        CacheEvaluationContext itemContext = new CacheEvaluationContext(testService, method, params, a);
         //public IUser getLatestUser(String status, IUser user, Integer time, List list)

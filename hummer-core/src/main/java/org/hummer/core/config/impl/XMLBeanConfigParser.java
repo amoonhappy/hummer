@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.hummer.core.config.intf.IXMLBeanConfig;
 import org.hummer.core.config.intf.IXMLConfigParser;
-import org.hummer.core.config.intf.IXMLConfiguration;
+import org.hummer.core.config.intf.IXMLConfig;
 import org.hummer.core.util.ClassLoaderUtil;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
@@ -17,8 +17,8 @@ import java.util.Map;
 public class XMLBeanConfigParser implements IXMLConfigParser {
     private static Logger log = Log4jUtils.getLogger(XMLBeanConfigParser.class);
 
-    public Map<String, IXMLConfiguration> parse(Element xmlDoc) {
-        Map<String, IXMLConfiguration> ret = new HashMap<>();
+    public Map<String, IXMLConfig> parse(Element xmlDoc) {
+        Map<String, IXMLConfig> ret = new HashMap<>();
 
         List beans = xmlDoc.elements();
         for (Object bean1 : beans) {

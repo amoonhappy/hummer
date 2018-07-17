@@ -1,9 +1,9 @@
 package org.hummer.core.common.test;
 
 import junit.framework.TestCase;
-import org.hummer.core.config.impl.PropConfigParser;
+import org.hummer.core.config.impl.PropertiesParser;
 import org.hummer.core.config.intf.IConfiguration;
-import org.hummer.core.config.intf.IPropConfigParser;
+import org.hummer.core.config.intf.IPropertiesParser;
 
 import java.io.FileNotFoundException;
 
@@ -23,7 +23,7 @@ public class PropConfigParserTest extends TestCase {
 
     public void testParse() {
         String fileName = "hummer-cfg-test.properties";
-        IPropConfigParser parser = new PropConfigParser();
+        IPropertiesParser parser = new PropertiesParser();
         try {
             IConfiguration config = parser.parse(fileName);
             String value = (String) config.getValue("testKey");

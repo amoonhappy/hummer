@@ -2,8 +2,6 @@ package org.hummer.core.factory.intf;
 
 import org.hummer.core.exception.BeanException;
 import org.hummer.core.exception.NoBeanDefinationException;
-//import org.springframework.beans.factory.FactoryBean;
-//import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 public interface IBeanFactory {
     /**

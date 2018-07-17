@@ -12,5 +12,5 @@ public interface ICPXMLConfigParser {
 
     public static final String CONFIG_TYPE_OTHER = "OTHER";
 
-    public Map<String, IXMLConfiguration> parse(String fileName) throws FileNotFoundException;
+    public Map<String, IXMLConfig> parse(String fileName) throws FileNotFoundException;
 }

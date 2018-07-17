@@ -5,7 +5,7 @@ import org.hummer.core.cache.annotation.CacheEvicts;
 import org.hummer.core.cache.annotation.CacheModelEvict;
 import org.hummer.core.cache.annotation.CacheModelEvicts;
 import org.hummer.core.cache.intf.MemoryCacheService;
-import org.hummer.core.container.impl.HummerContainer;
+import org.hummer.core.container.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.hummer.core.util.ThreadPoolUtil;

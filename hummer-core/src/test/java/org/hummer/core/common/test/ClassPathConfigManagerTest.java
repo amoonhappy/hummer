@@ -1,14 +1,14 @@
 package org.hummer.core.common.test;
 
 import junit.framework.TestCase;
-import org.hummer.core.config.impl.CPConfigManager;
+import org.hummer.core.config.impl.HummerConfigManager;
 
 import java.util.Map;
 
 public class ClassPathConfigManagerTest extends TestCase {
 
     public void testGetAllXMLConfiguration() {
-        CPConfigManager cpcm = CPConfigManager.getInstance();
+        HummerConfigManager cpcm = HummerConfigManager.getInstance();
         Map a = cpcm.getAllXMLConfiguration();
         System.out.println(a.keySet());
     }

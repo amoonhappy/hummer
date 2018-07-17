@@ -4,7 +4,7 @@ import com.mongodb.*;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.gridfs.GridFS;
 import org.apache.commons.lang.StringUtils;
-import org.hummer.core.container.impl.HummerContainer;
+import org.hummer.core.container.HummerContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

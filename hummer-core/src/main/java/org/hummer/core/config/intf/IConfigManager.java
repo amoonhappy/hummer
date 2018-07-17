@@ -1,6 +1,6 @@
 package org.hummer.core.config.intf;
 
-import org.hummer.core.config.impl.SupportedAppInfos;
+import org.hummer.core.config.impl.SupportedComponent;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,11 +19,11 @@ public interface IConfigManager {
     public static final String LOCAL_CONFIG_PATH_PREFIX = "local/config/";
     public static final String PATH_SEPERATOR = "/";
 
-    IXMLConfiguration getXMLConfig(String fileName, String serviceName);
+    IXMLConfig getXMLConfig(String fileName, String serviceName);
 
-    Map<String, IXMLConfiguration> getAllXMLConfiguration();
+    Map<String, IXMLConfig> getAllXMLConfiguration();
 
-    Set<SupportedAppInfos.SupportedAppInfo> getSupportedComponents();
+    Set<SupportedComponent.SupportedComponentInfo> getSupportedComponents();
 
     IConfiguration getArchConfig();
 

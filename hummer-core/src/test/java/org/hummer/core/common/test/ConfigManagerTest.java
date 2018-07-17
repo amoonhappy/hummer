@@ -1,14 +1,14 @@
 package org.hummer.core.common.test;
 
 import junit.framework.TestCase;
-import org.hummer.core.config.impl.CPConfigManager;
+import org.hummer.core.config.impl.HummerConfigManager;
 import org.hummer.core.config.intf.IXMLBeanConfig;
-import org.hummer.core.config.intf.IXMLConfiguration;
+import org.hummer.core.config.intf.IXMLConfig;
 
 public class ConfigManagerTest extends TestCase {
 
     public void testGetBusinessServiceConfig() {
-        IXMLConfiguration temp = CPConfigManager.getInstance().getXMLConfig("hummer-web-cfg-bean.xml", "pagerHandler");
+        IXMLConfig temp = HummerConfigManager.getInstance().getXMLConfig("hummer-web-cfg-bean.xml", "pagerHandler");
         IXMLBeanConfig temp1 = (IXMLBeanConfig) temp;
         String beanId = null;
         if (temp1 != null) {

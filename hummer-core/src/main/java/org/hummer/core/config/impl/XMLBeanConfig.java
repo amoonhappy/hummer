@@ -2,7 +2,7 @@ package org.hummer.core.config.impl;
 
 import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.config.intf.IXMLBeanConfig;
-import org.hummer.core.config.intf.IXMLConfiguration;
+import org.hummer.core.config.intf.IXMLConfig;
 import org.hummer.core.util.StringUtil;
 
 import java.util.HashMap;
@@ -140,7 +140,7 @@ public class XMLBeanConfig extends XMLConfig implements IXMLBeanConfig {
         this.propertiesValue.put(propertiesName, value);
     }
 
-    public Map<String, IXMLConfiguration> getChildMap() {
+    public Map<String, IXMLConfig> getChildMap() {
         if (overwriteConfig != null && overwriteConfig.getChildMap() != null
                 && overwriteConfig.getChildMap().size() > 0) {
             configCache.putAll(overwriteConfig.getChildMap());

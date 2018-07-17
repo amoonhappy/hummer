@@ -2,7 +2,7 @@ package org.hummer.core.config.intf;
 
 import java.util.Map;
 
-public interface IXMLBeanConfig extends IXMLConfiguration {
+public interface IXMLBeanConfig extends IXMLConfig {
     // public List<String> getEnabledBeanIds();
 
     String getBeanId();

@@ -1,10 +1,8 @@
 package org.hummer.openapi;
 
 import io.swagger.annotations.Api;
-import org.hummer.core.config.impl.SupportedAppInfos;
-import org.hummer.core.container.impl.HummerContainer;
-import org.hummer.core.container.intf.IBusinessServiceManager;
-import org.hummer.core.container.intf.IHummerContainer;
+import org.hummer.core.config.impl.SupportedComponent;
+import org.hummer.core.container.HummerContainer;
 import org.hummer.core.util.ObjectUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,15 +29,6 @@ public class AdminController {
 
             return mv;
         }*/
-    @RequestMapping(value = "/test", method = {RequestMethod.GET})
-    public Map<String, String> testHummer() {
-        Map<String, String> ret = new HashMap<>();
-        IHummerContainer hummerContainer = HummerContainer.getInstance();
-        IBusinessServiceManager businessServiceManager = hummerContainer.getServiceManager();
-        Object o = businessServiceManager.getService("testService");
-//        ret.put("Test Service", o.toString());
-        return ret;
-    }
 
     @RequestMapping(value = "/serverInfo", method = {RequestMethod.GET})
     public Map<String, String> serverInfo(ServletRequest request) {
@@ -52,21 +41,24 @@ public class AdminController {
 
     @RequestMapping(value = "/status", method = {RequestMethod.GET})
     public Map<String, String> getHummerStatus() {
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
+        HummerContainer container = HummerContainer.getInstance();
         Map<String, String> ret = new HashMap<>();
-        ret = checkHummerStatus(iHummerContainer, ret);
+        ret = checkHummerStatus(container, ret);
         return ret;
     }
 
-    private Map<String, String> checkHummerStatus(IHummerContainer iHummerContainer, Map<String, String> ret) {
-        if (!ObjectUtil.isNull(iHummerContainer)) {
-            Set<SupportedAppInfos.SupportedAppInfo> supportedAppInfos = iHummerContainer.getConfigManager().getSupportedComponents();
-            String dataSourceType = iHummerContainer.getDataSourcePoolType();
+    private Map<String, String> checkHummerStatus(HummerContainer hummerContainer, Map<String, String> ret) {
+        if (!ObjectUtil.isNull(hummerContainer)) {
+            Set<SupportedComponent.SupportedComponentInfo> supportedComponentInfos = hummerContainer.getConfigManager().getSupportedComponents();
+            String dataSourceType = hummerContainer.getDataSourcePoolType();
             ret.put("retCode", "0");
             ret.put("retMsg", "Hummer Container is initialized");
             ret.put("Data Source Type", dataSourceType);
-            ret.put("HummerContainer", iHummerContainer.toString());
-            ret.put("Supported Components:", supportedAppInfos.toString());
+            ret.put("HummerContainer", hummerContainer.toString());
+            ret.put("ComponentConfigManager", hummerContainer.getConfigManager().toString());
+            ret.put("BeanFactory", hummerContainer.getBeanFactory().toString());
+            ret.put("SpringContext", hummerContainer.getSpringContext().toString());
+            ret.put("Supported Components:", supportedComponentInfos.toString());
         } else {
             ret.put("retCode", "-1");
             ret.put("retMsg", "Hummer Container is not initialized");
@@ -77,9 +69,9 @@ public class AdminController {
     @RequestMapping(value = "/reInit", method = {RequestMethod.GET})
     public Map<String, String> reInitHummerContainer() {
         Map<String, String> ret = new HashMap<>();
-        IHummerContainer iHummerContainer = HummerContainer.getInstance();
-        iHummerContainer.reInit();
-        IHummerContainer newHummerContainer = HummerContainer.getInstance();
+        HummerContainer hummerContainer = HummerContainer.getInstance();
+        hummerContainer.reInit();
+        HummerContainer newHummerContainer = HummerContainer.getInstance();
         ret = checkHummerStatus(newHummerContainer, ret);
         return ret;
     }

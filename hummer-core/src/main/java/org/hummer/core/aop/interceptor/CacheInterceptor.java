@@ -9,7 +9,7 @@ import org.hummer.core.cache.impl.CacheStoreThread;
 import org.hummer.core.cache.impl.RedisService;
 import org.hummer.core.cache.impl.SimpleKeyGenerator;
 import org.hummer.core.cache.intf.ICacheable;
-import org.hummer.core.container.impl.HummerContainer;
+import org.hummer.core.container.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;

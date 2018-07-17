@@ -3,8 +3,8 @@ package org.hummer.core.config.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.hummer.core.config.intf.IXMLConfig;
 import org.hummer.core.config.intf.IXMLConfigParser;
-import org.hummer.core.config.intf.IXMLConfiguration;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.hummer.core.util.XmlDOMUtil;
@@ -31,11 +31,11 @@ public class XMLConfigFactory {
         return instance;
     }
 
-    public Map<String, IXMLConfiguration> parse(String fileName) {
+    public Map<String, IXMLConfig> parse(String fileName) {
         // load core config
-        Map<String, IXMLConfiguration> coreConfig = loadCoreConfig(fileName);
+        Map<String, IXMLConfig> coreConfig = loadCoreConfig(fileName);
         // load local config
-        Map<String, IXMLConfiguration> localConfig = loadLocalConfig(fileName);
+        Map<String, IXMLConfig> localConfig = loadLocalConfig(fileName);
         if (coreConfig != null && localConfig == null) {
             return coreConfig;
         } else if (coreConfig == null && localConfig != null) {
@@ -45,12 +45,12 @@ public class XMLConfigFactory {
             Set<String> coreKeySet = coreConfig.keySet();
             Set<String> localKeySet = localConfig.keySet();
             List<String> mergedKeySet = (List<String>) CollectionUtils.union(coreKeySet, localKeySet);
-            // List<IXMLConfiguration> ret = new
-            // ArrayList<IXMLConfiguration>();
-            Map<String, IXMLConfiguration> ret = new HashMap<>();
+            // List<IXMLConfig> ret = new
+            // ArrayList<IXMLConfig>();
+            Map<String, IXMLConfig> ret = new HashMap<>();
             for (String key : mergedKeySet) {
-                IXMLConfiguration coreTemp = coreConfig.get(key);
-                IXMLConfiguration localTemp = localConfig.get(key);
+                IXMLConfig coreTemp = coreConfig.get(key);
+                IXMLConfig localTemp = localConfig.get(key);
                 if (coreTemp == null && localTemp != null) {
                     ret.put(key, localTemp);
                 } else if (coreTemp != null && localTemp != null) {
@@ -65,9 +65,9 @@ public class XMLConfigFactory {
         }
     }
 
-    private Map<String, IXMLConfiguration> loadLocalConfig(String fileName) {
-        String localFileName = CPConfigManager.LOCAL_CONFIG_PATH_PREFIX + fileName;
-        Map<String, IXMLConfiguration> ret = null;
+    private Map<String, IXMLConfig> loadLocalConfig(String fileName) {
+        String localFileName = HummerConfigManager.LOCAL_CONFIG_PATH_PREFIX + fileName;
+        Map<String, IXMLConfig> ret = null;
         try {
             Document xmlDoc = getDocument(localFileName);
             if (xmlDoc != null) {
@@ -79,9 +79,9 @@ public class XMLConfigFactory {
         return ret;
     }
 
-    private Map<String, IXMLConfiguration> loadCoreConfig(String fileName) {
-        String coreFileName = CPConfigManager.CORE_CONFIG_PATH_PREFIX + fileName;
-        Map<String, IXMLConfiguration> ret = null;
+    private Map<String, IXMLConfig> loadCoreConfig(String fileName) {
+        String coreFileName = HummerConfigManager.CORE_CONFIG_PATH_PREFIX + fileName;
+        Map<String, IXMLConfig> ret = null;
         try {
             Document xmlDoc = getDocument(coreFileName);
             ret = convertToIConfiguration(xmlDoc);
@@ -95,8 +95,8 @@ public class XMLConfigFactory {
         return XmlDOMUtil.dom4jParse(fileName);
     }
 
-    private Map<String, IXMLConfiguration> convertToIConfiguration(Document xmlDoc) {
-        Map<String, IXMLConfiguration> ret;
+    private Map<String, IXMLConfig> convertToIConfiguration(Document xmlDoc) {
+        Map<String, IXMLConfig> ret;
 
         Element root = xmlDoc.getRootElement();
         String configType = root.attributeValue("type");
@@ -108,11 +108,11 @@ public class XMLConfigFactory {
     private IXMLConfigParser getParser(String configType) {
         IXMLConfigParser ret = null;
         if (!StringUtil.isEmpty(configType)) {
-            if (IXMLConfiguration.TYPE_BEAN.equals(configType)) {
+            if (IXMLConfig.TYPE_BEAN.equals(configType)) {
                 ret = new XMLBeanConfigParser();
-            } else if (IXMLConfiguration.TYPE_BIZ_SERVICE.equals(configType)) {
+            } else if (IXMLConfig.TYPE_BIZ_SERVICE.equals(configType)) {
                 ret = new XMLServiceBeanConfigParser();
-            } else if (IXMLConfiguration.TYPE_DATA_SERVICE.equals(configType)) {
+            } else if (IXMLConfig.TYPE_DATA_SERVICE.equals(configType)) {
                 ret = new XMLDSVBeanConfigParser();
             } else {
                 ret = new XMLBeanConfigParser();

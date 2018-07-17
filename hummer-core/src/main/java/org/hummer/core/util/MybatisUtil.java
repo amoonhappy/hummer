@@ -4,7 +4,9 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.hummer.core.container.HummerContainer;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -83,7 +85,6 @@ public class MybatisUtil {
             session = (sessionFactory != null) ? sessionFactory.openSession() : null;
             threadLocal.set(session);
         }
-
         return session;
     }
 
@@ -93,11 +94,23 @@ public class MybatisUtil {
 
     public static void buildSessionFactory() {
         try {
-            Reader reader = Resources.getResourceAsReader(CONFIG_FILE);
+//            Reader reader = Resources.getResourceAsReader(CONFIG_FILE);
             //https://blog.csdn.net/zjf280441589/article/details/50760942
-            sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+//            sessionFactory = new SqlSessionFactoryBuilder().build(reader);\
+            HummerContainer hummerContainer = HummerContainer.getInstance();
+//            ApplicationContext ctx = HummerContainer.getInstance().ge.get
+            try {
+                sessionFactory = (SqlSessionFactory) hummerContainer.getBeanFromSpring("sqlSessionFactory");
+            } catch (NoSuchBeanDefinitionException e) {
+                log.warn("Get sqlSessionFactory from Spring failed, try to initiate from Hummer container");
+            }
+//            sessionFactory = SpringContextUtils.getBean("sqlSessionFactory", SqlSessionFactory.class);
+            if (sessionFactory == null) {
+                Reader reader = Resources.getResourceAsReader(CONFIG_FILE);
+                sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error occurs when initiating Mybatis Session Factory!", e);
         }
     }
 
