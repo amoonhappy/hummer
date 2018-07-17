@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Hummer Framework核心Bean工厂类
  * 用来初始化AOP，创建Bean代理，并通过Annotation声明自动为HummerBean提供依赖注入服务
  * 目前支持Spring Bean加载，Mybatis Mapper加载，以及Spring MVC Controller的反向加载
+ *
  * @author Jeff Zhou
  * @version 1.0
  * @date ${YEAR}
@@ -48,6 +49,10 @@ public class HummerBeanFactory implements IBeanFactory {
     private List<String> postAutowireSpringMVCBeanNameList = new ArrayList<>();
     private ConcurrentHashMap<String, Object> postAutowireSpringMVCBeanMap = new ConcurrentHashMap<>();
     private Date initTime;
+
+    public Set<String> getHummerBeanList() {
+        return singletonBeanCache.keySet();
+    }
 
     private HummerBeanFactory() {
         Set<String> beanNames = singletonBeanConfigCache.keySet();

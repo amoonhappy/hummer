@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletRequest;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +30,15 @@ public class AdminController {
 
             return mv;
         }*/
+    @RequestMapping(value = "/beanList", method = {RequestMethod.GET})
+    public Set<String> getHummerBeanList() {
+        HummerContainer container = HummerContainer.getInstance();
+        Set<String> ret = new HashSet<>();
+        Set<String> beanList = container.getBeanFactory().getHummerBeanList();
+        ret.add("Total Initiated Hummer Bean: " + beanList.size());
+        ret.addAll(beanList);
+        return ret;
+    }
 
     @RequestMapping(value = "/serverInfo", method = {RequestMethod.GET})
     public Map<String, String> serverInfo(ServletRequest request) {
