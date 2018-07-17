@@ -16,6 +16,7 @@ import org.hummer.newweb.mapper.UserMapper;
 import org.hummer.newweb.model.impl.User;
 import org.hummer.newweb.model.impl.User1;
 import org.hummer.newweb.model.intf.IUser;
+import org.hummer.newweb.service.user.intf.ITest1Service;
 import org.hummer.newweb.service.user.intf.ITestService;
 import org.slf4j.Logger;
 
@@ -39,6 +40,9 @@ public class TestService extends BasicTestService implements ITestService, ICach
     //init by Hummer, Hummer容器注入Mybatis的MapperProxy对象
     @Autowired(value = BeanType.MAPPER_BEAN)
     UserMapper userMapper;
+
+    @Autowired(value = BeanType.HUMMER_BEAN)
+    ITest1Service test1Service;
 
     @Override
     @CacheKey(cacheName = "userList", key = "'test'", evictOnAll = true)
@@ -103,6 +107,7 @@ public class TestService extends BasicTestService implements ITestService, ICach
         //redisService.get("");
 //        userMapper = MybatisUtil.getSession().getMapper(UserMapper.class);
 //        return userMapper.selectActiveUsersByName(firstName, role);
+        System.out.println("nested bean initiation test successful! test1Service instance is \n ++++++++++:" + test1Service);
         return userMapper.selectActiveUsersByName(user);
         //return testDAO.getActiveUserByName(firstName, role);
     }

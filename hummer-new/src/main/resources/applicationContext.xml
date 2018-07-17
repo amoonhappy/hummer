@@ -78,7 +78,7 @@
 
         <!-- The sample config of the Redis Master Slave Sentinels -->
         <!--
-            <bean id="redisSentinelConfiguration" class="com.coracle.rosefinch.core.delegate.CoracleRedisSentinelConfiguration"
+            <bean id="redisSentinelConfiguration" class="org.hummer.imobile.rosefinch.core.delegate.HummerRedisSentinelConfiguration"
                 p:masterName="${redis.sentinel_master_name}" p:sentinelsString="${redis.sentinels}" />
             <bean id="jedisConnFactory"
                   class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"

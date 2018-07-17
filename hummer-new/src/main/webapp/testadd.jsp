@@ -1,7 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import="org.hummer.core.container.impl.HummerContainer" %>
-<%@ page import="org.hummer.core.container.intf.IBusinessServiceManager" %>
-<%@ page import="org.hummer.core.container.intf.IHummerContainer" %>
+<%@ page import="org.hummer.core.container.HummerContainer" %>
 <%@ page import="org.hummer.newweb.model.impl.User" %>
 <%@ page import="org.hummer.newweb.model.intf.IUser" %>
 <%@ page import="org.hummer.newweb.service.user.intf.ITestService" %>
@@ -15,9 +13,8 @@
 11
 
 <%
-    IHummerContainer hummerContainer = HummerContainer.getInstance();
-    IBusinessServiceManager bsm = hummerContainer.getServiceManager();
-    ITestService service = (ITestService) bsm.getService("testService");
+    HummerContainer hummerContainer = HummerContainer.getInstance();
+    ITestService service = hummerContainer.getBean("testService", ITestService.class);
 
     try {
 //        //get by user id test

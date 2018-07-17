@@ -1,9 +1,12 @@
 package org.hummer.newweb.controller;
 
 import io.swagger.annotations.Api;
-import org.hummer.core.container.impl.HummerContainer;
+import org.hummer.core.ioc.annotation.Autowired;
+import org.hummer.core.ioc.annotation.BeanType;
+import org.hummer.core.ioc.annotation.HummerPostAutowired;
 import org.hummer.newweb.model.impl.User;
 import org.hummer.newweb.model.intf.IUser;
+import org.hummer.newweb.service.user.intf.ITest1Service;
 import org.hummer.newweb.service.user.intf.ITestService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +19,12 @@ import java.util.List;
 @RequestMapping("/rest/v1")
 @RestController
 @Api(tags = "Test Controller例子類")
+@HummerPostAutowired
 public class TestController {
-    //因為使用的SpringMVC，所以Controller的IOC沒法實現，只能手動初始化
-    ITestService testService = (ITestService) HummerContainer.getInstance().getServiceManager().getService("testService");
+    @Autowired(value = BeanType.HUMMER_BEAN)
+    ITestService testService;
+    @Autowired(value = BeanType.HUMMER_BEAN)
+    ITest1Service test1Service;
     /*
         @RequestMapping(value = "info/{userNum}", method = {RequestMethod.GET, RequestMethod.POST})
         public Object test1(@RequestParam(value = "loginName", required = true) String loginName,

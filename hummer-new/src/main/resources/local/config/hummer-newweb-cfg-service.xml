@@ -13,4 +13,5 @@
     </bean>
     -->
     <bean id="testService" class="org.hummer.newweb.service.user.impl.TestService" singleton="true" autowired="true"/>
+    <bean id="test1Service" class="org.hummer.newweb.service.user.impl.Test1Service" singleton="true" autowired="true"/>
 </component>
