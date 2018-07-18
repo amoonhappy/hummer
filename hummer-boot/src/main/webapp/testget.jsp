@@ -1,7 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import="org.hummer.core.container.impl.HummerContainer" %>
-<%@ page import="org.hummer.core.container.intf.IBusinessServiceManager" %>
-<%@ page import="org.hummer.core.container.intf.IHummerContainer" %>
+<%@ page import="org.hummer.core.container.HummerContainer" %>
 <%@ page import="org.hummer.newweb.model.intf.IUser" %>
 <%@ page import="org.hummer.newweb.service.user.intf.ITestService" %>
 <%@ page import="org.hummer.openapi.service.TestService" %>
@@ -15,16 +13,13 @@
 11
 
 <%
-    IHummerContainer hummerContainer = HummerContainer.getInstance();
-    IBusinessServiceManager bsm = hummerContainer.getServiceManager();
-    TestService service = (TestService) bsm.getService("testService1");
-    ITestService service1 = (ITestService) bsm.getService("testService");
-
-
+    HummerContainer hummerContainer = HummerContainer.getInstance();
+    TestService service = hummerContainer.getBean("testService1", TestService.class);
+    ITestService service1 = hummerContainer.getBean("testService", ITestService.class);
     try {
         System.out.println("service" + service.toString());
         System.out.println("service1" + service1.toString());
-        IUser user = service1.getUserById(Integer.valueOf("13000"));
+        IUser user = service1.getUserById(Long.valueOf("13000"));
         System.out.println("service1.getUserById" + user.getId());
 
         //get by user id test

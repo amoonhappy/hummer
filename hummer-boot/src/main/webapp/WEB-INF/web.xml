@@ -34,7 +34,7 @@
     <!--</web-resource-collection>-->
     <!--</security-constraint>-->
     <listener>
-        <listener-class>org.hummer.openapi.HummerInitListener</listener-class>
+        <listener-class>org.hummer.core.web.HummerInitListener</listener-class>
     </listener>
     <!-- 中文过滤器 -->
     <filter>

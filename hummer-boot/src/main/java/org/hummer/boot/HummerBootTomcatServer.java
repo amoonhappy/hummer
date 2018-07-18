@@ -3,8 +3,7 @@ package org.hummer.boot;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 import org.hummer.core.config.intf.IConfiguration;
-import org.hummer.core.container.impl.HummerContainer;
-import org.hummer.core.container.intf.IHummerContainer;
+import org.hummer.core.container.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class HummerBootTomcatServer {
 //    static final String docBase = "e:/tmp/tomcat";
 
     public static void main(String[] args) throws Exception {
-        IHummerContainer container = HummerContainer.getInstance();
+        HummerContainer container = HummerContainer.getInstance();
 
         IConfiguration config = container.getConfigManager().getArchConfig();
         String configPort = (String) config.getValue(HUMMER_BOOT_SERVER_PORT);

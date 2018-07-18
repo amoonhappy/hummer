@@ -1,6 +1,6 @@
 package
 
-import com.coracle.mxm.common.entity.base.BaseEntity;
+import org.hummer.imobile.common.entity.base.BaseEntity;
 
 ${package}.entity;
 #if(${hasBigDecimal})

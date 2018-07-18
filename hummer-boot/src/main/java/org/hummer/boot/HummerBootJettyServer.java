@@ -6,9 +6,9 @@ package org.hummer.boot;
 //import org.eclipse.jetty.servlet.ServletHolder;
 //import org.eclipse.jetty.util.thread.QueuedThreadPool;
 //import org.eclipse.jetty.webapp.WebAppContext;
+
 import org.hummer.core.config.intf.IConfiguration;
-import org.hummer.core.container.impl.HummerContainer;
-import org.hummer.core.container.intf.IHummerContainer;
+import org.hummer.core.container.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.StringUtil;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class HummerBootJettyServer {
 
     //private static Server createServerIn() {
     private static Object createServerIn() {
-        IHummerContainer container = HummerContainer.getInstance();
+        HummerContainer container = HummerContainer.getInstance();
 
         IConfiguration config = container.getConfigManager().getArchConfig();
         String configPort = (String) config.getValue(HUMMER_BOOT_SERVER_PORT);

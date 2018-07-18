@@ -27,6 +27,8 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 
     @Override
     public List<Map<String, Object>> queryList(Map<String, Object> map) {
+        System.out.println(sysGeneratorMapper.getClass());
+
         return sysGeneratorMapper.queryList(map);
     }
 

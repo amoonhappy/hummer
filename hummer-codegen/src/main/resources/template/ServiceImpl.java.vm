@@ -1,9 +1,9 @@
 package
 
-import com.coracle.mxm.common.constant.Constants;
-import com.coracle.mxm.common.example.ParseExample;
-import com.coracle.mxm.common.exception.AppException;
-import com.coracle.mxm.common.util.PageUtils;
+import org.hummer.imobile.common.constant.Constants;
+import org.hummer.imobile.common.example.ParseExample;
+import org.hummer.imobile.common.exception.AppException;
+import org.hummer.imobile.common.util.PageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+//import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hummer.core.jason.JsonResponse;
 import org.hummer.core.pagination.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class ${className}Controller {
      */
     @ResponseBody
     @RequestMapping("/list" )
-    @RequiresPermissions("${pathName}:list" )
+    //@RequiresPermissions("${pathName}:list" )
     public JsonResponse list(${className}Dto ${classname}Dto) throws Exception {
         PageUtils pageUtil = new PageUtils(${classname}Service.queryForPage(${classname}Dto));
         return JsonResponse.ok().put("page", pageUtil);
@@ -48,7 +48,7 @@ public class ${className}Controller {
      */
     @ResponseBody
     @RequestMapping("/info/{id}" )
-    @RequiresPermissions("${pathName}:info" )
+    //@RequiresPermissions("${pathName}:info" )
     public JsonResponse info(@PathVariable("id" ) String id) {
         ${className} info = ${classname}Service.queryObject(id);
         return JsonResponse.ok().put("info", info);
@@ -59,7 +59,7 @@ public class ${className}Controller {
      */
     @ResponseBody
     @RequestMapping("/save" )
-    @RequiresPermissions("${pathName}:save" )
+    //@RequiresPermissions("${pathName}:save" )
     public JsonResponse save(@RequestBody ${className} insertRecord) {
             ${classname}Service.save(insertRecord, getUserId());
         return JsonResponse.ok();
@@ -70,7 +70,7 @@ public class ${className}Controller {
      */
     @ResponseBody
     @RequestMapping("/update" )
-    @RequiresPermissions("${pathName}:update" )
+    //@RequiresPermissions("${pathName}:update" )
     public JsonResponse update(@RequestBody ${className} updateRecord) {
             ${classname}Service.update(updateRecord, getUserId());
         return JsonResponse.ok();
@@ -81,7 +81,7 @@ public class ${className}Controller {
      */
     @ResponseBody
     @RequestMapping("/delete" )
-    @RequiresPermissions("${pathName}:delete" )
+    //@RequiresPermissions("${pathName}:delete" )
     public JsonResponse delete(@RequestBody String[] ids) {
             ${classname}Service.deleteBatch(ids, getUserId());
         return JsonResponse.ok();
@@ -92,7 +92,7 @@ public class ${className}Controller {
      */
     @ResponseBody
     @RequestMapping("/enable" )
-    @RequiresPermissions("${pathName}:enable" )
+    //@RequiresPermissions("${pathName}:enable" )
     public JsonResponse enable(@RequestBody String[] ids) {
             ${classname}Service.enableBatch(ids, getUserId());
         return JsonResponse.ok();
@@ -103,7 +103,7 @@ public class ${className}Controller {
      */
     @ResponseBody
     @RequestMapping("/disable" )
-    @RequiresPermissions("${pathName}:disable" )
+    //@RequiresPermissions("${pathName}:disable" )
     public JsonResponse disable(@RequestBody String[] ids) {
             ${classname}Service.disableBatch(ids, getUserId());
         return JsonResponse.ok();
