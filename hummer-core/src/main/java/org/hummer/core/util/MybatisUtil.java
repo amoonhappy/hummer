@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.hummer.core.container.HummerContainer;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.sql.Connection;
 
+@SuppressWarnings("all")
 public class MybatisUtil {
     private static final ThreadLocal<SqlSession> threadLocal = new ThreadLocal<>();
     private static ThreadLocal<SqlSession> newThreadLocal = new ThreadLocal<>();
@@ -46,7 +48,7 @@ public class MybatisUtil {
 //        //sqlSession.getConnection().setAutoCommit(false);
 //    }
 
-    public static void closeNewSession() {
+    public static synchronized void closeNewSession() {
         SqlSession session = newThreadLocal.get();
         newThreadLocal.set(null);
 
@@ -55,7 +57,7 @@ public class MybatisUtil {
         }
     }
 
-    public static SqlSession getNewSession(boolean createNew) {
+    public static synchronized SqlSession getNewSession(boolean createNew) {
         if (createNew) {
             ThreadLocal<SqlSession> temp = new ThreadLocal<>();
             newThreadLocal = temp;
@@ -68,21 +70,21 @@ public class MybatisUtil {
             if (sessionFactory == null) {
                 buildSessionFactory();
             }
-            session = (sessionFactory != null) ? sessionFactory.openSession() : null;
+            session = new SqlSessionTemplate(sessionFactory);
             newThreadLocal.set(session);
         }
 
         return session;
     }
 
-    public static SqlSession getSession() {
+    public static synchronized SqlSession getSession() {
         SqlSession session = threadLocal.get();
 
         if (session == null) {
             if (sessionFactory == null) {
                 buildSessionFactory();
             }
-            session = (sessionFactory != null) ? sessionFactory.openSession() : null;
+            session = new SqlSessionTemplate(sessionFactory);
             threadLocal.set(session);
         }
         return session;
@@ -92,7 +94,7 @@ public class MybatisUtil {
         return getSession().getConnection();
     }
 
-    public static void buildSessionFactory() {
+    public static synchronized void buildSessionFactory() {
         try {
 //            Reader reader = Resources.getResourceAsReader(CONFIG_FILE);
             //https://blog.csdn.net/zjf280441589/article/details/50760942
@@ -114,7 +116,7 @@ public class MybatisUtil {
         }
     }
 
-    public static void closeSession() {
+    public static synchronized void closeSession() {
         SqlSession session = threadLocal.get();
         threadLocal.set(null);
 

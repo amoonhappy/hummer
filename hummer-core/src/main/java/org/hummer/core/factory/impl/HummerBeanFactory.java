@@ -200,6 +200,9 @@ public class HummerBeanFactory implements IBeanFactory {
     private boolean processHummerBeanAutowireForSpring(List<String> list, ConcurrentHashMap<String, Object> map) {
         if (CollectionUtils.isNotEmpty(list) && MapUtils.isNotEmpty(map))
             for (String springMVCBeanName : list) {
+//                if (springMVCBeanName.equals("knPositionController")) {
+//                    Object temp = map.get(springMVCBeanName);
+//                }
                 Object springMVCBeanObject = map.get(springMVCBeanName);
                 Class beanClass = springMVCBeanObject.getClass();
                 Field[] fields = beanClass.getDeclaredFields();

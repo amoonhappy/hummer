@@ -30,6 +30,7 @@ public class HummerInitListener extends ContextLoaderListener {
                 Map<String, Object> postSpringBeanMap = context.getBeansWithAnnotation(HummerPostAutowired.class);
                 hummerContainer.addPostAutowireSpringBeanNameList(Arrays.asList(postSpringBeanList));
                 hummerContainer.addPostAutowireSpringBeanMap(postSpringBeanMap);
+                hummerContainer.postAutowireSpringBeans();
             }
         } else {
             log.error("Initiate Spring Context Error!");

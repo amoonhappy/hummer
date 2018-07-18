@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletRequest;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RequestMapping("/rest/hummer")
 @RestController
@@ -36,6 +33,17 @@ public class AdminController {
         Set<String> ret = new LinkedHashSet<>();
         Set<String> beanList = container.getBeanFactory().getHummerBeanList();
         ret.add("Total Initiated Hummer Bean: " + beanList.size());
+        ret.addAll(beanList);
+
+        return ret;
+    }
+
+    @RequestMapping(value = "/postSpringbeanList", method = {RequestMethod.GET})
+    public List<String> getPostAutowireSpringBeanNameList() {
+        HummerContainer container = HummerContainer.getInstance();
+        List<String> ret = new LinkedList<>();
+        List<String> beanList = container.getPostAutowireSpringBeanNameList();
+        ret.add("Total Post Initiated Spring Bean: " + beanList.size());
         ret.addAll(beanList);
         return ret;
     }

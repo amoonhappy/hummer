@@ -41,16 +41,16 @@ public class CacheInterceptor extends Perl5DynamicMethodInterceptor {
         Class targetClass = methodInvocation.getThis().getClass();
         String targetClassName = targetClass.getName();
         boolean cacheable = isCacheable(targetClass);
+        Method method = methodInvocation.getMethod();
+        CacheKey cacheKey = method.getAnnotation(CacheKey.class);
 
-        if (cacheable) {
+        if (cacheable && cacheKey != null) {
             Object[] args = methodInvocation.getArguments();
-            Method method = methodInvocation.getMethod();
             String methodName = method.getName();
             Object targetObject = methodInvocation.getThis();
             String cacheName = null;
             String annotationGeneratedKey = null;
             //get cache annotation
-            CacheKey cacheKey = method.getAnnotation(CacheKey.class);
             //优先查询Redis
             Object redisKey = genRedisKey(targetObject, method, args);
             if (redisKey != null) {

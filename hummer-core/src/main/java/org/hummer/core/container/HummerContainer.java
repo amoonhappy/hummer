@@ -35,7 +35,12 @@ public class HummerContainer {
         postInit();
         initTime = new Date();
     }
-
+    public List<String> getPostAutowireSpringBeanNameList(){
+        List<String> ret = new ArrayList<>();
+        ret.addAll(postAutowireSpringBeanNameList);
+        ret.addAll(postAutowireSpringMVCBeanNameList);
+        return ret;
+    }
     /**
      * add Spring Bean Name to be autowired
      *
