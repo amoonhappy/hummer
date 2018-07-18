@@ -11,9 +11,9 @@ import org.hummer.newweb.service.user.intf.ITest1Service;
 import org.hummer.newweb.service.user.intf.ITestService;
 
 public class Test1Service extends BasicTestService implements ITest1Service {
-    @Autowired(value = BeanType.HUMMER_BEAN)
+    @Autowired(BeanType.HUMMER_BEAN)
     ITestDAO testDAO;
-    @Autowired(value = BeanType.HUMMER_BEAN)
+    @Autowired(BeanType.HUMMER_BEAN)
     ITestService testService;
 
     //@Override

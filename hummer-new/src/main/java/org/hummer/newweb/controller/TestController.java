@@ -21,9 +21,9 @@ import java.util.List;
 @Api(tags = "Test Controller例子類")
 @HummerPostAutowired
 public class TestController {
-    @Autowired(value = BeanType.HUMMER_BEAN)
+    @Autowired(BeanType.HUMMER_BEAN)
     ITestService testService;
-    @Autowired(value = BeanType.HUMMER_BEAN)
+    @Autowired(BeanType.HUMMER_BEAN)
     ITest1Service test1Service;
     /*
         @RequestMapping(value = "info/{userNum}", method = {RequestMethod.GET, RequestMethod.POST})

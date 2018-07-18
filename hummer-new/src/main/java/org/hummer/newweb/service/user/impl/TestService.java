@@ -32,16 +32,16 @@ import java.util.List;
 public class TestService extends BasicTestService implements ITestService, ICacheable {
     private static Logger log = Log4jUtils.getLogger(TestService.class);
     //init by Hummer，Hummer容器注入的容器對象
-    @Autowired(value = BeanType.HUMMER_BEAN)
+    @Autowired
     ITestDAO testDAO;
     //init by Spring，Hummer容器通過Spring注入的Spring對象
-    @Autowired(value = BeanType.SPRING_BEAN)
+    @Autowired(BeanType.SPRING_BEAN)
     RedisService redisService;
     //init by Hummer, Hummer容器注入Mybatis的MapperProxy对象
-    @Autowired(value = BeanType.MAPPER_BEAN)
+    @Autowired(BeanType.MAPPER_BEAN)
     UserMapper userMapper;
 
-    @Autowired(value = BeanType.HUMMER_BEAN)
+    @Autowired
     ITest1Service test1Service;
 
     @Override
