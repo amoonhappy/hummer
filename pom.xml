@@ -64,6 +64,7 @@
         <!--Redis dependencies-->
         <springRedisVersion>2.0.8.RELEASE</springRedisVersion>
         <jedisVersion>2.9.0</jedisVersion>
+        <igniteVersion>2.6.0</igniteVersion>
         <!--DB related dependencies-->
         <mysqlVersion>8.0.11</mysqlVersion>
         <mongoDBVersion>3.8.0-beta1</mongoDBVersion>
@@ -115,6 +116,21 @@
         <junitVersion>4.12</junitVersion>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-indexing</artifactId>
+            <version>${igniteVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-core</artifactId>
+            <version>${igniteVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-spring</artifactId>
+            <version>${igniteVersion}</version>
+        </dependency>
         <!--AspectJ-->
         <dependency>
             <groupId>org.aspectj</groupId>
