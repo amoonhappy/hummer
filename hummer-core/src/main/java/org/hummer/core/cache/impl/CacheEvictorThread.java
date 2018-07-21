@@ -28,6 +28,17 @@ public class CacheEvictorThread {
 //    @Autowired
 //    RedisService redisService;
 
+    /**
+     * 1. 将key和value保持到redis
+     * 2. 解析value中保持的Model（实现IModel或者IStringPKModel接口的实体类）对应的ID
+     * 3. 通过modelKey(Model类名+Id)= values（第1步中的Key），保存实体Model缓存与Redis缓存Keys之间的关联
+     * 4. 在CacheModelEvict实现中，通过生成的modelKey找到所有关联redis缓存的Key，然后在redis中删除缓存
+     * 5. 在CacheEvict实现中，直接通过cacheName+“:”+key，删除指定key的缓存，如果key为通配符“*”则删除所有相关的缓存
+     *
+     * @param targetObject
+     * @param args
+     * @param method
+     */
     public static void evictCaches(Object targetObject, Object[] args, Method method) {
         ThreadPoolUtil.COMMON_POOL.execute(new Runnable() {
             @Override
