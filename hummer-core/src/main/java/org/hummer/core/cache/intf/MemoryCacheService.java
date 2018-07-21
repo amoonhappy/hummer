@@ -3,6 +3,7 @@ package org.hummer.core.cache.intf;
 import java.util.Collection;
 
 public interface MemoryCacheService {
+    public void deleteByPrex(String prex);
 
     public boolean isExist(Object key);
 
@@ -20,7 +21,7 @@ public interface MemoryCacheService {
 
     public Long getExp(Object key);
 
-    public void delete(Object... keys);
+    public void delete(Object keys);
 
     public void delete(Collection keys);
 

@@ -17,6 +17,7 @@ import org.hummer.core.factory.intf.IBeanFactory;
 import org.hummer.core.ioc.annotation.Autowired;
 import org.hummer.core.util.*;
 import org.slf4j.Logger;
+import org.springframework.aop.support.AopUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -200,12 +201,33 @@ public class HummerBeanFactory implements IBeanFactory {
     private boolean processHummerBeanAutowireForSpring(List<String> list, ConcurrentHashMap<String, Object> map) {
         if (CollectionUtils.isNotEmpty(list) && MapUtils.isNotEmpty(map))
             for (String springMVCBeanName : list) {
-//                if (springMVCBeanName.equals("knPositionController")) {
-//                    Object temp = map.get(springMVCBeanName);
-//                }
+                if (springMVCBeanName.equals("behaviorCollectErrorLogController")||springMVCBeanName.equals("")) {
+                    Object temp = map.get(springMVCBeanName);
+                }
                 Object springMVCBeanObject = map.get(springMVCBeanName);
+                boolean isAopCGLIB = false;
+                isAopCGLIB = AopUtils.isCglibProxy(springMVCBeanObject);
+                Field[] fields;
+//                if (isAopCGLIB) {
                 Class beanClass = springMVCBeanObject.getClass();
-                Field[] fields = beanClass.getDeclaredFields();
+                fields = HummerUtil.getDeepFields(beanClass);
+//                } else {
+//                    Class beanClass = springMVCBeanObject.getClass();
+//                    List<Field> allFields = new LinkedList();
+//                    for (; beanClass != Object.class; beanClass = beanClass.getSuperclass()) {
+//                        Field[] test = beanClass.getDeclaredFields();
+//                        for (Field field : test) {
+//                            int mod = field.getModifiers();
+//                            if (Modifier.isStatic(mod) || Modifier.isFinal(mod)) {
+//                                continue;
+//                            }
+//                            allFields.add(field);
+//                        }
+//                    }
+//                    fields = allFields.toArray(new Field[0]);
+////                    fields = beanClass.getDeclaredFields();
+////                    Field[] temp = beanClass.getFields();
+//                }
                 if (fields == null || fields.length == 0) {
                 } else {
                     for (Field field : fields) {
@@ -219,7 +241,7 @@ public class HummerBeanFactory implements IBeanFactory {
                                 case HUMMER_BEAN:
                                     depBeanObject = singletonBeanCache.get(depBeanName);
                                     if (depBeanObject != null) {
-                                        injectBeanProperties(springMVCBeanObject, depBeanName, depBeanObject);
+                                        injectHummerBeanProperties(springMVCBeanObject, depBeanName, depBeanObject);
                                     } else {
                                         log.warn("postSpringBeanAutowire failed, no Hummer Bean [{}] found for Spring Bean [{}]", depBeanName, springMVCBeanName);
                                     }
@@ -231,7 +253,7 @@ public class HummerBeanFactory implements IBeanFactory {
                                         springBeanCache.put(depBeanName, depBeanObject);
                                     }
                                     if (depBeanObject != null) {
-                                        injectBeanProperties(springMVCBeanObject, depBeanName, depBeanObject);
+                                        injectSimpleBeanProperties(springMVCBeanObject, depBeanName, depBeanObject);
                                     } else {
                                         log.warn("postSpringBeanAutowire failed, no Hummer Bean [{}] found for Spring Bean [{}]", depBeanName, springMVCBeanName);
                                     }
@@ -243,7 +265,7 @@ public class HummerBeanFactory implements IBeanFactory {
                                         mapperCache.put(depBeanName, depBeanObject);
                                     }
                                     if (depBeanObject != null) {
-                                        injectBeanProperties(springMVCBeanObject, depBeanName, depBeanObject);
+                                        injectSimpleBeanProperties(springMVCBeanObject, depBeanName, depBeanObject);
                                     } else {
                                         log.warn("no Hummer Bean [{}] found for Spring Bean [{}]", depBeanName, springMVCBeanName);
                                     }
@@ -253,6 +275,10 @@ public class HummerBeanFactory implements IBeanFactory {
                 }
             }
         return true;
+    }
+
+    private <T> T convertToTarget(Object springMVCBeanObject, final Class<T> requiredType) {
+        return (T) springMVCBeanObject;
     }
 
     private void initialInterceptors(Set<String> beanNames) {
@@ -503,7 +529,7 @@ public class HummerBeanFactory implements IBeanFactory {
                                 depBeanObject = depBeanHolder.getProxy();
                                 if (depBeanObject != null) {
                                     //inject reference bean from cached value
-                                    injectBeanProperties(target, depBeanName, depBeanObject);
+                                    injectSimpleBeanProperties(target, depBeanName, depBeanObject);
 //                                    singletonBeanCache.put(beanName, proxy);
                                     parentBeanHolder.setAutowiring(false);
                                     //injectBeanProperties(proxy, propertiesName, cachedPropertiesValue);
@@ -515,7 +541,7 @@ public class HummerBeanFactory implements IBeanFactory {
                                     cachedSpringBeanValue = HummerContainer.getInstance().getBeanFromSpring(depBeanName);
                                     springBeanCache.put(depBeanName, cachedSpringBeanValue);
                                 }
-                                injectBeanProperties(target, depBeanName, cachedSpringBeanValue);
+                                injectSimpleBeanProperties(target, depBeanName, cachedSpringBeanValue);
                                 continue;
                             case MAPPER_BEAN:
                                 //TODO
@@ -524,7 +550,7 @@ public class HummerBeanFactory implements IBeanFactory {
                                     cachedMapper = getMybatisMapperProxy(depBeanType);
                                     mapperCache.put(depBeanName, cachedMapper);
                                 }
-                                injectBeanProperties(target, depBeanName, cachedMapper);
+                                injectSimpleBeanProperties(target, depBeanName, cachedMapper);
                         }
                     }
                 }
@@ -555,7 +581,7 @@ public class HummerBeanFactory implements IBeanFactory {
                         cachedSpringBeanValue = HummerContainer.getInstance().getBeanFromSpring(springBeanId);
                         springBeanCache.put(springBeanId, cachedSpringBeanValue);
                     }
-                    injectBeanProperties(target, propertiesName, cachedSpringBeanValue);
+                    injectSimpleBeanProperties(target, propertiesName, cachedSpringBeanValue);
                 }
             }
             if (refBeanIds != null) {
@@ -578,7 +604,7 @@ public class HummerBeanFactory implements IBeanFactory {
 
                     }
                     if (depBeanObject != null) {
-                        injectBeanProperties(target, propertiesName, depBeanObject);
+                        injectSimpleBeanProperties(target, propertiesName, depBeanObject);
                     }
                 }
             }
@@ -723,6 +749,19 @@ public class HummerBeanFactory implements IBeanFactory {
         return cachedMapper;
     }
 
+    private static void injectSimpleBeanProperties(Object obj, String propertiesName, Object cachedPropertiesValue) {
+        Class objClass = obj.getClass();
+        try {
+            Field tobeInjectedField = objClass.getDeclaredField(propertiesName);
+//            Field tobeInjectedField = HummerUtil.getDeepFieldByName(objClass, propertiesName);
+            ReflectionUtil.makeAccessible(tobeInjectedField);
+            tobeInjectedField.set(obj, cachedPropertiesValue);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            log.error("bean[{}] don't have properties[{}]to be injected by object [{}]", obj, propertiesName, cachedPropertiesValue);
+        }
+//        BeanUtils.setProperty(obj, propertiesName, cachedPropertiesValue);
+    }
+
     /**
      * Don't need setter method to resolve the IOC of defined beans
      *
@@ -731,13 +770,16 @@ public class HummerBeanFactory implements IBeanFactory {
      * @param cachedPropertiesValue
      * @throws IllegalAccessException
      */
-    private static void injectBeanProperties(Object obj, String propertiesName, Object cachedPropertiesValue) {
+    private static void injectHummerBeanProperties(Object obj, String propertiesName, Object cachedPropertiesValue) {
         Class objClass = obj.getClass();
         try {
-            Field tobeInjectedField = objClass.getDeclaredField(propertiesName);
-            ReflectionUtil.makeAccessible(tobeInjectedField);
-            tobeInjectedField.set(obj, cachedPropertiesValue);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+//            Field tobeInjectedField = objClass.getDeclaredField(propertiesName);
+            Field[] tobeInjectedFields = HummerUtil.getDeepFieldByName(objClass, propertiesName);
+            for (Field tobeInjectedField : tobeInjectedFields) {
+                ReflectionUtil.makeAccessible(tobeInjectedField);
+                tobeInjectedField.set(obj, cachedPropertiesValue);
+            }
+        } catch (IllegalAccessException e) {
             log.error("bean[{}] don't have properties[{}]to be injected by object [{}]", obj, propertiesName, cachedPropertiesValue);
         }
 //        BeanUtils.setProperty(obj, propertiesName, cachedPropertiesValue);

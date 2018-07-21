@@ -1,9 +1,14 @@
 package org.hummer.core.cache.impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hummer.core.cache.intf.MemoryCacheService;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
@@ -13,6 +18,19 @@ import java.util.concurrent.TimeUnit;
 public class RedisService implements MemoryCacheService {
 
     private RedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
+    RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+
+    public StringRedisTemplate getStringRedisTemplate() {
+        return stringRedisTemplate;
+    }
+
+    public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
+        this.stringRedisTemplate = stringRedisTemplate;
+    }
+
+    public RedisService() {
+    }
 
     /**
      * 判断键是否存在
@@ -21,7 +39,21 @@ public class RedisService implements MemoryCacheService {
      * @return
      */
     public boolean isExist(Object key) {
+        redisTemplate.setKeySerializer(stringSerializer);
         return redisTemplate.hasKey(key);
+    }
+
+    public void deleteByPrex(String prex) {
+        redisTemplate.setKeySerializer(stringSerializer);
+
+//        Set<String> keys = stringRedisTemplate.keys(prex);
+        Set<String> keys = redisTemplate.keys(prex);
+
+        if (CollectionUtils.isNotEmpty(keys)) {
+            redisTemplate.delete(keys);
+        }
+
+
     }
 
     /**
@@ -31,7 +63,9 @@ public class RedisService implements MemoryCacheService {
      * @param value
      */
     public void set(Object key, Object value) {
-        redisTemplate.opsForValue().setIfAbsent(key, value);
+        redisTemplate.setKeySerializer(stringSerializer);
+
+        redisTemplate.opsForValue().set(key, value);
     }
 
     /**
@@ -42,6 +76,8 @@ public class RedisService implements MemoryCacheService {
      */
     public Object get(Object key) {
         Object ret;
+        redisTemplate.setKeySerializer(stringSerializer);
+
         ret = redisTemplate.opsForValue().get(key);
         return ret;
     }
@@ -54,6 +90,8 @@ public class RedisService implements MemoryCacheService {
      * @return
      */
     public Object getSet(Object key, Object value) {
+        redisTemplate.setKeySerializer(stringSerializer);
+
         Object ret = redisTemplate.opsForValue().getAndSet(key, value);
         return ret;
     }
@@ -66,6 +104,8 @@ public class RedisService implements MemoryCacheService {
      * @param value
      */
     public void setWithExp(Object key, int seconds, Object value) {
+        redisTemplate.setKeySerializer(stringSerializer);
+
         redisTemplate.opsForValue().set(key, value, seconds, TimeUnit.SECONDS);
     }
 
@@ -76,6 +116,8 @@ public class RedisService implements MemoryCacheService {
      * @param seconds
      */
     public void expire(Object key, int seconds) {
+
+        redisTemplate.setKeySerializer(stringSerializer);
         redisTemplate.expire(key, seconds, TimeUnit.SECONDS);
     }
 
@@ -85,6 +127,8 @@ public class RedisService implements MemoryCacheService {
      * @param key
      */
     public void removeExp(Object key) {
+
+        redisTemplate.setKeySerializer(stringSerializer);
         redisTemplate.persist(key);
     }
 
@@ -96,6 +140,9 @@ public class RedisService implements MemoryCacheService {
      */
     public Long getExp(Object key) {
         Long ret;
+
+        redisTemplate.setKeySerializer(stringSerializer);
+
         ret = redisTemplate.getExpire(key);
         return ret;
     }
@@ -106,6 +153,7 @@ public class RedisService implements MemoryCacheService {
      * @param keys
      */
     public void delete(Collection keys) {
+        redisTemplate.setKeySerializer(stringSerializer);
         redisTemplate.delete(keys);
     }
 
@@ -114,8 +162,9 @@ public class RedisService implements MemoryCacheService {
      *
      * @param keys
      */
-    public void delete(Object... keys) {
-        redisTemplate.delete(keys);
+    public void delete(Object keys) {
+        String key = (String) keys;
+        redisTemplate.delete(key);
     }
 
     /**
@@ -125,6 +174,8 @@ public class RedisService implements MemoryCacheService {
      * @param newkey
      */
     public void rename(Object key, Object newkey) {
+        redisTemplate.setKeySerializer(stringSerializer);
+
         redisTemplate.rename(key, newkey);
     }
 

@@ -1,21 +1,23 @@
 package org.hummer.core.cache.impl;
 
-import org.apache.commons.collections.FastHashMap;
-import org.hummer.core.util.Assert;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import org.hummer.core.container.HummerContainer;
 import org.hummer.core.util.Log4jUtils;
 import org.slf4j.Logger;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class CacheManager {
     private static final Logger log = Log4jUtils.getLogger(CacheManager.class);
     private static boolean expirationEnabled = false;
     private static int expirationPeriod = 60 * 60;
-    private static Map<String, Set<Object>> classMethodParaCacheKeyMapping = new FastHashMap();
-    // key = class name +
-    private static Map<String, String> springELgenRedisKeyCacheKey = new FastHashMap();
-
+//    private static Map<String, Set<Object>> classMethodParaCacheKeyMapping = new FastHashMap();
 
     static boolean isExpirationEnabled() {
         return expirationEnabled;
@@ -36,61 +38,62 @@ public class CacheManager {
     public CacheManager() {
     }
 
-    public static String getGenRedisKeyFromCache(String key) {
-
-        if (key == null) return null;
-        if (springELgenRedisKeyCacheKey.containsKey(key)) {
-            return springELgenRedisKeyCacheKey.get(key);
-        } else {
-            return null;
-        }
-    }
-
-    public static void setGenRedisKey2Cache(String key, String redisKey) {
-        if (key != null && redisKey != null) {
-            springELgenRedisKeyCacheKey.put(key, redisKey);
-        } else {
-            //do nothing
-        }
+    public static Map<?, ?> getClassMethodParaCacheKeyMapping() {
+//        return classMethodParaCacheKeyMapping;
+        return null;
     }
 
     @SuppressWarnings("all")
     public static void registerRedisKeyForId(Class modelClass, String id, Object redisKey) {
+        RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
         String modelIdKey = getModelIdKey(modelClass, id);
-        Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+        Set<Object> redisKeys = (Set<Object>) redisService.get(modelIdKey);
+//        Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
         if (redisKeys == null) {
             redisKeys = new HashSet<>();
         }
-        //log.debug("Redis Cache Key linked with {}, RedisCacheKey is {}", modelIdKey, redisKey);
+        log.debug("Redis Cache Key linked with {}, RedisCacheKey is {}", modelIdKey, JSONObject.toJSONString(redisKey));
         redisKeys.add(redisKey);
-        classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+        redisService.delete(modelIdKey);
+        redisService.set(modelIdKey, redisKeys);
+//        classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
     }
 
     @SuppressWarnings("all")
     public static void registerRedisKeyForIdsOfStr(Class modelClass, Set<String> ids, Object redisKey) {
+        RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
         //String[] idsArray = ids.split(",");
         for (String id : ids) {
             String modelIdKey = getModelIdKey(modelClass, id);
-            Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+//            Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+            Set<Object> redisKeys = (Set<Object>) redisService.get(modelIdKey);
+
             if (redisKeys == null) {
                 redisKeys = new HashSet<>();
             }
             redisKeys.add(redisKey);
-            classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+            log.debug("Redis Cache Key linked with {}, RedisCacheKeys is {}", modelIdKey, JSONArray.toJSONString(redisKeys));
+//            classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+            redisService.set(modelIdKey, redisKeys);
         }
     }
 
     @SuppressWarnings("all")
     public static void registerRedisKeyForIds(Class modelClass, Set<Long> ids, Object redisKey) {
+        RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
         //String[] idsArray = ids.split(",");
         for (Long id : ids) {
             String modelIdKey = getModelIdKey(modelClass, id);
-            Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+//            Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+            Set<Object> redisKeys = (Set<Object>) redisService.get(modelIdKey);
+
             if (redisKeys == null) {
                 redisKeys = new HashSet<>();
             }
             redisKeys.add(redisKey);
-            classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+            log.debug("Redis Cache Key linked with {}, RedisCacheKeys is {}", modelIdKey, JSONArray.toJSONString(redisKeys));
+//            classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+            redisService.set(modelIdKey, redisKeys);
         }
     }
 
@@ -102,10 +105,12 @@ public class CacheManager {
         }
     }
 
-    public static Collection getRedisKeysById(Class modelClass, String id) {
+    static Collection getRedisKeysById(Class modelClass, String id) {
+        RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
         String modelIdKey = getModelIdKey(modelClass, id);
-        Collection redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
-        //log.debug("Redis Cache Keys Found By {}, size is {}", modelIdKey, redisKeys);
+//        Collection redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+        Set<Object> redisKeys = (Set<Object>) redisService.get(modelIdKey);
+        log.debug("Redis Cache Keys Found By {}, size is {}", modelIdKey, JSONArray.toJSONString(redisKeys));
         return redisKeys;
     }
 
@@ -117,50 +122,32 @@ public class CacheManager {
         return getModelIdKey(modelClass, String.valueOf(id));
     }
 
-    @SuppressWarnings("all")
-    public static void unRegisterRedisKeyForId(Class modelClass, String id, Object redisKey) {
-        String modelIdKey = getModelIdKey(modelClass, id);
-        Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
-        if (redisKeys == null) {
-            redisKeys = new HashSet<>();
-        }
-        //log.debug("Redis Cache Key removed with {}, RedisCacheKey is {}", modelIdKey, redisKey);
-        redisKeys.remove(redisKey);
-        classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
-    }
+//    @SuppressWarnings("all")
+//    public static void unRegisterRedisKeyForId(Class modelClass, String id, Object redisKey) {
+//        String modelIdKey = getModelIdKey(modelClass, id);
+//        Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+//        if (redisKeys == null) {
+//            redisKeys = new HashSet<>();
+//        } else if (redisKeys.size() > 0) {
+//            log.debug("Redis Cache Key removed with {}, RedisCacheKey is {}", modelIdKey, JSONObject.toJSONString(redisKey));
+//            redisKeys.remove(redisKey);
+//        }
+//        classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+//    }
 
-    public static void unRegisterRedisKeyForId(Class modelClass, String id, Collection<Object> removeRedisKeys) {
+    static void unRegisterRedisKeyForId(Class modelClass, String id, Collection<Object> removeRedisKeys) {
+        RedisService redisService = (RedisService) HummerContainer.getInstance().getBeanFromSpring("redisService");
         String modelIdKey = getModelIdKey(modelClass, id);
-        Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+//        Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
+        Set<Object> redisKeys = (Set<Object>) redisService.get(modelIdKey);
         if (redisKeys == null) {
             redisKeys = new HashSet<>();
         }
-        //log.debug("Redis Cache Key removed with {}, RedisCacheKey is {}", modelIdKey, removeRedisKeys);
-        if (removeRedisKeys != null) {
+        if (removeRedisKeys != null && redisKeys.size() > 0) {
+            log.debug("Redis Cache Key removed with {}, RedisCacheKey is {}", modelIdKey, JSONArray.toJSONString(removeRedisKeys));
             redisKeys.removeAll(removeRedisKeys);
-            classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+//            classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
+            redisService.set(modelIdKey, redisKeys);
         }
-    }
-
-    public static void registerRedisKeyForId(Class modelClass, String id, Collection<Object> addRedisKeys) {
-        String modelIdKey = getModelIdKey(modelClass, id);
-        Set<Object> redisKeys = classMethodParaCacheKeyMapping.get(modelIdKey);
-        if (redisKeys == null) {
-            redisKeys = new HashSet<>();
-        }
-        redisKeys.addAll(addRedisKeys);
-        log.debug("Redis Cache Key linked with {}, RedisCacheKeys is {}", modelIdKey, redisKeys);
-        classMethodParaCacheKeyMapping.put(modelIdKey, redisKeys);
-    }
-
-    public static String getGeneratedKeyCacheKey(Object[] args, String targetClassName, String methodName, String cacheName, String cacheKeyDef) {
-        Assert.notNull(targetClassName, "target Class Name should not be empty");
-        Assert.notNull(methodName, "Method should not be empty");
-        Assert.notNull(cacheName, "CacheName should not be empty");
-        Assert.notNull(cacheKeyDef, "CacheKeyDef should not be empty");
-        Assert.notNull(args, "Arguments should not be empty");
-        String argstr = Arrays.deepToString(args);
-
-        return targetClassName + methodName + cacheName + cacheKeyDef + argstr;
     }
 }

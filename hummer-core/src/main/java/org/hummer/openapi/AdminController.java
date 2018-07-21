@@ -1,6 +1,8 @@
 package org.hummer.openapi;
 
+import com.alibaba.fastjson.JSONArray;
 import io.swagger.annotations.Api;
+import org.apache.commons.collections.FastHashMap;
 import org.hummer.core.config.impl.SupportedComponent;
 import org.hummer.core.container.HummerContainer;
 import org.hummer.core.util.ObjectUtil;
@@ -27,6 +29,16 @@ public class AdminController {
 
             return mv;
         }*/
+    @RequestMapping(value = "/cacheKeyMapping", method = {RequestMethod.GET})
+    public Map<String, String> getHummerCacheKeyMapping() {
+        HummerContainer container = HummerContainer.getInstance();
+        Map<String, String> ret = new FastHashMap();
+        Map<?, ?> cachedRedisKeys = container.getCachedRedisKeys();
+        ret.put("1-Total stored Hummer Cache Keys: ", String.valueOf(cachedRedisKeys.size()));
+        ret.put("2-Stored CacheKeys", JSONArray.toJSONString(cachedRedisKeys));
+        return ret;
+    }
+
     @RequestMapping(value = "/beanList", method = {RequestMethod.GET})
     public Set<String> getHummerBeanList() {
         HummerContainer container = HummerContainer.getInstance();

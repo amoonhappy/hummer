@@ -1,5 +1,7 @@
 package org.hummer.core.cache.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import org.apache.commons.lang.StringUtils;
 import org.hummer.core.cache.annotation.CacheEvict;
 import org.hummer.core.cache.annotation.CacheEvicts;
 import org.hummer.core.cache.annotation.CacheModelEvict;
@@ -67,18 +69,30 @@ public class CacheEvictorThread {
         String uniKeyDef = cacheEvict.key();
         String uniCacheName = cacheEvict.cacheName();
         String uniAnnoGenRedisKey;
+
         boolean useKey = (!StringUtil.isEmpty(uniKeyDef)) && (!StringUtil.isEmpty(uniCacheName));
         if (useKey) {
-            ExpressionParser parser = new SpelExpressionParser();
-            PrioritizedParameterNameDiscoverer parameterNameDiscoverer = new PrioritizedParameterNameDiscoverer();
-            CacheEvaluationContext cacheEvaluationContext = new CacheEvaluationContext(targetObject, method, args, parameterNameDiscoverer);
-            Expression expression = parser.parseExpression(uniKeyDef);
-            String redisKey;
-            uniAnnoGenRedisKey = expression.getValue(cacheEvaluationContext, String.class);
-            redisKey = uniCacheName + ":" + uniAnnoGenRedisKey;
-            //log.debug("Deleting from Redis for Key: {}", redisKey);
-            redisDao.delete(redisKey);
+            uniAnnoGenRedisKey = uniCacheName + ":" + uniKeyDef;
+            boolean byPrex = StringUtils.contains(uniAnnoGenRedisKey, '*');
+            uniAnnoGenRedisKey = "*" + uniAnnoGenRedisKey;
+            if (byPrex) {
+                redisDao.deleteByPrex(uniAnnoGenRedisKey);
+            } else {
+                redisDao.delete(uniAnnoGenRedisKey);
+            }
+
         }
+//        if (useKey) {
+//            ExpressionParser parser = new SpelExpressionParser();
+//            PrioritizedParameterNameDiscoverer parameterNameDiscoverer = new PrioritizedParameterNameDiscoverer();
+//            CacheEvaluationContext cacheEvaluationContext = new CacheEvaluationContext(targetObject, method, args, parameterNameDiscoverer);
+//            Expression expression = parser.parseExpression(uniKeyDef);
+//            String redisKey;
+//            uniAnnoGenRedisKey = expression.getValue(cacheEvaluationContext, String.class);
+//            redisKey = uniCacheName + ":" + uniAnnoGenRedisKey;
+//            log.debug("Deleting from Redis for Key: {}", redisKey);
+//            redisDao.delete(redisKey);
+//        }
     }
 
     private static void evictRedisCacheByModelIds(Object targetObject, Object[] args, Method method, MemoryCacheService
@@ -92,9 +106,9 @@ public class CacheEvictorThread {
         Expression evictExpression = evictParser.parseExpression(evictCacheKeyDef);
         evictAnnoGenRedisKey = evictExpression.getValue(evictCacheEvaluationContext, String.class);
         Set<Object> linkedRedisKeys = (Set<Object>) CacheManager.getRedisKeysById(evictModelClass, evictAnnoGenRedisKey);
-        //log.debug("Deleting from Redis for Key: {}", linkedRedisKeys);
+        log.debug("Deleting from Redis for Key: {}", JSONArray.toJSONString(linkedRedisKeys));
         redisDao.delete(linkedRedisKeys);
-        //log.debug("Deleting from CacheManager for Key: {}", linkedRedisKeys);
+        log.debug("Deleting from CacheManager for Key: {}", JSONArray.toJSONString(linkedRedisKeys));
         CacheManager.unRegisterRedisKeyForId(evictModelClass, evictAnnoGenRedisKey, linkedRedisKeys);
     }
 }

@@ -1,5 +1,6 @@
 package org.hummer.core.container;
 
+import org.hummer.core.cache.impl.CacheManager;
 import org.hummer.core.config.impl.HummerConfigManager;
 import org.hummer.core.config.intf.IConfiguration;
 import org.hummer.core.factory.impl.HummerBeanFactory;
@@ -35,12 +36,18 @@ public class HummerContainer {
         postInit();
         initTime = new Date();
     }
-    public List<String> getPostAutowireSpringBeanNameList(){
+
+    public List<String> getPostAutowireSpringBeanNameList() {
         List<String> ret = new ArrayList<>();
         ret.addAll(postAutowireSpringBeanNameList);
         ret.addAll(postAutowireSpringMVCBeanNameList);
         return ret;
     }
+
+    public Map<?, ?> getCachedRedisKeys() {
+        return CacheManager.getClassMethodParaCacheKeyMapping();
+    }
+
     /**
      * add Spring Bean Name to be autowired
      *

@@ -3,14 +3,13 @@ package org.hummer.core.cache.impl;
 import org.hummer.core.cache.annotation.CacheKey;
 import org.hummer.core.container.HummerContainer;
 import org.hummer.core.model.intf.IModel;
+import org.hummer.core.model.intf.IStringPKModel;
+import org.hummer.core.pagination.PageUtils;
 import org.hummer.core.util.Log4jUtils;
 import org.hummer.core.util.ThreadPoolUtil;
 import org.slf4j.Logger;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("all")
@@ -37,21 +36,44 @@ public class CacheStoreThread {
 
                     //如果不通过Model.Id祛除Cache，并且返回值不为空
                     if (!evictOnAll && returnValue != null) {
-                        //store the rediskey and ids mapping
-                        if (returnValue instanceof IModel) {
+                        if (returnValue instanceof IStringPKModel) {
+                            String id = ((IStringPKModel) returnValue).getId();
+                            CacheManager.registerRedisKeyForId(returnValue.getClass(), id, redisKey);
+                        } else if (returnValue instanceof IModel) {
+                            //store the rediskey and ids mapping
                             Long id = ((IModel) returnValue).getId();
                             CacheManager.registerRedisKeyForId(returnValue.getClass(), String.valueOf(id), redisKey);
                         } else if (returnValue instanceof Collection) {
                             // 使用jdk1.8中的新Collector实现从Collection中获取对象.方法的值返回一个集合
-                            if (returnValue != null && ((Collection) returnValue).size() > 0) {
-                                Set<Long> ids = ((Collection<IModel>) returnValue).stream().map(IModel::getId).collect(Collectors.toCollection(TreeSet::new));
-                                Class modelClass = ((Collection<IModel>) returnValue).iterator().next().getClass();
-                                CacheManager.registerRedisKeyForIds(modelClass, ids, redisKey);
+                            if (((Collection) returnValue).iterator().next() instanceof IModel) {
+                                if (returnValue != null && ((Collection) returnValue).size() > 0) {
+                                    Set<Long> ids = ((Collection<IModel>) returnValue).stream().map(IModel::getId).collect(Collectors.toCollection(TreeSet::new));
+                                    Class modelClass = ((Collection<IModel>) returnValue).iterator().next().getClass();
+                                    CacheManager.registerRedisKeyForIds(modelClass, ids, redisKey);
+                                }
+                            } else if (((Collection) returnValue).iterator().next() instanceof IStringPKModel) {
+                                if (returnValue != null && ((Collection) returnValue).size() > 0) {
+                                    Set<String> ids = ((Collection<IStringPKModel>) returnValue).stream().map(IStringPKModel::getId).collect(Collectors.toCollection(TreeSet::new));
+                                    Class modelClass = ((Collection<IStringPKModel>) returnValue).iterator().next().getClass();
+                                    CacheManager.registerRedisKeyForIdsOfStr(modelClass, ids, redisKey);
+                                }
                             }
                         } else if (returnValue instanceof Map) {
                             if (returnValue != null && ((Map) returnValue).size() > 0) {
                                 Set<String> ids = ((Map) returnValue).keySet();
                                 Class modelClass = ((Map) returnValue).values().iterator().next().getClass();
+                                CacheManager.registerRedisKeyForIdsOfStr(modelClass, ids, redisKey);
+                            }
+                        } else if (returnValue instanceof PageUtils) {
+                            List<?> results = ((PageUtils) returnValue).getList();
+                            Object temp = results.get(0);
+                            if (temp != null && temp instanceof IModel) {
+                                Class modelClass = temp.getClass();
+                                Set<Long> ids = ((Collection<IModel>) results).stream().map(IModel::getId).collect(Collectors.toCollection(TreeSet::new));
+                                CacheManager.registerRedisKeyForIds(modelClass, ids, redisKey);
+                            } else if (temp != null && temp instanceof IStringPKModel) {
+                                Set<String> ids = ((Collection<IStringPKModel>) results).stream().map(IStringPKModel::getId).collect(Collectors.toCollection(TreeSet::new));
+                                Class modelClass = temp.getClass();
                                 CacheManager.registerRedisKeyForIdsOfStr(modelClass, ids, redisKey);
                             }
                         }

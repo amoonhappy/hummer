@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 public @interface CacheEvict {
     String cacheName() default "";
 
-    Class modelClass() default Object.class;
+//    Class modelClass() default Object.class;
 
     String key() default "";
 }
